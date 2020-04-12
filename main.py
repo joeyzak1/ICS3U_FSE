@@ -41,11 +41,11 @@ ch1_sprites.append(add_ch1_sprites("Ch1_", 29, 41))
 
 X = 0
 Y = 1
-ROW = 0
-COL = 4
+ROW = 2
+COL = 3
 
 
-ch1 = [50, 500, 0, 4]
+ch1 = [0, 500, 4, 0]
 
 
 while running:
@@ -57,8 +57,8 @@ while running:
     mb = mouse.get_pressed()
     keys = key.get_pressed()
 
-    intro.move_player(ch1)
-    intro.draw_intro(screen, ch1, ch1_sprites)
+    intro.move_intro(ch1, ROW, X, COL, ch1_sprites)
+    intro.draw_introScene(screen, ch1, ch1_sprites, ROW, COL, X, Y)
       
    
     myClock.tick(60) #60 fps
