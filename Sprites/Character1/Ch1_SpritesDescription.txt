@@ -1,0 +1,8 @@
+Sprites Character 1 List
+
+
+Attacking Sprites: Ch1_000 --> Ch1_004
+Invincibility Sprites: Ch1_005 --> Ch1_009
+Jumping and Landing Sprites: Ch1_010 --> Ch1_015
+Running (LEFT) Sprites: Ch1_016 --> Ch1_028
+Running (RIGHT) Sprites: Ch1_029 --> Ch1_041
