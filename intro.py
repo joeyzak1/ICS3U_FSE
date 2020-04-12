@@ -5,7 +5,7 @@ ICS3U FSE
 from pygame import *
 
 def draw_introScene(screen, player, picList, ROW, COL, X, Y):
-
+    'This function draws the scene'
     screen.fill((0)) 
 
     col = int(player[COL]) #getting the col number for pic
@@ -15,8 +15,9 @@ def draw_introScene(screen, player, picList, ROW, COL, X, Y):
     screen.blit(pic, (player[X], player[Y])) #blitting the correct position
     display.flip()
 
-def move_intro(player, ROW, X, COL, picList):
 
+def move_intro(player, ROW, X, COL, picList):
+    'This function moves the player'
     player[ROW] = 0
     player[X] += 7
 
