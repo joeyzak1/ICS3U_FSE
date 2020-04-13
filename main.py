@@ -23,6 +23,9 @@ YELLOW = (255,255,0)
 running = True
 myClock = time.Clock()
 
+moveBackground = 0
+moveWalking = 0
+
 
 #ADDING SPRITES -----------------------------------------------------------------------------------
 def add_ch1_sprites(name, start, end):
@@ -57,8 +60,8 @@ while running:
     mb = mouse.get_pressed()
     keys = key.get_pressed()
 
-    intro.move_intro(ch1, ROW, X, COL, ch1_sprites)
-    intro.draw_introScene(screen, ch1, ch1_sprites, ROW, COL, X, Y)
+    intro.move_intro(ch1, ch1_sprites, moveBackground, moveWalking)
+    intro.draw_introScene(ch1, ch1_sprites, moveBackground, moveWalking)
       
    
     myClock.tick(60) #60 fps
