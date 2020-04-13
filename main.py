@@ -63,7 +63,8 @@ while running:
     intro.move_intro(ch1, ch1_sprites, moveBackground, moveWalking)
     intro.draw_introScene(ch1, ch1_sprites, moveBackground, moveWalking)
       
-   
+
+    display.set_caption(str(int(myClock.get_fps())))
     myClock.tick(60) #60 fps
     display.flip()
             

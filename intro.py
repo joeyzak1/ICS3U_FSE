@@ -43,8 +43,8 @@ def move_intro(player, picList, mB, mW):
 
     else:
         player[X] = 683
-        mB += 30
-        mW += 50
+        mB -= 300
+        mW -= 3072
 
     player[COL]=player[COL]+0.2 #advancing to the "next" frame
 
