@@ -15,12 +15,11 @@ COL = 3
 
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
-    screen.fill((0)) 
+    screen.fill((0))
 
     col = int(player[COL]) #getting the col number for pic
 
     pic = picList[4][col]
-
 
     if player[X] == 683:
         screen.blit(background, (mB, 0))
