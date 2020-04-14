@@ -66,6 +66,6 @@ while running:
 
     display.set_caption(str(int(myClock.get_fps())))
     myClock.tick(60) #60 fps
-    display.flip()
+    display.update()
             
 quit()

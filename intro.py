@@ -11,10 +11,18 @@ Y = 1
 ROW = 2
 COL = 3
 
+introRects = [Rect(337, 225, 350, 75), Rect(337, 325, 350, 75)]
+highlight_rects = [(255, 255, 255), (255, 255, 255)]
+
+option_images = [image.load("Intro Pictures/%s%02d.png" %("intro", i)) for i in range(2)]
+
 
 
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
+    mx, my = mouse.get_pos()
+    mb = mouse.get_pressed()
+
     screen.fill((0))
 
     col = int(player[COL]) #getting the col number for pic
@@ -27,10 +35,22 @@ def draw_introScene(player, picList, mB, mW):
 
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
 
+        for i in range(2):
+            draw.rect(screen, highlight_rects[i], introRects[i], 3)
+            screen.blit(option_images[i], (337, 225+100*i))
+
+            if introRects[i].collidepoint(mx, my) and mb[0] == 1:
+                highlight_rects[i] = (0, 255, 0)
+
+            elif introRects[i].collidepoint(mx, my):
+                highlight_rects[i] = (0, 0, 255)
+
+            else:
+                highlight_rects[i] = (255, 255, 255)
+
     else:
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
-    
-    display.flip()
+
 
 
 def move_intro(player, picList, mB, mW):
@@ -50,12 +70,7 @@ def move_intro(player, picList, mB, mW):
     if player[COL]>=len(picList[ROW]):
         player[COL] = 1   
 
-# def newBackground(player):
-#     if player[X] == 683:
-#         screen.blit(background, (moveBackground, 0))
-#         moveBackground += 1
-#         screen.blit(walking, (moveWalking, 0))
-#         moveWalking += 3
+
 
 walking = image.load("Backgrounds/ToWalk1.png")
 background = image.load("Backgrounds/Back1.png")
