@@ -29,9 +29,9 @@ moveWalking = 0
 
 #ADDING SPRITES -----------------------------------------------------------------------------------
 def add_ch1_sprites(name, start, end):
-    my_ch1Sprites = []
-    for i in range(start, end+1):
-        my_ch1Sprites.append(image.load("Sprites/Character1/%s%03d.png" %(name, i)))
+    my_ch1Sprites = [image.load("Sprites/Character1/%s%03d.png" %(name, i)) for i in range(start, end+1)]
+##    for i in range(start, end+1):
+##        my_ch1Sprites.append(image.load("Sprites/Character1/%s%03d.png" %(name, i)))
 
     return my_ch1Sprites
 
