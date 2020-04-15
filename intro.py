@@ -6,10 +6,7 @@ from pygame import *
 
 screen = display.set_mode((1024, 768))
 
-X = 0
-Y = 1
-ROW = 2
-COL = 3
+X = 0; Y = 1; ROW = 2; COL = 3
 
 introRects = [Rect(337, 225, 350, 75), Rect(337, 325, 350, 75)]
 highlight_rects = [(255, 255, 255), (255, 255, 255)]
