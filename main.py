@@ -35,6 +35,8 @@ X = 0; Y = 1; ROW = 2; COL = 3
 
 ch1 = [0, 500, 4, 0]
 
+introRun = True
+
 
 while running:
     for evt in event.get():
@@ -43,8 +45,9 @@ while running:
                        
     mx, my = mouse.get_pos(); mb = mouse.get_pressed(); keys = key.get_pressed()
 
-    intro.move_intro(ch1, ch1_sprites, moveBackground, moveWalking)
-    intro.draw_introScene(ch1, ch1_sprites, moveBackground, moveWalking)
+    if introRun == True:
+        intro.move_intro(ch1, ch1_sprites, moveBackground, moveWalking)
+        intro.draw_introScene(ch1, ch1_sprites, moveBackground, moveWalking)
       
 
     display.set_caption(str(int(myClock.get_fps())))

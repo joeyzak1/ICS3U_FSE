@@ -8,12 +8,16 @@ screen = display.set_mode((1024, 768))
 
 X = 0; Y = 1; ROW = 2; COL = 3
 
-introRects = [Rect(337, 225, 350, 75), Rect(337, 325, 350, 75)]
+introRects = [Rect(337, 275, 350, 75), Rect(337, 375, 350, 75)]
 highlight_rects = [(255, 255, 255), (255, 255, 255)]
 
 option_images = [image.load("Intro Pictures/%s%02d.png" %("intro", i)) for i in range(2)]
 
-
+logo = image.load("Intro Pictures/logo.png")
+logoHeight = int((logo.get_height())*0.33)
+logoWidth = int((logo.get_width())*0.33)
+print(logoWidth)
+logo = transform.scale(logo, (logoWidth, logoHeight))
 
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
@@ -29,12 +33,13 @@ def draw_introScene(player, picList, mB, mW):
     if player[X] == 683:
         screen.blit(background, (mB, 0))
         screen.blit(walking, (mW, 0))
+        screen.blit(logo, (289, -50))
 
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
 
         for i in range(2):
             draw.rect(screen, highlight_rects[i], introRects[i], 3)
-            screen.blit(option_images[i], (337, 225+100*i))
+            screen.blit(option_images[i], (337, 275+100*i))
 
             if introRects[i].collidepoint(mx, my) and mb[0] == 1:
                 highlight_rects[i] = (0, 255, 0)
@@ -50,8 +55,14 @@ def draw_introScene(player, picList, mB, mW):
 
 
 
+
 def move_intro(player, picList, mB, mW):
     'This function moves the player'
+    global introRun
+
+    mb = mouse.get_pressed()
+    mx, my = mouse.get_pos()
+
     player[ROW] = 0
 
     if player[X] < 683:
@@ -61,6 +72,12 @@ def move_intro(player, picList, mB, mW):
         player[X] = 683
         mB -= 300
         mW -= 3072
+
+        if mb[0] == 1 and introRects[0].collidepoint(mx, my):
+            introRun = False
+
+
+
 
     player[COL]=player[COL]+0.2 #advancing to the "next" frame
 
