@@ -28,8 +28,11 @@ def move(p, pics):
     keys = key.get_pressed()
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0:
-        p[ROW] = 2
         v[Y] = jumpSpeed
+
+
+    if p[Y] != bottom:
+        p[ROW] = 2
 
     if keys[K_LEFT] and p[X] > 400:
         p[ROW] = 3
