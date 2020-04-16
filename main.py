@@ -31,7 +31,8 @@ ch1_sprites.append(add_ch1_sprites("Ch1_", 16, 28)); ch1_sprites.append(add_ch1_
 X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
 
 ch1_intro = [0, 500, 4, 0] #ch1 location and sprite list for 
-p = Rect(512, 675, 35, 50) #beginning rect for level one
+ch1_levelOne = [512, 675, 4, 0]
+# p = Rect(512, 675, 35, 50) #beginning rect for level one
 
 #true or false variables for starting and ending certain functions
 introRun = True
@@ -53,9 +54,9 @@ while running:
             levelOne_Run = True
 
     elif levelOne_Run: #level one
-        levelOne.move(p)
-        levelOne.check(p)
-        levelOne.drawScene(screen, p)
+        levelOne.move(ch1_levelOne, ch1_sprites)
+        levelOne.check(ch1_levelOne)
+        levelOne.drawScene(screen, ch1_levelOne, ch1_sprites)
 
     print (introRun, levelOne_Run)
       

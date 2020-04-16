@@ -57,12 +57,6 @@ def draw_introScene(player, picList, mB, mW):
 
 def move_intro(player, picList, mB, mW):
     'This function moves the player'
-    global introRun
-    global levelOne_Run
-
-    mb = mouse.get_pressed()
-    mx, my = mouse.get_pos()
-
     player[ROW] = 0
 
     if player[X] < 683:

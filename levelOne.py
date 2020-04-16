@@ -9,36 +9,50 @@ backPic = image.load("Level One/background_levelOne.png")
 GROUND = 677; bottom = GROUND
 jumpSpeed = -20; gravity = 1
 
-X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3
+X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3
 
 v = [0, 0, bottom, 512]
 
-def drawScene(screen, p):
+def drawScene(screen, p, picList):
     offset = v[SCREENX]-p[X]
     screen.blit(backPic, (offset, 0))
 
-    draw.rect(screen, (0), [v[SCREENX], p[1], p[2], p[3]])
+    # draw.rect(screen, (0), [v[SCREENX], p[1], p[2], p[3]])
+    row = p[ROW]
+    col = int(p[COL])
+    pic = picList[row][col]
+    screen.blit(pic, (p[X], p[Y]))
 
-def move(p):
+
+def move(p, pics):
     keys = key.get_pressed()
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0:
+        p[ROW] = 2
         v[Y] = jumpSpeed
 
     if keys[K_LEFT] and p[X] > 400:
-        v[X] = -10
+        p[ROW] = 3
+        v[X] = -5
 
         if v[SCREENX] > 100:
-            v[SCREENX] -= 10
+            v[SCREENX] -= 5
 
 
     elif keys[K_RIGHT] and p[X] < 12280:
-        v[X] = 10
+        p[ROW] = 4
+        v[X] = 5
         if v[SCREENX] < 900:
-            v[SCREENX] += 10
+            v[SCREENX] += 5
 
     else:
+        p[COL] = 0
         v[X] = 0
+
+    p[COL] = p[COL]+0.2
+
+    if p[COL] >= len(pics[ROW]):
+        p[COL] = 1
 
     p[X] += v[X]
     v[Y] += gravity
