@@ -16,7 +16,6 @@ option_images = [image.load("Intro Pictures/%s%02d.png" %("intro", i)) for i in 
 logo = image.load("Intro Pictures/logo.png")
 logoHeight = int((logo.get_height())*0.33)
 logoWidth = int((logo.get_width())*0.33)
-print(logoWidth)
 logo = transform.scale(logo, (logoWidth, logoHeight))
 
 def draw_introScene(player, picList, mB, mW):
@@ -59,6 +58,7 @@ def draw_introScene(player, picList, mB, mW):
 def move_intro(player, picList, mB, mW):
     'This function moves the player'
     global introRun
+    global levelOne_Run
 
     mb = mouse.get_pressed()
     mx, my = mouse.get_pos()
@@ -72,12 +72,6 @@ def move_intro(player, picList, mB, mW):
         player[X] = 683
         mB -= 300
         mW -= 3072
-
-        if mb[0] == 1 and introRects[0].collidepoint(mx, my):
-            introRun = False
-
-
-
 
     player[COL]=player[COL]+0.2 #advancing to the "next" frame
 

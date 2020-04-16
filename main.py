@@ -7,6 +7,7 @@ Run this file to play the game
 '''
 from pygame import *
 import intro
+import levelOne
 
 init()
 width, height = 1024, 768; screen = display.set_mode((width,height))
@@ -33,9 +34,11 @@ ch1_sprites.append(add_ch1_sprites("Ch1_", 16, 28)); ch1_sprites.append(add_ch1_
 X = 0; Y = 1; ROW = 2; COL = 3
 
 
-ch1 = [0, 500, 4, 0]
+ch1_intro = [0, 500, 4, 0]
+p = Rect(512, 675, 35, 50)
 
 introRun = True
+levelOne_Run = False
 
 
 while running:
@@ -45,9 +48,19 @@ while running:
                        
     mx, my = mouse.get_pos(); mb = mouse.get_pressed(); keys = key.get_pressed()
 
-    if introRun == True:
-        intro.move_intro(ch1, ch1_sprites, moveBackground, moveWalking)
-        intro.draw_introScene(ch1, ch1_sprites, moveBackground, moveWalking)
+    if introRun:
+        intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
+        intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking)
+        if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
+            introRun = False
+            levelOne_Run = True
+
+    elif levelOne_Run:
+        levelOne.move(p)
+        levelOne.check(p)
+        levelOne.drawScene(screen, p)
+
+    print (introRun, levelOne_Run)
       
 
     display.set_caption(str(int(myClock.get_fps())))
