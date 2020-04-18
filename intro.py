@@ -6,7 +6,7 @@ from pygame import *
 
 screen = display.set_mode((1024, 768))
 
-X = 0; Y = 1; ROW = 2; COL = 3
+X = 0; Y = 1; ROW = 2; COL = 3; W = 2
 
 introRects = [Rect(337, 275, 350, 75), Rect(337, 375, 350, 75)]
 highlight_rects = [(255, 255, 255), (255, 255, 255)]
@@ -17,6 +17,8 @@ logo = image.load("Intro Pictures/logo.png")
 logoHeight = int((logo.get_height())*0.33)
 logoWidth = int((logo.get_width())*0.33)
 logo = transform.scale(logo, (logoWidth, logoHeight))
+
+b1 = [0, 0, 1024]; b2 = [1024, 0, 1024]; speed = 7
 
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
@@ -30,8 +32,18 @@ def draw_introScene(player, picList, mB, mW):
     pic = picList[4][col]
 
     if player[X] == 683:
-        screen.blit(background, (mB, 0))
-        screen.blit(walking, (mW, 0))
+        screen.blit(background_imgs[0], (b1[X], b1[Y]))
+        screen.blit(background_imgs[1], (b2[X], b2[Y]))
+
+        b1[X] -= speed
+        if abs(b1[X] - speed) > abs(b1[W]):
+            b1[X] = b2[W]
+
+        b2[X] -= speed
+        if abs(b2[X] - speed) > abs(b2[W]):
+            b2[X] = b1[W]
+
+
         screen.blit(logo, (289, -50))
 
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
@@ -73,6 +85,10 @@ def move_intro(player, picList, mB, mW):
         player[COL] = 1   
 
 
+background_imgs = [image.load("Backgrounds/back_" + str(i) + ".png") for i in range(2)]
 
-walking = image.load("Backgrounds/ToWalk1.png")
-background = image.load("Backgrounds/Back1.png")
+
+
+
+
+

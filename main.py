@@ -30,7 +30,7 @@ ch1_sprites.append(add_ch1_sprites("Ch1_", 16, 28)); ch1_sprites.append(add_ch1_
 
 X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
 
-ch1_intro = [0, 500, 4, 0] #ch1 location and sprite list for 
+ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
 ch1_levelOne = [512, 675, 4, 0]
 # p = Rect(512, 675, 35, 50) #beginning rect for level one
 
