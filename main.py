@@ -37,6 +37,7 @@ ch1_levelOne = [512, 675, 4, 0]
 #true or false variables for starting and ending certain functions
 introRun = True
 levelOne_Run = False
+display.set_icon(ch1_sprites[4][0])
 
 
 while running:
@@ -61,7 +62,7 @@ while running:
     print (introRun, levelOne_Run)
       
 
-    display.set_caption(str(int(myClock.get_fps())))
+    display.set_caption("Super Swordy Boy: FPS = " + str(int(myClock.get_fps())))
     myClock.tick(60) #60 fps
     display.update()
             
