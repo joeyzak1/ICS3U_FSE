@@ -59,7 +59,8 @@ while running:
     elif levelOne_Run: #level one
         levelOne.move(p)
         levelOne.check(p, levelOne.plats)
-        levelOne.drawScene(screen, p, levelOne.plats)
+        # hitBlocks(p, levelOne.blocks)
+        levelOne.drawScene(screen, p, levelOne.plats, levelOne.blocks)
 
     # print (introRun, levelOne_Run)
       

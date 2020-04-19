@@ -14,16 +14,21 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3
 v = [0, 0, bottom, 512]
 
 plats = [Rect(900, 525, 200, 15)]
+blocks = [Rect(1150, 350, 250, 40)]
 
 
 
-def drawScene(screen, p, plats):
+def drawScene(screen, p, plats, blocks):
     offset = v[SCREENX]-p[X]
     screen.blit(backPic, (offset, 0))
 
     for plat in plats:
         plat = plat.move(offset, 0)
         draw.rect(screen, (0), plat)
+
+    for block in blocks:
+        block = block.move(offset, 0)
+        draw.rect(screen, (255, 0, 0), block)
 
     draw.rect(screen, (0), [v[SCREENX], p[1], p[2], p[3]])
     # row = p[ROW]
@@ -35,10 +40,12 @@ def drawScene(screen, p, plats):
 def move(p):
     keys = key.get_pressed()
 
-    if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0:
-        v[Y] = jumpSpeed
+    if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
+        if v[Y] > 0 and hitBlocks(p[X], p[Y] + 5, blocks) \
+        or v[Y] < 0  and hitBlocks(p[X], p[Y] + 5, blocks):
+            v[Y] = jumpSpeed
 
-    if keys[K_LEFT] and p[X] > 400:
+    if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks):
         if keys[K_LSHIFT] or keys[K_RSHIFT]:
             v[X] = -10
 
@@ -50,7 +57,7 @@ def move(p):
             v[SCREENX] -= 5
 
 
-    elif keys[K_RIGHT] and p[X] < 12280:
+    elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks):
         if keys[K_LSHIFT] or keys[K_RSHIFT]:
             v[X] = 10
         else:
@@ -86,5 +93,12 @@ def check(p, plats):
         v[BOT] = GROUND
         p[Y] = GROUND-p[H]
         v[Y] = 0
+
+def hitBlocks(x, y, blocks):
+    playerRect = Rect(x, y, 35, 50)
+    return playerRect.collidelist(blocks)
+
+
+
 
 
