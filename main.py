@@ -59,7 +59,7 @@ while running:
         levelOne.check(ch1_levelOne)
         levelOne.drawScene(screen, ch1_levelOne, ch1_sprites)
 
-    print (introRun, levelOne_Run)
+    # print (introRun, levelOne_Run)
       
 
     display.set_caption("Super Swordy Boy: FPS = " + str(int(myClock.get_fps())))
