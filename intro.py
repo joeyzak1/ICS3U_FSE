@@ -29,7 +29,7 @@ def draw_introScene(player, picList, mB, mW):
 
     col = int(player[COL]) #getting the col number for pic
 
-    pic = picList[4][col]#hello world
+    pic = picList[4][col]
     if player[X] == 683:
         screen.blit(background_imgs[0], (b1[X], b1[Y]))
         screen.blit(background_imgs[1], (b2[X], b2[Y]))
