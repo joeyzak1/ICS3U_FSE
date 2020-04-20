@@ -14,7 +14,7 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3
 v = [0, 0, bottom, 512]
 
 plats = [Rect(900, 525, 200, 15)]
-blocks = [Rect(1150, 350, 250, 40)]
+blocks = [Rect(1150, 360, 250, 40)]
 
 
 
@@ -41,9 +41,15 @@ def move(p):
     keys = key.get_pressed()
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
-        if v[Y] > 0 and hitBlocks(p[X], p[Y] + 5, blocks) \
-        or v[Y] < 0  and hitBlocks(p[X], p[Y] + 5, blocks):
-            v[Y] = jumpSpeed
+        v[Y] = jumpSpeed 
+
+        if hitBlocks(p[X], p[Y] - 5, blocks):
+            v[Y]  = jumpSpeed
+
+        elif hitBlocks(p[X], p[Y] + 5, blocks):
+            v[Y] += gravity
+
+
 
     if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks):
         if keys[K_LSHIFT] or keys[K_RSHIFT]:

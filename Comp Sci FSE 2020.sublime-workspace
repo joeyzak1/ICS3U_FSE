@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"pla",
+				"playerRect\tstatement"
+			],
+			[
+				"level",
+				"levelOne\tmodule"
+			],
+			[
 				"ch1_",
 				"ch1_sprites\tstatement"
 			],
@@ -119,6 +127,51 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "main.py",
+			"settings":
+			{
+				"buffer_size": 2331,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "levelOne.py",
+			"settings":
+			{
+				"buffer_size": 2300,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\n  BRANCH:  On branch `master` tracking `origin/master`.\n  ROOT:    ~/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/ICS3U FSE/ICS3U_FSE\n  HEAD:    b8d1282 added a block, one issue\n\n    Your working directory is clean.\n\n  ###################                   ###############\n  ## SELECTED FILE ##                   ## ALL FILES ##\n  ###################                   ###############\n\n  [o] open file                         [a] stage all unstaged files\n  [s] stage file                        [A] stage all unstaged and untracked files\n  [u] unstage file                      [U] unstage all staged files\n  [d] discard changes to file           [D] discard all unstaged changes\n  [h] open file on remote\n  [M] launch external merge tool\n\n  [l] diff file inline                  [f] diff all files\n  [e] diff file                         [F] diff all cached files\n\n  #############                         #############\n  ## ACTIONS ##                         ## STASHES ##\n  #############                         #############\n\n  [c] commit                            [t][a] apply stash\n  [C] commit, including unstaged        [t][p] pop stash\n  [m] amend previous commit             [t][s] show stash\n  [p] push current branch               [t][c] create stash\n                                        [t][u] create stash including untracked files\n  [i] ignore file                       [t][g] create stash of staged changes only\n  [I] ignore pattern                    [t][d] drop stash\n\n  [B] abort merge\n\n  ###########\n  ## OTHER ##\n  ###########\n\n  [g]         show graph repop history\n  [?]         toggle this help menu\n  [tab]       transition to next dashboard\n  [SHIFT-tab] transition to previous dashboard\n  [.]         move cursor to next file\n  [,]         move cursor to previous file\n\n-\n\n",
+			"settings":
+			{
+				"buffer_size": 1833,
+				"line_ending": "Unix",
+				"name": "STATUS: ICS3U_FSE",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"file": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/Notes/U8 FSE Topics/BlockingMovementRects.py",
+			"settings":
+			{
+				"buffer_size": 1767,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/Notes/U8 FSE Topics/Moving Background/scroll3.py",
+			"settings":
+			{
+				"buffer_size": 2078,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -282,6 +335,7 @@
 	],
 	"file_history":
 	[
+		"/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/ICS3U FSE/ICS3U_FSE/levelOne.py"
 	],
 	"find":
 	{
@@ -316,8 +370,168 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "main.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2331,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								387,
+								387
+							]
+						],
+						"settings":
+						{
+							"git_savvy.repo_path": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/ICS3U FSE/ICS3U_FSE",
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 160.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "levelOne.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2300,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								980,
+								980
+							]
+						],
+						"settings":
+						{
+							"git_savvy.repo_path": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/ICS3U FSE/ICS3U_FSE",
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 335.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1833,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								212,
+								212
+							]
+						],
+						"settings":
+						{
+							"__vi_external_disable": false,
+							"default_dir": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/ICS3U FSE/ICS3U_FSE",
+							"git_savvy.help_hidden": false,
+							"git_savvy.interface": "status",
+							"git_savvy.repo_path": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/ICS3U FSE/ICS3U_FSE",
+							"git_savvy.status_view": true,
+							"git_savvy.tabbable": true,
+							"result_base_dir": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/ICS3U FSE/ICS3U_FSE",
+							"result_file_regex": "^(?:    .+ -> |  [ -] (?!\\(\\d+\\) ))(?!Your working directory is clean\\.)(\\S.*)$",
+							"syntax": "Packages/GitSavvy/syntax/status.sublime-syntax",
+							"tab_size": 2
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/Notes/U8 FSE Topics/BlockingMovementRects.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1767,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/joeyzaka/Library/Mobile Documents/com~apple~CloudDocs/High School/Junior/ICS3U 01/Notes/U8 FSE Topics/Moving Background/scroll3.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2078,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								778,
+								778
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 655.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
