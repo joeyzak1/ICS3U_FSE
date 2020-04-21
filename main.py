@@ -1,4 +1,9 @@
-#newmain.py
+'''
+main.py
+ICS3U FSE 
+Run this to play the game from start to finish
+'''
+
 from pygame import *
 import intro #intro.py
 import levelOne #levelOne.py
