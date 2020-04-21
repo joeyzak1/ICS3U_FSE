@@ -6,9 +6,9 @@ import levelOne #levelOne.py
 init()
 width, height = 1024, 768; screen = display.set_mode((width,height))
 
-RED = (255,0,0); GREY = (127,127,127); BLACK = (0,0,0); WHITE = (255,255,255); BLUE = (0,0,255); GREEN = (0,255,0); YELLOW = (255,255,0)
+RED = (255,0,0); GREY = (127,127,127); BLACK = (0,0,0); WHITE = (255,255,255); BLUE = (0,0,255); GREEN = (0,255,0); YELLOW = (255,255,0) #cols
 
-running = True; myClock = time.Clock()
+running = True; myClock = time.Clock() #pg stuff
 
 moveBackground = 0; moveWalking = 0
 
@@ -64,7 +64,8 @@ def level_One(action):
 
         levelOne.move(p)
         levelOne.check(p, levelOne.plats)
-        levelOne.drawScene(screen, p, levelOne.plats, levelOne.blocks)
+        levelOne.drawScene(screen, p, levelOne.plats, levelOne.blocks, levelOne.squared_blocks, levelOne.slugs)
+
 
         display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
         display.update()

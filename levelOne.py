@@ -15,10 +15,12 @@ v = [0, 0, bottom, 512]
 
 plats = [Rect(900, 525, 200, 15)]
 blocks = [Rect(1150, 360, 250, 40)]
+squared_blocks = [Rect(1250, 182, 50, 50)]
+slugs = [Rect(2050, 645, 30, 30)]
 
 
 
-def drawScene(screen, p, plats, blocks):
+def drawScene(screen, p, plats, blocks, sqblocks, slugs):
     offset = v[SCREENX]-p[X]
     screen.blit(backPic, (offset, 0))
 
@@ -30,6 +32,14 @@ def drawScene(screen, p, plats, blocks):
         block = block.move(offset, 0)
         draw.rect(screen, (255, 0, 0), block)
 
+    for sq in sqblocks:
+        sq = sq.move(offset, 0)
+        draw.rect(screen, (0, 0, 255), sq)
+
+    for slug in slugs:
+        slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
+
+
     draw.rect(screen, (0), [v[SCREENX], p[1], p[2], p[3]])
     # row = p[ROW]
     # col = int(p[COL])
@@ -39,6 +49,9 @@ def drawScene(screen, p, plats, blocks):
 
 def move(p):
     keys = key.get_pressed()
+    mx, my = mouse.get_pos()
+
+    print(mx, my, mx+30, my+30)
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
         v[Y] = jumpSpeed 
