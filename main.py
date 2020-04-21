@@ -32,6 +32,7 @@ X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
 ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
 ch1_levelOne = [512, 675, 4, 0]
 p = Rect(512, 675, 35, 50) #beginning rect for level one
+bullets_slugs = []
 
 
 #true or false variables for starting and ending certain functions
@@ -68,8 +69,10 @@ def level_One(action):
 
 
         levelOne.move(p)
+        levelOne.move_slugBullets(bullets_slugs)
         levelOne.check(p, levelOne.plats)
-        levelOne.drawScene(screen, p, levelOne.plats, levelOne.blocks, levelOne.squared_blocks, levelOne.slugs)
+        levelOne.check_bullSlug(bullets_slugs, p)
+        levelOne.drawScene(screen, p, levelOne.plats, levelOne.blocks, levelOne.squared_blocks, levelOne.slugs, bullets_slugs)
 
 
         display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
