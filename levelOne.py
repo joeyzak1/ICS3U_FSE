@@ -80,8 +80,6 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
 
 def move(p, player, sprites):
-    global sword
-
     keys = key.get_pressed()
     mx, my = mouse.get_pos()
 
@@ -96,6 +94,13 @@ def move(p, player, sprites):
 
     if v[Y] == jumpSpeed or v[Y] < 0:
         player[ROW] = 2
+
+    if keys[K_x]:
+
+        player[ROW] = 0
+        check_attack(p, slugs, birds)
+        if player[COL] >= 4:
+            player[COL] = 0
 
 
     if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks):
@@ -124,13 +129,7 @@ def move(p, player, sprites):
 
 
     # #attacking
-    if keys[K_x]:
 
-        player[ROW] = 0
-        check_attack(p, slugs, birds)
-        if player[COL] >= 4:
-            player[COL] = 0
-            rapid = 0
 
     else:
         player[COL] = 0
