@@ -20,7 +20,7 @@ squared_blocks = [Rect(1250, 182, 50, 50)]
 slugs = [Rect(2050, 645, 30, 30)]
 birds = [Rect(3300, 50, 50, 15)]
 
-rapid = 20
+rapid = 20; sword = 20
 
 
 
@@ -80,6 +80,8 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
 
 def move(p, player, sprites):
+    global sword
+
     keys = key.get_pressed()
     mx, my = mouse.get_pos()
 
@@ -102,7 +104,6 @@ def move(p, player, sprites):
             v[X] = -10
 
         else:
-        # p[ROW] = 3
             v[X] = -5
 
         if v[SCREENX] > 350:
@@ -123,9 +124,13 @@ def move(p, player, sprites):
 
 
     # #attacking
-    elif keys[K_x]:
+    if keys[K_x]:
+
         player[ROW] = 0
         check_attack(p, slugs, birds)
+        if player[COL] >= 4:
+            player[COL] = 0
+            rapid = 0
 
     else:
         player[COL] = 0
@@ -135,13 +140,11 @@ def move(p, player, sprites):
     player[COL] += 0.2
 
 
-    if player[COL] == len(sprites[ROW])-2:
+    if player[COL] >= len(sprites[ROW]):
         player[COL] = 0
 
     p[X] += v[X]
     v[Y] += gravity
-
-
 
 
 
@@ -184,9 +187,6 @@ def check_attack(p, slugs, birds):
 
             elif p.colliderect(bird):
                 birds.remove(bird)
-
-
-
 
 
 def hitBlocks(x, y, blocks):
