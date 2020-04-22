@@ -68,11 +68,11 @@ def level_One(action):
                 action = 'end'
 
 
-        levelOne.move(p)
+        levelOne.move(p, ch1_levelOne, ch1_sprites)
         levelOne.move_slugBullets(bullets_slugs)
         levelOne.check(p, levelOne.plats)
         levelOne.check_bullSlug(bullets_slugs, p)
-        levelOne.drawScene(screen, p, levelOne.plats, levelOne.blocks, levelOne.squared_blocks, levelOne.slugs, bullets_slugs)
+        levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds)
 
 
         display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
