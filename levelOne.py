@@ -14,17 +14,18 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3
 v = [0, 0, bottom, 512]
 v_bull = [-5, 0]
 
-plats = [Rect(900, 525, 200, 15)]
+plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15)]
 blocks = [Rect(1150, 360, 250, 40)]
 squared_blocks = [Rect(1250, 182, 50, 50)]
-slugs = [Rect(2050, 645, 30, 30)]
+slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30)]
 birds = [Rect(3300, 50, 50, 15)]
+borders = [Rect(2732, 632, 1366, 47)]
 
 rapid = 20; sword = 20
 
 
 
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds):
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, borders):
     global rapid
     offset = v[SCREENX]-p[X]
     screen.blit(backPic, (offset, 0))
@@ -60,6 +61,10 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         bird = bird.move(offset, 0)
         draw.rect(screen, (255, 0, 120), bird)
 
+    for border in borders:
+        border = border.move(offset, 0)
+        draw.rect(screen, (255, 0, 0), border, 3)
+
     row = player[ROW]
     col = int(player[COL])
     pic = sprites[row][col]
@@ -70,7 +75,10 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     screen.blit(pic, hitBox)
     draw.rect(screen, (255, 0, 0), hitBox, 2)
 
-    print(row, col)
+    # print(row, col)
+    print(p[X])
+
+
 
     # draw.rect(screen, (0), [v[SCREENX], p[1], p[2], p[3]])
     # row = p[ROW]
@@ -95,12 +103,7 @@ def move(p, player, sprites):
     if v[Y] == jumpSpeed or v[Y] < 0:
         player[ROW] = 2
 
-    if keys[K_x]:
 
-        player[ROW] = 0
-        check_attack(p, slugs, birds)
-        if player[COL] >= 4:
-            player[COL] = 0
 
 
     if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks):
@@ -128,8 +131,17 @@ def move(p, player, sprites):
             v[SCREENX] += 5
 
 
-    # #attacking
+    # else:
+    #     player[COL] = 0
+    #     player[COL] -= 0.2
+    #     v[X] = 0
 
+
+    # if keys[K_x]:
+    #     player[ROW] = 0
+    #     check_attack(p, slugs, birds)
+    #     if player[COL] >= 4:
+    #         player[COL] = 0
 
     else:
         player[COL] = 0
