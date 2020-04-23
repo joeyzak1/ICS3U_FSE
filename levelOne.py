@@ -1,4 +1,5 @@
 from pygame import *
+from tkinter import *
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
@@ -15,7 +16,14 @@ v = [0, 0, bottom, 512]
 v_bull = [-5, 0]
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15)]
-blocks = [Rect(1150, 360, 250, 40)]
+blocks = [Rect(1150, 360, 250, 40), Rect(3900, 75, 50, 300), Rect(3950, 75, 200, 50), Rect(4100, 75, 50, 150), Rect(3900, 187, 75, 150),
+        Rect(4250, 75, 50, 300), Rect(4250, 325, 200, 50), Rect(4400, 375, 50, -300), Rect(4550, 75, 50, 300)]
+
+rotated_R = Surface((75, 150))
+rotated_R.fill((255, 0, 0 ))
+rotated_R = transform.rotate(rotated_R, 315)
+screen.blit(rotated_R, blocks[4])
+
 squared_blocks = [Rect(1250, 182, 50, 50)]
 slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30)]
 birds = [Rect(3300, 50, 50, 15)]
@@ -168,10 +176,19 @@ def move_slugBullets(bull):
 
 
 
-def check(p, plats):
+def check(p, plats, borders):
     for plat in plats:
         if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]:
             v[BOT] = plat[Y]
+            p[Y] = v[BOT] - p[H]
+            v[Y] = 0
+
+    for border in borders:
+        if p[X]+5 + p[W] > border[X] and p[X] < border[X] + border[W]  and v[BOT] == GROUND:
+            v[X] = 0
+
+        if p[X] + p[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + p[H] >= border[Y] and p[Y] + p[H] + v[Y] > border[Y]:
+            v[BOT] = border[Y]
             p[Y] = v[BOT] - p[H]
             v[Y] = 0
 
@@ -203,3 +220,30 @@ def check_attack(p, slugs, birds):
 def hitBlocks(x, y, blocks):
     playerRect = Rect(x, y, 35, 50)
     return playerRect.collidelist(blocks)
+
+
+canvasRect = Rect(0, 0, backPic.get_width(), backPic.get_height())
+new_ss = screen.subsurface(canvasRect).copy()
+
+try:
+    fname = filedialog.asksaveasfilename(defaultextension=".png")
+    print(fname)
+    print ("")
+    image.save(new_ss,fname)
+except:
+    print ('saving error')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
