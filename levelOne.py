@@ -15,7 +15,7 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3
 v = [0, 0, bottom, 512]
 v_bull = [-5, 0]
 
-plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15)]
+plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15)]
 blocks = [Rect(1150, 360, 250, 40), Rect(3900, 75, 50, 300), Rect(3950, 75, 200, 50), Rect(4100, 75, 50, 150), Rect(3900, 187, 75, 150),
         Rect(4250, 75, 50, 300), Rect(4250, 325, 200, 50), Rect(4400, 375, 50, -300), Rect(4550, 75, 50, 300)]
 
@@ -24,9 +24,9 @@ rotated_R.fill((255, 0, 0 ))
 rotated_R = transform.rotate(rotated_R, 315)
 screen.blit(rotated_R, blocks[4])
 
-squared_blocks = [Rect(1250, 182, 50, 50)]
-slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30)]
-birds = [Rect(3300, 50, 50, 15)]
+squared_blocks = [Rect(1250, 182, 50, 50), Rect(5475, 250, 50, 50)]
+slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)]
+birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)]
 borders = [Rect(2732, 632, 1366, 47)]
 
 rapid = 20; sword = 20
@@ -84,7 +84,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     draw.rect(screen, (255, 0, 0), hitBox, 2)
 
     # print(row, col)
-    print(p[X])
+    # print(p[X])
 
 
 
@@ -220,21 +220,6 @@ def check_attack(p, slugs, birds):
 def hitBlocks(x, y, blocks):
     playerRect = Rect(x, y, 35, 50)
     return playerRect.collidelist(blocks)
-
-
-canvasRect = Rect(0, 0, backPic.get_width(), backPic.get_height())
-new_ss = screen.subsurface(canvasRect).copy()
-
-try:
-    fname = filedialog.asksaveasfilename(defaultextension=".png")
-    print(fname)
-    print ("")
-    image.save(new_ss,fname)
-except:
-    print ('saving error')
-
-
-
 
 
 
