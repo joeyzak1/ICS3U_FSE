@@ -41,11 +41,11 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     for plat in plats:
         plat = plat.move(offset, 0)
-        draw.rect(screen, (0), plat)
+        # draw.rect(screen, (0), plat)
 
     for block in blocks:
         block = block.move(offset, 0)
-        draw.rect(screen, (255, 0, 0), block)
+        # draw.rect(screen, (255, 0, 0), block)
 
     for sq in sqblocks:
         sq = sq.move(offset, 0)
