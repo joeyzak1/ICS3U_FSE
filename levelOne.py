@@ -10,9 +10,9 @@ backPic = image.load("Level One/background_levelOne.png")
 GROUND = 677; bottom = GROUND
 jumpSpeed = -20; gravity = 1
 
-X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3
+X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 
-v = [0, 0, bottom, 512]
+v = [0, 0, bottom, 512, 0]
 v_bull = [-5, 0]
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15)]
@@ -31,6 +31,8 @@ borders = [Rect(2732, 632, 1366, 47)]
 
 rapid = 20; sword = 20
 
+isJump = False
+
 
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, borders):
@@ -41,11 +43,11 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     for plat in plats:
         plat = plat.move(offset, 0)
-        # draw.rect(screen, (0), plat)
+        draw.rect(screen, (0), plat)
 
     for block in blocks:
         block = block.move(offset, 0)
-        # draw.rect(screen, (255, 0, 0), block)
+        draw.rect(screen, (255, 0, 0), block)
 
     for sq in sqblocks:
         sq = sq.move(offset, 0)
@@ -95,21 +97,66 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     # screen.blit(pic, (p[X], p[Y]))
 
 
-def move(p, player, sprites):
+def move(p, player, sprites, blocks):
+    global isJump
+
     keys = key.get_pressed()
     mx, my = mouse.get_pos()
 
+    if v[Y] != v[BOT]:
+        isJump = True
+
+    if p[Y] + p[H] >= GROUND:
+        isJump = False
+
+    # isJump = False
+
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
+        # v[Y] = jumpSpeed
+        # pRect = Rect(p[X], p[Y], p[W], p[H])
+
+        # for block in blocks:
+        #     if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(block):
+        #         v[TOP] = block[Y] + block[H]
+        #         p[Y] = v[TOP]
+        #         v[Y] = 0
+
+        #     elif isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
+        #         v[BOT] = block[Y]
+        #         p[Y] = v[BOT] - p[H]
+        #         v[Y] = 0
+
+            # else:
         v[Y] = jumpSpeed
 
-        if hitBlocks(p[X], p[Y] - 5, blocks):
-            v[Y]  = jumpSpeed
+            # if v[Y] > 0 and Rect(p[X], p[Y] - 5, p[W], p[H]).colliderect(blocks[i]):
+            #     v[BOT] = blocks[i][Y]
+            #     p[Y] = v[BOT] - p[H]
+            #     v[Y] = 0
 
-        elif hitBlocks(p[X], p[Y] + 5, blocks):
-            v[Y] += gravity
 
-    if v[Y] == jumpSpeed or v[Y] < 0:
-        player[ROW] = 2
+        # if isJump:
+
+
+        # # if isJump:
+        # #     player[ROW] = 2
+
+        #     if v[Y] > 0 and hitBlocks(p[X], p[Y] - 5, blocks) == -1:
+        #         v[Y] = jumpSpeed
+
+        #     if v[Y] < 0 and hitBlocks(p[X], p[Y] + 5, blocks) == -1:
+        #         v[Y] += gravity
+
+
+
+
+
+        # if hitBlocks(p[X], p[Y] - 5, blocks) == -1:
+        #     v[Y] = jumpSpeed
+
+        # elif hitBlocks(p[X], p[Y] + 5, blocks) == -1:
+        #     v[Y] = 0
+
 
 
 
@@ -165,6 +212,8 @@ def move(p, player, sprites):
     p[X] += v[X]
     v[Y] += gravity
 
+    print(isJump)
+
 
 
 def move_slugBullets(bull):
@@ -189,6 +238,17 @@ def check(p, plats, borders):
 
         if p[X] + p[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + p[H] >= border[Y] and p[Y] + p[H] + v[Y] > border[Y]:
             v[BOT] = border[Y]
+            p[Y] = v[BOT] - p[H]
+            v[Y] = 0
+
+    for block in blocks:
+        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(block):
+            v[TOP] = block[Y] + block[H]
+            p[Y] = v[TOP]
+            v[Y] += gravity
+
+        elif isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
+            v[BOT] = block[Y]
             p[Y] = v[BOT] - p[H]
             v[Y] = 0
 
@@ -220,9 +280,6 @@ def check_attack(p, slugs, birds):
 def hitBlocks(x, y, blocks):
     playerRect = Rect(x, y, 35, 50)
     return playerRect.collidelist(blocks)
-
-
-
 
 
 

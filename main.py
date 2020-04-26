@@ -68,7 +68,7 @@ def level_One(action):
                 action = 'end'
 
 
-        levelOne.move(p, ch1_levelOne, ch1_sprites)
+        levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks)
         levelOne.move_slugBullets(bullets_slugs)
         levelOne.check(p, levelOne.plats, levelOne.borders)
         levelOne.check_bullSlug(bullets_slugs, p)
