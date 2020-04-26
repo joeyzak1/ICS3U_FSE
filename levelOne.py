@@ -103,61 +103,12 @@ def move(p, player, sprites, blocks):
     keys = key.get_pressed()
     mx, my = mouse.get_pos()
 
-    if v[Y] != v[BOT]:
-        isJump = True
 
-    if p[Y] + p[H] >= GROUND:
-        isJump = False
 
     # isJump = False
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
-        # v[Y] = jumpSpeed
-        # pRect = Rect(p[X], p[Y], p[W], p[H])
-
-        # for block in blocks:
-        #     if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(block):
-        #         v[TOP] = block[Y] + block[H]
-        #         p[Y] = v[TOP]
-        #         v[Y] = 0
-
-        #     elif isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
-        #         v[BOT] = block[Y]
-        #         p[Y] = v[BOT] - p[H]
-        #         v[Y] = 0
-
-            # else:
         v[Y] = jumpSpeed
-
-            # if v[Y] > 0 and Rect(p[X], p[Y] - 5, p[W], p[H]).colliderect(blocks[i]):
-            #     v[BOT] = blocks[i][Y]
-            #     p[Y] = v[BOT] - p[H]
-            #     v[Y] = 0
-
-
-        # if isJump:
-
-
-        # # if isJump:
-        # #     player[ROW] = 2
-
-        #     if v[Y] > 0 and hitBlocks(p[X], p[Y] - 5, blocks) == -1:
-        #         v[Y] = jumpSpeed
-
-        #     if v[Y] < 0 and hitBlocks(p[X], p[Y] + 5, blocks) == -1:
-        #         v[Y] += gravity
-
-
-
-
-
-        # if hitBlocks(p[X], p[Y] - 5, blocks) == -1:
-        #     v[Y] = jumpSpeed
-
-        # elif hitBlocks(p[X], p[Y] + 5, blocks) == -1:
-        #     v[Y] = 0
-
-
 
 
 
@@ -226,6 +177,14 @@ def move_slugBullets(bull):
 
 
 def check(p, plats, borders):
+    global isJump
+
+    if v[Y] != v[BOT]:
+        isJump = True
+
+    if p[Y] + p[H] >= GROUND:
+        isJump = False
+
     for plat in plats:
         if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]:
             v[BOT] = plat[Y]
@@ -247,10 +206,11 @@ def check(p, plats, borders):
             p[Y] = v[TOP]
             v[Y] += gravity
 
-        elif isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
+        if isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
             v[BOT] = block[Y]
             p[Y] = v[BOT] - p[H]
             v[Y] = 0
+            isJump = False
 
 
     p[Y] += v[Y]
