@@ -15,9 +15,11 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 v = [0, 0, bottom, 512, 0]
 v_bull = [-5, 0]
 
-plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15)]
+plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
+        Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)]
 blocks = [Rect(1150, 360, 250, 40), Rect(3900, 75, 50, 300), Rect(3950, 75, 200, 50), Rect(4100, 75, 50, 150), Rect(3900, 187, 75, 150),
-        Rect(4250, 75, 50, 300), Rect(4250, 325, 200, 50), Rect(4400, 375, 50, -300), Rect(4550, 75, 50, 300)]
+        Rect(4250, 75, 50, 300), Rect(4250, 325, 200, 50), Rect(4400, 375, 50, -300), Rect(4550, 75, 50, 300), Rect(7200, 175, 250, 40)]
+
 
 rotated_R = Surface((75, 150))
 rotated_R.fill((255, 0, 0 ))
@@ -29,13 +31,15 @@ slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 3
 birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)]
 borders = [Rect(2732, 632, 1366, 47)]
 
+doorRect = Rect(7305, 100, 40, 75)
+
 rapid = 100; sword = 20
 
 isJump = False
 
 
 
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, borders):
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, borders, door):
     global rapid
     offset = v[SCREENX]-p[X]
     screen.blit(backPic, (offset, 0))
@@ -74,6 +78,9 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     for border in borders:
         border = border.move(offset, 0)
         draw.rect(screen, (255, 0, 0), border, 3)
+
+    door = door.move(offset, 0)
+    draw.rect(screen, (123, 213, 7), door)
 
     row = player[ROW]
     col = int(player[COL])
