@@ -1,5 +1,10 @@
 from pygame import *
 
+#MUSIC
+init()
+file='clipOne.mp3'
+mixer.music.load(file)
+mixer.music.play(-1)
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
