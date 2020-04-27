@@ -29,7 +29,7 @@ slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 3
 birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)]
 borders = [Rect(2732, 632, 1366, 47)]
 
-rapid = 20; sword = 20
+rapid = 100; sword = 20
 
 isJump = False
 
@@ -56,11 +56,11 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     for slug in slugs:
         slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
 
-        if rapid < 20:
+        if rapid < 100:
             rapid += 1
 
-        if slug[0] <= 1400 and rapid == 20:
-            b_slugs.append([slug[0], 645, v[0], v[1]])
+        if slug[0] <= 1400 and rapid == 100:
+            b_slugs.append([slug[0], 645, v_bull[0], v_bull[1]])
             rapid = 0
 
     for b in b_slugs:
@@ -81,7 +81,6 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     sprite_width = pic.get_width()
     sprite_height = pic.get_height()
 
-    global hitBox
 
     hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
     screen.blit(pic, hitBox)
@@ -145,13 +144,13 @@ def move(p, player, sprites, blocks):
         player[COL] -= 0.2
         v[X] = 0
 
-    if keys[K_x]:
-        player[ROW] = 0
+    # if keys[K_x]:
+    #     player[ROW] = 0
 
-    else:
-        player[COL] = 0
-        player[COL] -= 0.2
-        # v[X] = 0
+    # else:
+    #     player[COL] = 0
+    #     player[COL] -= 0.2
+    #     # v[X] = 0
 
 
 
