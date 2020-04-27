@@ -41,6 +41,7 @@ isJump = False
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, borders, door):
     global rapid
+
     offset = v[SCREENX]-p[X]
     screen.blit(backPic, (offset, 0))
 
@@ -122,7 +123,7 @@ def move(p, player, sprites, blocks):
 
 
 
-    if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks):
+    if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks):
         player[ROW] = 3
         if keys[K_LSHIFT] or keys[K_RSHIFT]:
             v[X] = -10
@@ -134,7 +135,7 @@ def move(p, player, sprites, blocks):
             v[SCREENX] -= 5
 
 
-    elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks):
+    elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks):
         player[ROW] = 4
 
         if keys[K_LSHIFT] or keys[K_RSHIFT]:
@@ -227,6 +228,23 @@ def check(p, plats, borders):
 
             else:
                 v[Y] = 0
+
+    for sq in squared_blocks:
+        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq):
+            v[TOP] = sq[Y] + sq[H]
+            p[Y] = v[TOP]
+            v[Y] += gravity
+
+        if isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq):
+            v[BOT] = sq[Y]
+            p[Y] = v[BOT] - p[H]
+
+            if keys[K_SPACE]: #these next 2 sections are for fixing issues with not being able to jump on blocks
+                v[Y] = jumpSpeed
+
+            else:
+                v[Y] = 0
+
 
 
 
