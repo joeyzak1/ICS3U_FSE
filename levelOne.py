@@ -81,9 +81,13 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     sprite_width = pic.get_width()
     sprite_height = pic.get_height()
 
+    global hitBox
+
     hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
     screen.blit(pic, hitBox)
     draw.rect(screen, (255, 0, 0), hitBox, 2)
+
+
 
     # print(row, col)
     # print(p[X])
@@ -136,29 +140,29 @@ def move(p, player, sprites, blocks):
         if v[SCREENX] < 700:
             v[SCREENX] += 5
 
-
-    # else:
-    #     player[COL] = 0
-    #     player[COL] -= 0.2
-    #     v[X] = 0
-
-
-    # if keys[K_x]:
-    #     player[ROW] = 0
-    #     check_attack(p, slugs, birds)
-    #     if player[COL] >= 4:
-    #         player[COL] = 0
-
     else:
         player[COL] = 0
         player[COL] -= 0.2
         v[X] = 0
 
+    if keys[K_x]:
+        player[ROW] = 0
+
+    else:
+        player[COL] = 0
+        player[COL] -= 0.2
+        # v[X] = 0
+
+
+
+    # if player[ROW] == 0 and player[COL] == 5:
+    #     player[COL] = 0
+    # else:
     player[COL] += 0.2
 
 
     if player[COL] >= len(sprites[ROW]):
-        player[COL] = 0
+        player[COL] = 1
 
     p[X] += v[X]
     v[Y] += gravity
@@ -178,6 +182,8 @@ def move_slugBullets(bull):
 
 def check(p, plats, borders):
     global isJump
+
+    keys = key.get_pressed()
 
     if v[Y] != v[BOT]:
         isJump = True
@@ -209,8 +215,13 @@ def check(p, plats, borders):
         if isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
             v[BOT] = block[Y]
             p[Y] = v[BOT] - p[H]
-            v[Y] = 0
-            isJump = False
+
+            if keys[K_SPACE]: #these next 2 sections are for fixing issues with not being able to jump on blocks
+                v[Y] = jumpSpeed
+
+            else:
+                v[Y] = 0
+
 
 
     p[Y] += v[Y]
