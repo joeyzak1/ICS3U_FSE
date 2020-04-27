@@ -1,5 +1,5 @@
 from pygame import *
-from tkinter import *
+
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
@@ -173,7 +173,7 @@ def move(p, player, sprites, blocks):
     p[X] += v[X]
     v[Y] += gravity
 
-    print(isJump)
+    print(p[X])
 
 
 
