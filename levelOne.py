@@ -114,18 +114,19 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
 
 def move(p, player, sprites, blocks):
-    global isJump
 
     keys = key.get_pressed()
     mx, my = mouse.get_pos()
 
 
-
-    # isJump = False
-
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
         v[Y] = jumpSpeed
 
+
+    # if keys[K_x]:
+    #     player[ROW] = 0
+    #     if player[COL] >= len(sprites[0]):
+    #         player[COL] = 0
 
 
     if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks):
@@ -207,6 +208,16 @@ def move(p, player, sprites, blocks):
 
     if player[COL] >= len(sprites[ROW]):
         player[COL] = 1
+
+    # if player[ROW] == 0 and player[COL] == 3:
+    #     # player[COL] -= 1
+    #     if player[COL] == 0:
+    #         player[COL] += 1
+    #         if player[COL] == 4:
+    #             player[COL] -= 1
+
+    #     else:
+    #         player[COL] -= 1
 
     p[X] += v[X]
     v[Y] += gravity
