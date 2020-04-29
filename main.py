@@ -42,6 +42,7 @@ display.set_icon(ch1_sprites[4][0])
 
 
 
+
 def menu(action):
     while action == 'menu':
         for evt in event.get():
