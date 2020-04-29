@@ -19,6 +19,7 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 
 v = [0, 0, bottom, 512, 0]
 v_bull = [-5, 0]
+v_bird = [-5, 0]; vBird_vertical = 50; vBrid_gravity = -1
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
         Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)]
@@ -101,17 +102,6 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
 
 
-    # print(row, col)
-    # print(p[X])
-
-
-
-    # draw.rect(screen, (0), [v[SCREENX], p[1], p[2], p[3]])
-    # row = p[ROW]
-    # col = int(p[COL])
-    # pic = picList[row][col]
-    # screen.blit(pic, (p[X], p[Y]))
-
 
 def move(p, player, sprites, blocks):
 
@@ -190,39 +180,35 @@ def move(p, player, sprites, blocks):
         v[X] = 0
 
 
-    # if keys[K_x]:
-    #     player[ROW] = 0
-
-    # else:
-    #     player[COL] = 0
-    #     player[COL] -= 0.2
-    #     # v[X] = 0
-
-
-
-    # if player[ROW] == 0 and player[COL] == 5:
-    #     player[COL] = 0
-    # else:
     player[COL] += 0.2
 
 
     if player[COL] >= len(sprites[ROW]):
         player[COL] = 1
 
-    # if player[ROW] == 0 and player[COL] == 3:
-    #     # player[COL] -= 1
-    #     if player[COL] == 0:
-    #         player[COL] += 1
-    #         if player[COL] == 4:
-    #             player[COL] -= 1
 
-    #     else:
-    #         player[COL] -= 1
 
     p[X] += v[X]
     v[Y] += gravity
 
     print(p[X])
+
+
+
+def move_Bird(birds):
+    for bird in birds:
+        if bird[X]-offset == 950:
+
+            if bird[X] == 650:
+                v[Y] = 0
+
+            else:
+                v[Y] = vBird_vertical
+                v[X] = 15
+
+        bird[X] += v[X]
+
+
 
 
 
