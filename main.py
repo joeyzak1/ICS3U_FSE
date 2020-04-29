@@ -27,7 +27,7 @@ ch1_sprites = [] #2d list
 ch1_sprites.append(add_ch1_sprites("Ch1_", 0, 4)); ch1_sprites.append(add_ch1_sprites("Ch1_", 5, 9)); ch1_sprites.append(add_ch1_sprites("Ch1_", 10, 15))
 ch1_sprites.append(add_ch1_sprites("Ch1_", 16, 28)); ch1_sprites.append(add_ch1_sprites("Ch1_", 29, 41))
 
-X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
+# X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
 
 ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
 ch1_levelOne = [512, 675, 4, 0]
@@ -36,8 +36,8 @@ bullets_slugs = []
 
 
 #true or false variables for starting and ending certain functions
-introRun = True
-levelOne_Run = False
+# introRun = True
+# levelOne_Run = False
 display.set_icon(ch1_sprites[4][0])
 
 

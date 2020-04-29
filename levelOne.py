@@ -1,10 +1,10 @@
 from pygame import *
 
 #MUSIC
-init()
-file='clipOne.mp3'
-mixer.music.load(file)
-mixer.music.play(-1)
+# init()
+# file='clipOne.mp3'
+# mixer.music.load(file)
+# mixer.music.play(-1)
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
@@ -130,32 +130,64 @@ def move(p, player, sprites, blocks):
 
     if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks):
         player[ROW] = 3
-        if keys[K_LSHIFT] or keys[K_RSHIFT]:
-            v[X] = -10
 
-        else:
-            v[X] = -5
+        if p[X] + 5 < 7550:
 
-        if v[SCREENX] > 350:
-            v[SCREENX] -= 5
+            if keys[K_LSHIFT] or keys[K_RSHIFT]:
+                v[X] = -10
+
+            else:
+                v[X] = -5
+
+            if v[SCREENX] > 350:
+                v[SCREENX] -= 5
+
+
+        elif p[X] > 7550:
+            if v[X] == 0:
+                if keys[K_LSHIFT] or keys[K_RSHIFT]:
+                    v[X] = -10
+
+                else:
+                    v[X] = -5
+
+
+        #     v[X] = 0
+            # v[SCREENX] = 0
+
+
 
 
     elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks):
         player[ROW] = 4
 
-        if keys[K_LSHIFT] or keys[K_RSHIFT]:
-            v[X] = 10
-        else:
-        # p[ROW] = 4
-            v[X] = 5
 
-        if v[SCREENX] < 700:
-            v[SCREENX] += 5
+        if p[X] + 5 < 7550:
+
+            if keys[K_LSHIFT] or keys[K_RSHIFT]:
+                v[X] = 10
+            else:
+            # p[ROW] = 4
+                v[X] = 5
+
+            if v[SCREENX] < 700:
+                v[SCREENX] += 5
+
+        elif p[X] > 7550:
+            player[COL] = 0
+            if v[X] > 0:
+                v[X] = 0
+        #     v[X] = 0
+            # v[SCREENX] = 0
+
+
+    
 
     else:
         player[COL] = 0
         player[COL] -= 0.2
         v[X] = 0
+
 
     # if keys[K_x]:
     #     player[ROW] = 0
