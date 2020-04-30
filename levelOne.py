@@ -19,7 +19,7 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 
 v = [0, 0, bottom, 512, 0]
 v_bull = [-5, 0]
-v_bird = [-5, 0]; vBird_vertical = 20; vBrid_gravity = -1
+v_bird = [-5, 0]; vBird_vertical = 30; vBrid_gravity = -1
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
         Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)]
@@ -99,6 +99,10 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
     screen.blit(pic, hitBox)
     draw.rect(screen, (255, 0, 0), hitBox, 2)
+
+
+
+
 
 
 
@@ -208,11 +212,12 @@ def move(p, player, sprites, blocks, birds):
     #     bird[Y] += v_bird[Y]
 
 
-def move_bird(p, birds):
+def move_bird(p, birds, sprites):
     for bird in birds:
-        if p[X] + 90 >= bird[X]:
+        bird_p = [bird[X], bird[Y], 0]
+        if p[X] + 400 >= bird[X]:
 
-            if bird[X] == p[X] + 100:
+            if bird[X] <= p[X] + 200 and bird[Y] >= p[Y]:
                 v_bird[Y] = 0
 
             else:
@@ -221,8 +226,16 @@ def move_bird(p, birds):
 
             
             bird[Y] += v_bird[Y]
+            bird[X] += v_bird[X]
 
-        bird[X] += v_bird[X]
+            bird_p[ROW] += 0.2
+
+            if bird_p[ROW] >= len(sprites):
+                bird_p[ROW] = 0
+
+        global bird_p
+
+
 
 
 

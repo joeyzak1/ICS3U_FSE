@@ -5,8 +5,12 @@ Run this to play the game from start to finish
 '''
 
 from pygame import *
+import os
 import intro #intro.py
 import levelOne #levelOne.py
+
+os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
+
 
 init()
 width, height = 1024, 768; screen = display.set_mode((width,height))
@@ -27,6 +31,8 @@ ch1_sprites = [] #2d list
 ch1_sprites.append(add_ch1_sprites("Ch1_", 0, 4)); ch1_sprites.append(add_ch1_sprites("Ch1_", 5, 9)); ch1_sprites.append(add_ch1_sprites("Ch1_", 10, 15))
 ch1_sprites.append(add_ch1_sprites("Ch1_", 16, 28)); ch1_sprites.append(add_ch1_sprites("Ch1_", 29, 41))
 
+bird_sprites = [image.load('Sprites/Bird/tile00' + str(i) + '.png') for i in range (5)]
+
 # X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
 
 ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
@@ -41,8 +47,6 @@ bullets_slugs = []
 display.set_icon(ch1_sprites[4][0])
 
 health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)]
-
-
 
 
 
