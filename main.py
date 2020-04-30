@@ -31,7 +31,13 @@ ch1_sprites = [] #2d list
 ch1_sprites.append(add_ch1_sprites("Ch1_", 0, 4)); ch1_sprites.append(add_ch1_sprites("Ch1_", 5, 9)); ch1_sprites.append(add_ch1_sprites("Ch1_", 10, 15))
 ch1_sprites.append(add_ch1_sprites("Ch1_", 16, 28)); ch1_sprites.append(add_ch1_sprites("Ch1_", 29, 41))
 
-bird_sprites = [image.load('Sprites/Bird/tile00' + str(i) + '.png') for i in range (5)]
+bird_images = ['Sprites/Bird/tile00' + str(i) + '.png' for i in range (5)]
+bird_sprites = []
+for i in bird_images:
+    i = image.load(i)
+    i = transform.scale(i, (100, 80))
+    bird_sprites.append(i)
+    
 
 # X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
 

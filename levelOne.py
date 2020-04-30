@@ -9,90 +9,98 @@ from pygame import *
 size = width, height = 1024, 768
 screen = display.set_mode(size)
 
-backPic = image.load("Level One/background_levelOne.png")
+backPic = image.load("Level One/background_levelOne.png") #background
 
 
-GROUND = 677; bottom = GROUND
+GROUND = 677; bottom = GROUND #ground and jump variables for jumping, platforms, etc.
 jumpSpeed = -20; gravity = 1
 
-X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
+X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4 #variables for navigating around lists
 
-v = [0, 0, bottom, 512, 0]
-v_bull = [-5, 0]
-v_bird = [-5, 0]; vBird_vertical = 30; vBrid_gravity = -1
+v = [0, 0, bottom, 512, 0] #velocity of player
+
+v_bull = [-5, 0] #vel of bullets
+
+v_bird = [0, 0]; vBird_vertical = 30; vBrid_gravity = -1 #velocity of birds
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
-        Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)]
+        Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)] #platform rect list
+
 blocks = [Rect(1150, 360, 250, 40), Rect(3900, 75, 50, 300), Rect(3950, 75, 200, 50), Rect(4100, 75, 50, 150), Rect(3900, 187, 75, 150),
-        Rect(4250, 75, 50, 300), Rect(4250, 325, 200, 50), Rect(4400, 375, 50, -300), Rect(4550, 75, 50, 300), Rect(7200, 175, 250, 40)]
+        Rect(4250, 75, 50, 300), Rect(4250, 325, 200, 50), Rect(4400, 375, 50, -300), Rect(4550, 75, 50, 300), Rect(7200, 175, 250, 40)] #blocks rect list
 
+squared_blocks = [Rect(1250, 182, 50, 50), Rect(5475, 250, 50, 50)] #squared blocks rect list
 
-rotated_R = Surface((75, 150))
-rotated_R.fill((255, 0, 0 ))
-rotated_R = transform.rotate(rotated_R, 315)
-screen.blit(rotated_R, blocks[4])
+slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)] #slugs rect list
 
-squared_blocks = [Rect(1250, 182, 50, 50), Rect(5475, 250, 50, 50)]
-
-slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)]
-
-birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)]
+birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)] #rect list for birds
 bird_p = [[birds[i][X], birds[i][Y], 0] for i in range(len(birds))]
 
-borders = [Rect(2732, 632, 1366, 47)]
+# print (bird_p)
 
-doorRect = Rect(7305, 100, 40, 75)
+borders = [Rect(2732, 632, 1366, 47)] #ground border
 
-rapid = 100; sword = 20
+doorRect = Rect(7305, 100, 40, 75) #rect for door
 
-isJump = False
+rapid = 100; sword = 20 #for speed of bullets and sword
+
+isJump = False #variable for checking jumps
 
 
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door):
     global rapid
 
-    offset = v[SCREENX]-p[X]
-    screen.blit(backPic, (offset, 0))
+    offset = v[SCREENX]-p[X] #offset to move screen with eveything
+    screen.blit(backPic, (offset, 0)) #background
 
 
-    for plat in plats:
+    for plat in plats: #this for loop blits all platforms in the correct position
         plat = plat.move(offset, 0)
         draw.rect(screen, (0), plat)
 
-    for block in blocks:
+    for block in blocks: #this loop blits all blocks
         block = block.move(offset, 0)
         draw.rect(screen, (255, 0, 0), block)
 
-    for sq in sqblocks:
+    for sq in sqblocks: #this for loop blits all squared blocks
         sq = sq.move(offset, 0)
         draw.rect(screen, (0, 0, 255), sq)
 
-    for slug in slugs:
+    for slug in slugs: #this blits the slugs
         slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
 
-        if rapid < 100:
+        if rapid < 100: #checking for bullet speed
             rapid += 1
 
-        if slug[0] <= 1400 and rapid == 100:
+        if slug[0] <= 1400 and rapid == 100: #checking if bullet speed is slow enough to shoot
             b_slugs.append([slug[0], 645, v_bull[0], v_bull[1]])
             rapid = 0
 
-    for b in b_slugs:
+    for b in b_slugs: #bullets
         bs_rect = Rect(b[0], b[1], 20, 10)
         draw.rect(screen, (255, 255, 0), bs_rect)
 
-    for bird in birds:
-        for sp in b_s:
-            bird = bird.move(offset, 0)
-            row = int(sp[ROW])
-            pic_b = sprites_b[row]
-            b_s_width = pic_b.get_width(); b_s_height = pic_b.get_height()
-            hitbox_b = Rect(bird[X], bird[Y], b_s_width, b_s_height)
+    # for bird in birds:
+    #     for sp in b_s:
+    #         bird = bird.move(offset, 0)
+    #         row = int(sp[ROW])
+    #         pic_b = sprites_b[row]
+    #         b_s_width = pic_b.get_width(); b_s_height = pic_b.get_height()
+    #         hitbox_b = Rect(bird[X], bird[Y], b_s_width, b_s_height)
 
 
-            draw.rect(screen, (255, 0, 120), hitbox_b, 2)
-            screen.blit(pic_b, hitbox_b)
+    #         draw.rect(screen, (255, 0, 120), hitbox_b, 2)
+    #         screen.blit(pic_b, hitbox_b)
+
+    for b in b_s: #birds
+        # b = b.move(offset, 0)
+        row = int(b[ROW])
+        print (row)
+        if row > 4:
+            row = 0
+        pic_bird = sprites_b[row]
+        screen.blit(pic_bird, (b[X], b[Y]))
 
     for border in borders:
         border = border.move(offset, 0)
@@ -110,12 +118,6 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
     screen.blit(pic, hitBox)
     draw.rect(screen, (255, 0, 0), hitBox, 2)
-
-
-
-
-
-
 
 
 
@@ -208,41 +210,43 @@ def move(p, player, sprites, blocks, birds):
     p[X] += v[X]
     v[Y] += gravity
 
-    print(p[X])
+    # print(p[X])
 
-    ###bird
-    # move_bird(p, birds)
-    # for bird in birds:
-    #     if p[X] + 90 >= bird[X]:
-    #         if bird[X] == p[X] + 100:
-    #             v_bird[Y] = 0
 
-    #         else:
-    #             v_bird[Y] = vBird_vertical
-    #             v_bird[X] = -15
 
-    #     bird[X] += v_bird[X]
-    #     bird[Y] += v_bird[Y]
+
+
 
 
 def move_bird(p, birds, bird_p, sprites):
-    for bird in birds:
-        for b in bird_p:
-            if p[X] + 400 >= bird[X]:
+    # for bird in birds:
+    for b in bird_p:
+        
+        if p[X] + 400 >= b[X]:
 
-                if bird[X] <= p[X] + 200 and bird[Y] >= p[Y]:
-                    v_bird[Y] = 0
+            if b[X] <= p[X] + 200 and b[Y] >= p[Y]:
+                v_bird[Y] = 0
 
-                else:
-                    v_bird[Y] = vBird_vertical
-                    v_bird[X] = -15
+            else:              
+                v_bird[Y] = vBird_vertical
+                v_bird[X] = -15
+
+
+        # else:
+        #     b[ROW] = 0
+        #     b[ROW] -= 0.2
+
+            # if b[ROW] == 5:
+            #     b[ROW] = 0
+
 
                 b[ROW] += 0.2
-                if b[ROW] == 4:
-                    b[ROW] = 0
+                
+                b[Y] += v_bird[Y]
+                b[X] += v_bird[X]
 
-                bird[Y] += v_bird[Y]
-                bird[X] += v_bird[X]
+
+
 
 
 
@@ -256,9 +260,20 @@ def move_slugBullets(bull):
             bull.remove(b)
 
 
+
+
+
+
+
 def move_bad(p, bull, birds, bird_p, sprite_bird):
     move_slugBullets(bull)
     move_bird(p, birds, bird_p, sprite_bird)
+
+
+
+
+
+
 
 
 def check(p, plats, borders):
@@ -336,6 +351,8 @@ def check_bullSlug(bull, p):
             bull.remove(b)
             break
 
+
+
 def check_attack(p, slugs, birds):
     for slug in slugs:
         for bird in birds:
@@ -346,17 +363,7 @@ def check_attack(p, slugs, birds):
                 birds.remove(bird)
 
 
+
 def hitBlocks(x, y, blocks):
     playerRect = Rect(x, y, 35, 50)
     return playerRect.collidelist(blocks)
-
-
-
-
-
-
-
-
-
-
-
