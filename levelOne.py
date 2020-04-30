@@ -19,7 +19,7 @@ X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 
 v = [0, 0, bottom, 512, 0]
 v_bull = [-5, 0]
-v_bird = [-5, 0]; vBird_vertical = 50; vBrid_gravity = -1
+v_bird = [-5, 0]; vBird_vertical = 20; vBrid_gravity = -1
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
         Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)]
@@ -103,7 +103,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
 
 
-def move(p, player, sprites, blocks):
+def move(p, player, sprites, blocks, birds):
 
     keys = key.get_pressed()
     mx, my = mouse.get_pos()
@@ -193,20 +193,52 @@ def move(p, player, sprites, blocks):
 
     print(p[X])
 
+    ###bird
+    # move_bird(p, birds)
+    # for bird in birds:
+    #     if p[X] + 90 >= bird[X]:
+    #         if bird[X] == p[X] + 100:
+    #             v_bird[Y] = 0
+
+    #         else:
+    #             v_bird[Y] = vBird_vertical
+    #             v_bird[X] = -15
+
+    #     bird[X] += v_bird[X]
+    #     bird[Y] += v_bird[Y]
 
 
-def move_Bird(birds):
+def move_bird(p, birds):
     for bird in birds:
-        if bird[X]-offset == 950:
+        if p[X] + 90 >= bird[X]:
 
-            if bird[X] == 650:
-                v[Y] = 0
+            if bird[X] == p[X] + 100:
+                v_bird[Y] = 0
 
             else:
-                v[Y] = vBird_vertical
-                v[X] = 15
+                v_bird[Y] = vBird_vertical
+                v_bird[X] = -15
 
-        bird[X] += v[X]
+            
+            bird[Y] += v_bird[Y]
+
+        bird[X] += v_bird[X]
+
+
+
+
+# def move_Bird(birds):
+#     for bird in birds:
+#         if bird[X]-offset == 950:
+
+#             if bird[X] == 650:
+#                 v[Y] = 0
+
+#             else:
+#                 v[Y] = vBird_vertical
+#                 v[X] = 15
+
+#         bird[X] += v[X]
 
 
 
@@ -219,6 +251,10 @@ def move_slugBullets(bull):
         if b[0] < 0:
             bull.remove(b)
 
+
+def move_bad(p, bull, birds):
+    move_slugBullets(bull)
+    move_bird(p, birds)
 
 
 def check(p, plats, borders):
@@ -309,6 +345,8 @@ def check_attack(p, slugs, birds):
 def hitBlocks(x, y, blocks):
     playerRect = Rect(x, y, 35, 50)
     return playerRect.collidelist(blocks)
+
+
 
 
 
