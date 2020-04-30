@@ -33,8 +33,12 @@ rotated_R = transform.rotate(rotated_R, 315)
 screen.blit(rotated_R, blocks[4])
 
 squared_blocks = [Rect(1250, 182, 50, 50), Rect(5475, 250, 50, 50)]
+
 slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)]
+
 birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)]
+bird_p = [[birds[i][X], birds[i][Y], 0] for i in range(len(birds))]
+
 borders = [Rect(2732, 632, 1366, 47)]
 
 doorRect = Rect(7305, 100, 40, 75)
@@ -45,7 +49,7 @@ isJump = False
 
 
 
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, borders, door):
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door):
     global rapid
 
     offset = v[SCREENX]-p[X]
@@ -79,8 +83,16 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         draw.rect(screen, (255, 255, 0), bs_rect)
 
     for bird in birds:
-        bird = bird.move(offset, 0)
-        draw.rect(screen, (255, 0, 120), bird)
+        for sp in b_s:
+            bird = bird.move(offset, 0)
+            row = int(sp[ROW])
+            pic_b = sprites_b[row]
+            b_s_width = pic_b.get_width(); b_s_height = pic_b.get_height()
+            hitbox_b = Rect(bird[X], bird[Y], b_s_width, b_s_height)
+
+
+            draw.rect(screen, (255, 0, 120), hitbox_b, 2)
+            screen.blit(pic_b, hitbox_b)
 
     for border in borders:
         border = border.move(offset, 0)
@@ -95,10 +107,11 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     sprite_width = pic.get_width()
     sprite_height = pic.get_height()
 
-
     hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
     screen.blit(pic, hitBox)
     draw.rect(screen, (255, 0, 0), hitBox, 2)
+
+
 
 
 
@@ -212,46 +225,24 @@ def move(p, player, sprites, blocks, birds):
     #     bird[Y] += v_bird[Y]
 
 
-def move_bird(p, birds, sprites):
+def move_bird(p, birds, bird_p, sprites):
     for bird in birds:
-        bird_p = [bird[X], bird[Y], 0]
-        if p[X] + 400 >= bird[X]:
+        for b in bird_p:
+            if p[X] + 400 >= bird[X]:
 
-            if bird[X] <= p[X] + 200 and bird[Y] >= p[Y]:
-                v_bird[Y] = 0
+                if bird[X] <= p[X] + 200 and bird[Y] >= p[Y]:
+                    v_bird[Y] = 0
 
-            else:
-                v_bird[Y] = vBird_vertical
-                v_bird[X] = -15
+                else:
+                    v_bird[Y] = vBird_vertical
+                    v_bird[X] = -15
 
-            
-            bird[Y] += v_bird[Y]
-            bird[X] += v_bird[X]
+                b[ROW] += 0.2
+                if b[ROW] == 4:
+                    b[ROW] = 0
 
-            bird_p[ROW] += 0.2
-
-            if bird_p[ROW] >= len(sprites):
-                bird_p[ROW] = 0
-
-        global bird_p
-
-
-
-
-
-
-# def move_Bird(birds):
-#     for bird in birds:
-#         if bird[X]-offset == 950:
-
-#             if bird[X] == 650:
-#                 v[Y] = 0
-
-#             else:
-#                 v[Y] = vBird_vertical
-#                 v[X] = 15
-
-#         bird[X] += v[X]
+                bird[Y] += v_bird[Y]
+                bird[X] += v_bird[X]
 
 
 
@@ -265,9 +256,9 @@ def move_slugBullets(bull):
             bull.remove(b)
 
 
-def move_bad(p, bull, birds):
+def move_bad(p, bull, birds, bird_p, sprite_bird):
     move_slugBullets(bull)
-    move_bird(p, birds)
+    move_bird(p, birds, bird_p, sprite_bird)
 
 
 def check(p, plats, borders):

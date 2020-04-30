@@ -77,12 +77,12 @@ def level_One(action):
 
 
         levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
-        levelOne.move_bad(p, bullets_slugs, levelOne.birds)
+        levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
         # levelOne.move_slugBullets(bullets_slugs)
         levelOne.check(p, levelOne.plats, levelOne.borders)
         levelOne.check_bullSlug(bullets_slugs, p)
         levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
-            levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.borders, 
+            levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
             levelOne.doorRect)
 
 
