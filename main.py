@@ -40,7 +40,7 @@ bullets_slugs = []
 # levelOne_Run = False
 display.set_icon(ch1_sprites[4][0])
 
-health_img = [image.load("health/Health="+str(i)) for i in range(1, 4)]
+health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)]
 
 
 
