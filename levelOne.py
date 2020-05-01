@@ -131,6 +131,9 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     row = player[ROW]
     col = int(player[COL])
+    if row == 0 and col == 5:
+        col = 0
+
     pic = sprites[row][col]
     # sprite_width = pic.get_width()
     # sprite_height = pic.get_height()
@@ -165,8 +168,15 @@ def move(p, player, sprites, blocks, birds):
     #     if player[COL] >= len(sprites[0]):
     #         player[COL] = 0
 
+    if keys[K_x]:
+        player[ROW] = 0
 
-    if keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks):
+    # else:
+    #     player[COL] = 0
+    #     # player[COL] -= 0.2
+
+
+    elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks):
         player[ROW] = 3
 
         if p[X] + 5 < 7550:
@@ -218,13 +228,23 @@ def move(p, player, sprites, blocks, birds):
         #     v[X] = 0
             # v[SCREENX] = 0
 
-
-    
-
     else:
         player[COL] = 0
         player[COL] -= 0.2
         v[X] = 0
+
+    # if keys[K_x]:
+    #     player[ROW] = 0
+
+    # else:
+    #     player[COL] = 0
+        # player[COL] -= 0.2
+    
+
+    # else:
+    #     player[COL] = 0
+    #     player[COL] -= 0.2
+    #     # v[X] = 0
 
 
     player[COL] += 0.2
@@ -300,7 +320,7 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, plats, borders, birds, birdHitboxes, door):
+def check(p, player, plats, slugs, borders, birds, birdHitboxes, door):
     global isJump
 
     keys = key.get_pressed()
@@ -362,6 +382,7 @@ def check(p, plats, borders, birds, birdHitboxes, door):
         
     # check_bird(p, birds, birdHitboxes)
     birdCollision(p, birds)
+    check_attack(p, player, slugs, birds)
 
 
 
@@ -382,14 +403,15 @@ def check_bullSlug(bull, p):
 
 
 
-def check_attack(p, slugs, birds):
-    for slug in slugs:
-        for bird in birds:
-            if p.colliderect(slug):
-                slugs.remove(slug)
+def check_attack(p, player, slugs, birds):
+    if player[ROW] == 0:
+        for slug in slugs:
+            for bird in birds:
+                if p.colliderect(slug):
+                    slugs.remove(slug)
 
-            elif p.colliderect(bird):
-                birds.remove(bird)
+                elif p.colliderect(bird):
+                    birds.remove(bird)
 
 def check_levelTwo(door, p):
     keys = key.get_pressed()

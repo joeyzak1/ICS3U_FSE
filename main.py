@@ -94,7 +94,7 @@ def level_One(action):
         levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
         levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
         # levelOne.move_slugBullets(bullets_slugs)
-        levelOne.check(p, levelOne.plats, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect)
+        levelOne.check(p, ch1_levelOne,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect)
         levelOne.check_bullSlug(bullets_slugs, p)
 
         if levelOne.check_levelTwo(levelOne.doorRect, p):
