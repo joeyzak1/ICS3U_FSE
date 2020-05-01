@@ -1,14 +1,16 @@
 #shortcutFunctions.py
 # this program has useful functions that can shorten code
 from pygame import *
-from levelOne import *
-from main import *
+# import main
+# from levelOne import *
+# from main import *
 
-vscreenX = 512
-offset = vscreenX - main.p[X]
+# vscreenX = 512
+# offset = vscreenX - main.p[X]
 
 def drawPlats(plats):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects'
+    global offset
     for plat in plats:
         plat = plat.move(offset, 0)
         draw.rect(screen, (0), plat)

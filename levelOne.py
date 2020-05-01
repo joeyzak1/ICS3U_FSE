@@ -48,9 +48,11 @@ rapid = 100; sword = 20 #for speed of bullets and sword
 
 isJump = False #variable for checking jumps
 
+health = 2
 
 
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door):
+
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health):
     global rapid
 
     offset = v[SCREENX]-p[X] #offset to move screen with eveything
@@ -60,7 +62,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     for plat in plats: #this for loop blits all platforms in the correct position
         plat = plat.move(offset, 0)
         draw.rect(screen, (0), plat)
-    # shortcutFunctions.drawPlats(plats)
+    # drawPlats(plats)
 
     for block in blocks: #this loop blits all blocks
         block = block.move(offset, 0)
@@ -121,6 +123,9 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         border = border.move(offset, 0)
         draw.rect(screen, (255, 0, 0), border, 3)
 
+    #health
+    screen.blit(healthBar(health, hearts), (0, 0))
+
     door = door.move(offset, 0)
     draw.rect(screen, (123, 213, 7), door)
 
@@ -133,6 +138,14 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     # hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
     screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y]))
     draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2)
+
+
+
+def healthBar(health, pics):
+    for i in range(3):
+        if i == health:
+            pic = pics[i]
+            return pic
 
 
 
@@ -276,8 +289,6 @@ def move_slugBullets(bull):
 
 
 
-
-
 def move_bad(p, bull, birds, bird_p, sprite_bird):
     move_slugBullets(bull)
     move_bird(p, birds, bird_p, sprite_bird)
@@ -348,6 +359,7 @@ def check(p, plats, borders, birds, birdHitboxes):
                 v[Y] = 0
 
     # check_bird(p, birds, birdHitboxes)
+    birdCollision(p, birds)
 
 
 
@@ -384,8 +396,14 @@ def check_attack(p, slugs, birds):
 #                 birds.remove(bird)
 #                 hitboxes.remove(hitbox)
 
-
-
+def birdCollision(p, birds):
+    global health 
+    
+    for bird in birds:
+        birdRect = Rect(bird[X], bird[Y], 100, 80)
+        if birdRect.colliderect(p):
+            birds.remove(bird)
+            health -= 1
 
 
 def hitBlocks(x, y, blocks):
