@@ -404,14 +404,18 @@ def check_bullSlug(bull, p):
 
 
 def check_attack(p, player, slugs, birds):
+    global health
+
     if player[ROW] == 0:
         for slug in slugs:
             for bird in birds:
+                birdRect = Rect(bird[X], bird[Y], 100, 80)
                 if p.colliderect(slug):
                     slugs.remove(slug)
 
-                elif p.colliderect(bird):
+                elif p.colliderect(birdRect):
                     birds.remove(bird)
+                    health += 1
 
 def check_levelTwo(door, p):
     keys = key.get_pressed()
