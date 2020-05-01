@@ -9,6 +9,7 @@ from shortcutFunctions import *
 import os
 import intro #intro.py
 import levelOne #levelOne.py
+import levelTwo
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
@@ -63,6 +64,7 @@ def get_hitbox(pic, size):
 
 
 
+
 def menu(action):
     while action == 'menu':
         for evt in event.get():
@@ -92,8 +94,12 @@ def level_One(action):
         levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
         levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
         # levelOne.move_slugBullets(bullets_slugs)
-        levelOne.check(p, levelOne.plats, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes)
+        levelOne.check(p, levelOne.plats, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect)
         levelOne.check_bullSlug(bullets_slugs, p)
+
+        if levelOne.check_levelTwo(levelOne.doorRect, p):
+            level_Two('lev2')
+
         levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
             levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
             levelOne.doorRect, health_img, levelOne.health)
@@ -103,6 +109,18 @@ def level_One(action):
         display.update()
         myClock.tick(60)
 
+def level_Two(action):
+    while action == 'lev2':
+        for evt in event.get():
+            if evt.type == QUIT:
+                action = 'end'
+
+        levelTwo.drawScene()
+
+
+        display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
+        display.update()
+        myClock.tick(60)
 
 
 

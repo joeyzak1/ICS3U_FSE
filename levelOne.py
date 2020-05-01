@@ -300,7 +300,7 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, plats, borders, birds, birdHitboxes):
+def check(p, plats, borders, birds, birdHitboxes, door):
     global isJump
 
     keys = key.get_pressed()
@@ -358,6 +358,8 @@ def check(p, plats, borders, birds, birdHitboxes):
             else:
                 v[Y] = 0
 
+
+        
     # check_bird(p, birds, birdHitboxes)
     birdCollision(p, birds)
 
@@ -388,6 +390,15 @@ def check_attack(p, slugs, birds):
 
             elif p.colliderect(bird):
                 birds.remove(bird)
+
+def check_levelTwo(door, p):
+    keys = key.get_pressed()
+
+    if keys[K_RETURN] and p.colliderect(door):
+        return True
+
+    else:
+        return False
 
 # def check_bird(p, birds, hitboxes):
 #     for bird in birds:
