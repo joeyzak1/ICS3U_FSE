@@ -1,4 +1,5 @@
 from pygame import *
+from shortcutFunctions import *
 
 #MUSIC
 # init()
@@ -35,6 +36,7 @@ slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 3
 
 birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)] #rect list for birds
 bird_p = [[birds[i][X], birds[i][Y], 0] for i in range(len(birds))]
+bird_hitboxes = []
 
 # print (bird_p)
 
@@ -58,6 +60,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     for plat in plats: #this for loop blits all platforms in the correct position
         plat = plat.move(offset, 0)
         draw.rect(screen, (0), plat)
+    # shortcutFunctions.drawPlats(plats)
 
     for block in blocks: #this loop blits all blocks
         block = block.move(offset, 0)
@@ -100,7 +103,19 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         if row > 4:
             row = 0
         pic_bird = sprites_b[row]
-        screen.blit(pic_bird, (b[X], b[Y]))
+
+        # get_hitbox(pic_bird, b)
+
+        # bird_width = pic_bird.get_width()
+        # bird_height = pic_bird.get_height()
+        # birdHitbox = Rect(b[X], b[Y], bird_width, bird_height)
+        # birdHitbox = birdHitbox.move(offset, 0)
+        # bird_hitboxes.append(birdHitbox)
+
+        screen.blit(pic_bird, createHitbox(pic_bird, b[X], b[Y]).move(offset, 0))
+        draw.rect(screen, (255, 0, 0), createHitbox(pic_bird, b[X], b[Y]).move(offset, 0), 1)
+
+        # screen.blit(pic_bird, get_hitbox(pic_bird, b))
 
     for border in borders:
         border = border.move(offset, 0)
@@ -112,12 +127,12 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     row = player[ROW]
     col = int(player[COL])
     pic = sprites[row][col]
-    sprite_width = pic.get_width()
-    sprite_height = pic.get_height()
+    # sprite_width = pic.get_width()
+    # sprite_height = pic.get_height()
 
-    hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
-    screen.blit(pic, hitBox)
-    draw.rect(screen, (255, 0, 0), hitBox, 2)
+    # hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
+    screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y]))
+    draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2)
 
 
 
@@ -224,12 +239,12 @@ def move_bird(p, birds, bird_p, sprites):
         
         if p[X] + 400 >= b[X]:
 
+            v_bird[Y] = vBird_vertical
+            v_bird[X] = -15
+
             if b[X] <= p[X] + 200 and b[Y] >= p[Y]:
                 v_bird[Y] = 0
 
-            else:              
-                v_bird[Y] = vBird_vertical
-                v_bird[X] = -15
 
 
         # else:
@@ -240,12 +255,10 @@ def move_bird(p, birds, bird_p, sprites):
             #     b[ROW] = 0
 
 
-                b[ROW] += 0.2
-                
-                b[Y] += v_bird[Y]
-                b[X] += v_bird[X]
-
-
+            b[ROW] += 0.2
+            
+            b[Y] += v_bird[Y]
+            b[X] += v_bird[X]
 
 
 
@@ -276,7 +289,7 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, plats, borders):
+def check(p, plats, borders, birds, birdHitboxes):
     global isJump
 
     keys = key.get_pressed()
@@ -334,6 +347,8 @@ def check(p, plats, borders):
             else:
                 v[Y] = 0
 
+    # check_bird(p, birds, birdHitboxes)
+
 
 
 
@@ -361,6 +376,15 @@ def check_attack(p, slugs, birds):
 
             elif p.colliderect(bird):
                 birds.remove(bird)
+
+# def check_bird(p, birds, hitboxes):
+#     for bird in birds:
+#         for hitbox in hitboxes:
+#             if hitbox.colliderect(p):
+#                 birds.remove(bird)
+#                 hitboxes.remove(hitbox)
+
+
 
 
 

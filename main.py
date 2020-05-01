@@ -5,12 +5,12 @@ Run this to play the game from start to finish
 '''
 
 from pygame import *
+from shortcutFunctions import *
 import os
 import intro #intro.py
 import levelOne #levelOne.py
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
-
 
 init()
 width, height = 1024, 768; screen = display.set_mode((width,height))
@@ -54,6 +54,13 @@ display.set_icon(ch1_sprites[4][0])
 
 health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)]
 
+def get_hitbox(pic, size):
+    pic_w = pic.get_width()
+    pic_h = pic.get_height()
+
+    hitbox = Rect(size[X], size[Y], pic_w, pic_h)
+    return hitbox
+
 
 
 def menu(action):
@@ -85,7 +92,7 @@ def level_One(action):
         levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
         levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
         # levelOne.move_slugBullets(bullets_slugs)
-        levelOne.check(p, levelOne.plats, levelOne.borders)
+        levelOne.check(p, levelOne.plats, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes)
         levelOne.check_bullSlug(bullets_slugs, p)
         levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
             levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
@@ -102,5 +109,3 @@ def level_One(action):
 
 menu('menu')
 quit()
-
-
