@@ -49,11 +49,13 @@ rapid = 100; sword = 20 #for speed of bullets and sword
 isJump = False #variable for checking jumps
 
 health = 2
+pHitbox = Rect(0, 0, 0, 0)
 
 
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health):
     global rapid
+    global pHitbox
 
     offset = v[SCREENX]-p[X] #offset to move screen with eveything
     screen.blit(backPic, (offset, 0)) #background
@@ -139,6 +141,8 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     # sprite_height = pic.get_height()
 
     # hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
+    pHitbox = createHitbox(pic, v[SCREENX], p[Y])
+
     screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y]))
     draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2)
 
@@ -320,7 +324,7 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, player, plats, slugs, borders, birds, birdHitboxes, door):
+def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
     global isJump
 
     keys = key.get_pressed()
@@ -382,7 +386,7 @@ def check(p, player, plats, slugs, borders, birds, birdHitboxes, door):
         
     # check_bird(p, birds, birdHitboxes)
     birdCollision(p, birds)
-    check_attack(p, player, slugs, birds)
+    check_attack(hitbox, player, slugs, birds)
 
 
 
@@ -408,14 +412,15 @@ def check_attack(p, player, slugs, birds):
 
     if player[ROW] == 0:
         for slug in slugs:
-            for bird in birds:
-                birdRect = Rect(bird[X], bird[Y], 100, 80)
-                if p.colliderect(slug):
-                    slugs.remove(slug)
+            if p.colliderect(slug):
+                slugs.remove(slug)
 
-                elif p.colliderect(birdRect):
-                    birds.remove(bird)
-                    health += 1
+        for bird in birds:
+            birdRect = Rect(bird[X], bird[Y], 100, 80)
+
+            if p.colliderect(birdRect):
+                birds.remove(bird)
+                health += 1
 
 def check_levelTwo(door, p):
     keys = key.get_pressed()
