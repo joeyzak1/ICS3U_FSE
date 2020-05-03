@@ -63,7 +63,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     for plat in plats: #this for loop blits all platforms in the correct position
         plat = plat.move(offset, 0)
-        draw.rect(screen, (0), plat)
+        # draw.rect(screen, (0), plat)
     # drawPlats(plats)
 
     for block in blocks: #this loop blits all blocks
@@ -129,7 +129,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     screen.blit(healthBar(health, hearts), (0, 0))
 
     door = door.move(offset, 0)
-    draw.rect(screen, (123, 213, 7), door)
+    # draw.rect(screen, (123, 213, 7), door)
 
     row = player[ROW]
     col = int(player[COL])
