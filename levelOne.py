@@ -103,7 +103,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     for b in b_s: #birds
         # b = b.move(offset, 0)
         row = int(b[ROW])
-        print (row)
+        # print (row)
         if row > 4:
             row = 0
         pic_bird = sprites_b[row]
@@ -332,8 +332,10 @@ def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
     if v[Y] != v[BOT]:
         isJump = True
 
-    if p[Y] + p[H] >= GROUND:
-        isJump = False
+    for block in blocks:
+        for sq in squared_blocks:
+            if p[Y] + p[H] >= GROUND or p[Y] + p[H] == v[BOT] or Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block) or Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq):
+                isJump = False
 
     for plat in plats:
         if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]:
@@ -356,7 +358,8 @@ def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
             p[Y] = v[TOP]
             v[Y] += gravity
 
-        if isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
+        if  not isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
+            # isJump = False
             v[BOT] = block[Y]
             p[Y] = v[BOT] - p[H]
 
@@ -372,7 +375,7 @@ def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
             p[Y] = v[TOP]
             v[Y] += gravity
 
-        if isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq):
+        if not isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq):
             v[BOT] = sq[Y]
             p[Y] = v[BOT] - p[H]
 
@@ -388,6 +391,8 @@ def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
     birdCollision(p, birds)
     check_attack(hitbox, player, slugs, birds)
 
+    print (isJump)
+
 
 
 
@@ -397,6 +402,8 @@ def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
         v[BOT] = GROUND
         p[Y] = GROUND-p[H]
         v[Y] = 0
+
+
 
 def check_bullSlug(bull, p):
     for b in bull:
