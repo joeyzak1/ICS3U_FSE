@@ -372,7 +372,13 @@ def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
     for sq in squared_blocks:
         if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq):
             v[TOP] = sq[Y] + sq[H]
-            p[Y] = v[TOP]
+            #fixes player going above block
+            if p[Y] > sq[H] + sq[Y]:
+                v[Y] = 0
+
+            else:
+                p[Y] = v[TOP]
+
             v[Y] += gravity
 
         if not isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq):
