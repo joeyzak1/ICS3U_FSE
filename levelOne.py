@@ -324,7 +324,7 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
+def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
     global isJump
 
     keys = key.get_pressed()
@@ -395,7 +395,7 @@ def check(p, player, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
         
     # check_bird(p, birds, birdHitboxes)
     birdCollision(p, birds)
-    check_attack(hitbox, player, slugs, birds)
+    check_attack(p, player, sprites, slugs, birds)
 
     print (isJump)
 
@@ -420,18 +420,21 @@ def check_bullSlug(bull, p):
 
 
 
-def check_attack(p, player, slugs, birds):
+def check_attack(p, player, sprites, slugs, birds):
     global health
+    # global pHitbox
+    pSprite = sprites[ROW][COL]
+    pHitBox = Rect(p[X], p[Y], pSprite.get_width(), pSprite.get_height())
 
     if player[ROW] == 0:
         for slug in slugs:
-            if p.colliderect(slug):
+            if pHitBox.colliderect(slug):
                 slugs.remove(slug)
 
         for bird in birds:
             birdRect = Rect(bird[X], bird[Y], 100, 80)
 
-            if p.colliderect(birdRect):
+            if pHitBox.colliderect(birdRect):
                 birds.remove(bird)
                 health += 1
 
