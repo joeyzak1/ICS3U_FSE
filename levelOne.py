@@ -394,7 +394,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
         
     # check_bird(p, birds, birdHitboxes)
-    birdCollision(p, birds)
+    birdCollision(p, player, birds)
     check_attack(p, player, sprites, slugs, birds)
 
     print (isJump)
@@ -423,20 +423,34 @@ def check_bullSlug(bull, p):
 def check_attack(p, player, sprites, slugs, birds):
     global health
     # global pHitbox
-    pSprite = sprites[ROW][COL]
-    pHitBox = Rect(p[X], p[Y], pSprite.get_width(), pSprite.get_height())
+    # pSprite = sprites[ROW][COL]
+    # pHitBox = Rect(p[X], p[Y], pSprite.get_width(), pSprite.get_height())
+
+    row = player[ROW]
+    col = int(player[COL])
+
+    if row == 0 and col == 5:
+        col = 0
+
+    pic = sprites[row][col]
+    # sprite_width = pic.get_width()
+    # sprite_height = pic.get_height()
+
+    # hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
+    pHitbox = createHitbox(pic, p[X], p[Y])
 
     if player[ROW] == 0:
         for slug in slugs:
-            if pHitBox.colliderect(slug):
+            if pHitbox.colliderect(slug):
                 slugs.remove(slug)
 
         for bird in birds:
             birdRect = Rect(bird[X], bird[Y], 100, 80)
 
-            if pHitBox.colliderect(birdRect):
+            if pHitbox.colliderect(birdRect):
+                # health += 1
                 birds.remove(bird)
-                health += 1
+
 
 def check_levelTwo(door, p):
     keys = key.get_pressed()
@@ -454,14 +468,18 @@ def check_levelTwo(door, p):
 #                 birds.remove(bird)
 #                 hitboxes.remove(hitbox)
 
-def birdCollision(p, birds):
+def birdCollision(p, player, birds):
     global health 
     
     for bird in birds:
         birdRect = Rect(bird[X], bird[Y], 100, 80)
         if birdRect.colliderect(p):
             birds.remove(bird)
-            health -= 1
+            if player[ROW] == 0:
+                health = health
+
+            else:
+                health -= 1
 
 
 def hitBlocks(x, y, blocks):

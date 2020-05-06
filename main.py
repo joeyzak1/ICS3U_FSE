@@ -9,7 +9,7 @@ from shortcutFunctions import *
 import os
 import intro #intro.py
 import levelOne #levelOne.py
-import levelTwo
+import levelTwo as lev2
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
@@ -115,7 +115,7 @@ def level_Two(action):
             if evt.type == QUIT:
                 action = 'end'
 
-        levelTwo.drawScene()
+        lev2.drawScene()
 
 
         display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
