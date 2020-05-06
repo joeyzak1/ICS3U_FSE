@@ -51,6 +51,8 @@ isJump = False #variable for checking jumps
 health = 2
 pHitbox = Rect(0, 0, 0, 0)
 
+myClock = time.Clock()
+
 
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health):
@@ -68,7 +70,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     for block in blocks: #this loop blits all blocks
         block = block.move(offset, 0)
-        draw.rect(screen, (255, 0, 0), block)
+        # draw.rect(screen, (255, 0, 0), block)
 
     for sq in sqblocks: #this for loop blits all squared blocks
         sq = sq.move(offset, 0)
@@ -123,7 +125,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     for border in borders:
         border = border.move(offset, 0)
-        draw.rect(screen, (255, 0, 0), border, 3)
+        # draw.rect(screen, (255, 0, 0), border, 3)
 
     #health
     screen.blit(healthBar(health, hearts), (0, 0))
@@ -145,6 +147,10 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y]))
     draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2)
+
+    display.update()
+    myClock.tick(60)
+    display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
 
 
 

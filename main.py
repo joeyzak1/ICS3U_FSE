@@ -80,9 +80,8 @@ def menu(action):
             # action = 'lev1'
             level_One('lev1')
 
-        display.set_caption("Super Swordy Boy - Intro Screen     FPS = " + str(int(myClock.get_fps())))
-        display.update()
-        myClock.tick(60)
+        
+
 
 def level_One(action):
     while action == 'lev1':
@@ -105,9 +104,8 @@ def level_One(action):
             levelOne.doorRect, health_img, levelOne.health)
 
 
-        display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
-        display.update()
-        myClock.tick(60)
+        
+
 
 def level_Two(action):
     while action == 'lev2':

@@ -20,6 +20,8 @@ logo = transform.scale(logo, (logoWidth, logoHeight))
 
 b1 = [0, 0, 1024]; b2 = [1024, 0, 1024]; speed = 7
 
+myClock = time.Clock()
+
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
     mx, my = mouse.get_pos()
@@ -62,6 +64,10 @@ def draw_introScene(player, picList, mB, mW):
 
     else:
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
+
+    display.update()
+    myClock.tick(60)
+    display.set_caption("Super Swordy Boy - Intro Screen     FPS = " + str(int(myClock.get_fps())))
 
 
 
