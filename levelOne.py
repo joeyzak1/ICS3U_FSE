@@ -351,12 +351,34 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
                 v[Y] = 0
 
 
+        for h in healthSq:
+            if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq):
+                if health < 2:
+                    health += 1
+
+                else:
+                    health = health
+
+                v[TOP] = sq[Y] + sq[H]
+                #fixes player going above block
+                if p[Y] > sq[H] + sq[Y]:
+                    v[Y] = 0
+
+                else:
+                    p[Y] = v[TOP]
+
+                v[Y] += gravity
+
+        print (health)
+
+
+
         
-    checkHealthSq(healthSq)
+    # checkHealthSq(healthSq)
     birdCollision(p, player, birds)
     check_attack(p, player, sprites, slugs, birds)
 
-    print (isJump)
+    # print (isJump)
 
 
 
@@ -420,7 +442,7 @@ def checkHealthSq (healthSq):
         if pHitbox.colliderect(h) and health < 2:
             health += 1
 
-    print (height)
+    print (health)
 
 
 
