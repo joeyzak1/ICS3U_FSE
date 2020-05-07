@@ -34,6 +34,8 @@ blocks = [Rect(1150, 360, 250, 40), Rect(7200, 175, 250, 40)] #blocks rect list
 
 squared_blocks = [Rect(1250, 182, 50, 50), Rect(5475, 250, 50, 50)] #squared blocks rect list
 
+healthSq = [squared_blocks[1]]
+
 slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)] #slugs rect list
 
 birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)] #rect list for birds
@@ -247,6 +249,7 @@ def move_bird(p, birds, bird_p, sprites):
 
 
 
+
 def move_slugBullets(bull):
     for b in bull:
         b[2] = v_bull[0]
@@ -270,8 +273,18 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door):
+def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq):
     global isJump
+    global health
+
+    row = player[ROW]
+    col = int(player[COL])
+
+    if row == 0 and col == 5:
+        col = 0
+
+    pic = sprites[row][col]
+    pHitbox = createHitbox(pic, p[X], p[Y])
 
     keys = key.get_pressed()
 
@@ -339,7 +352,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
 
         
-    # check_bird(p, birds, birdHitboxes)
+    checkHealthSq(healthSq)
     birdCollision(p, player, birds)
     check_attack(p, player, sprites, slugs, birds)
 
@@ -389,6 +402,26 @@ def check_attack(p, player, sprites, slugs, birds):
             if pHitbox.colliderect(birdRect):
                 # health += 1
                 birds.remove(bird)
+
+def checkHealthSq (healthSq):
+    global health
+
+    # row = player[ROW]
+    # col = int(player[COL])
+
+    # if row == 0 and col == 5:
+    #     col = 0
+
+    # pic = sprites[row][col]
+    # pHitbox = createHitbox(pic, p[X], p[Y])
+
+    for h in healthSq:
+        # health = health
+        if pHitbox.colliderect(h) and health < 2:
+            health += 1
+
+    print (height)
+
 
 
 def check_levelTwo(door, p):
