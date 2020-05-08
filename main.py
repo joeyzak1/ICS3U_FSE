@@ -113,7 +113,8 @@ def level_Two(action):
             if evt.type == QUIT:
                 action = 'end'
 
-        lev2.drawScene()
+        lev2.move(lev2.player, ch1_sprites)
+        lev2.drawScene(lev2.player)
 
 
         display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
