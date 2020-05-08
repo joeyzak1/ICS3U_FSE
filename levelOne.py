@@ -84,12 +84,12 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
             rapid += 1
 
         if slug[0] <= 1400 and rapid == 100: #checking if bullet speed is slow enough to shoot
-            b_slugs.append([slug[0], 645, v_bull[0], v_bull[1]])
+            b_slugs.append([slug[X], (slug[Y] + (slug[Y]+slug[H]))//2, v_bull[0], 0])
             rapid = 0
 
     for b in b_slugs: #bullets
         bs_rect = Rect(b[0], b[1], 20, 10)
-        bs_rect = bs_rect.move(offset, 0)
+        # bs_rect = bs_rect.move(offset, 0)
         draw.rect(screen, (255, 255, 0), bs_rect)
 
 
