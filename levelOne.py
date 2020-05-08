@@ -425,6 +425,8 @@ def check_attack(p, player, sprites, slugs, birds):
 def checkHealthSq (healthSq):
     global health
 
+    hit = False
+
     # row = player[ROW]
     # col = int(player[COL])
 
@@ -436,7 +438,8 @@ def checkHealthSq (healthSq):
 
     for h in healthSq:
         # health = health
-        if pHitbox.colliderect(h) and health < 2:
+        if pHitbox.colliderect(h) and health < 2 and not hit:
+            hit = True
             health += 1
 
     print (health)
