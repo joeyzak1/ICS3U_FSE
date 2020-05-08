@@ -8,6 +8,10 @@ from pygame import *
 # vscreenX = 512
 # offset = vscreenX - main.p[X]
 
+jumpSpeed = -20; gravity = 1
+
+X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
+
 def drawPlats(plats):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects'
     global offset

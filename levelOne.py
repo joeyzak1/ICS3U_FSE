@@ -4,9 +4,9 @@ from shortcutFunctions import *
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
+extra=False
 
-backPic = image.load("Level One/background_levelOne.png").convert() #background
-
+backPic = image.load("Level One/background_levelOne.png") #background
 
 
 GROUND = 677; bottom = GROUND #ground and jump variables for jumping, platforms, etc.
@@ -84,13 +84,12 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         if rapid < 100 and player[X] + 500 <= slug[X]: #checking for bullet speed
             rapid += 1
 
-        if slug[0] <= 1400 and rapid == 100: #checking if bullet speed is slow enough to shoot
+        if slug[0] <= 1400 and rapid == 100 and player[X] < slug[X]: #checking if bullet speed is slow enough to shoot
             b_slugs.append([slug[X], (slug[Y] + (slug[Y]+slug[H]))//2, v_bull[0], 0])
             rapid = 0
 
     for b in b_slugs: #bullets
         bs_rect = Rect(b[0], b[1], 20, 10)
-        # bs_rect = bs_rect.move(offset, 0)
         draw.rect(screen, (255, 255, 0), bs_rect)
 
 
@@ -136,7 +135,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     myClock.tick(60)
     display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
 
-
+    #print(b_slugs)
 
 def healthBar(health, pics):
     for i in range(3):
@@ -146,9 +145,8 @@ def healthBar(health, pics):
 
 
 
-
 def move(p, player, sprites, blocks, birds):
-
+    global extra
     keys = key.get_pressed()
     mx, my = mouse.get_pos()
 
@@ -185,6 +183,7 @@ def move(p, player, sprites, blocks, birds):
 
 
     elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks):
+        extra=True
         player[ROW] = 4
 
         if p[X] + 5 < 7550:
@@ -204,6 +203,7 @@ def move(p, player, sprites, blocks, birds):
 
 
     else:
+        extra=False
         player[COL] = 0
         player[COL] -= 0.2
         v[X] = 0
@@ -248,10 +248,14 @@ def move_bird(p, birds, bird_p, sprites):
 
 
 def move_slugBullets(bull):
+    global extra
     for b in bull:
 ##        b[2] = v_bull[0]
         b[0] += b[2]
         b[1] += b[3]
+        if extra:
+            print("extra 5 pixels left")
+            b[0]-=5
         if b[0] < 0:
             bull.remove(b)
 
@@ -425,8 +429,6 @@ def check_attack(p, player, sprites, slugs, birds):
 def checkHealthSq (healthSq):
     global health
 
-    hit = False
-
     # row = player[ROW]
     # col = int(player[COL])
 
@@ -438,8 +440,7 @@ def checkHealthSq (healthSq):
 
     for h in healthSq:
         # health = health
-        if pHitbox.colliderect(h) and health < 2 and not hit:
-            hit = True
+        if pHitbox.colliderect(h) and health < 2:
             health += 1
 
     print (health)
