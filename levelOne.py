@@ -1,11 +1,6 @@
 from pygame import *
 from shortcutFunctions import *
 
-#MUSIC
-# init()
-# file='clipOne.mp3'
-# mixer.music.load(file)
-# mixer.music.play(-1)
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
@@ -83,7 +78,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         # draw.rect(screen, (0, 0, 255), sq)
 
     for slug in slugs: #this blits the slugs
-        # slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
+        slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
 
         if rapid < 100 and player[X] + 500 <= slug[X]: #checking for bullet speed
             rapid += 1
@@ -94,6 +89,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
     for b in b_slugs: #bullets
         bs_rect = Rect(b[0], b[1], 20, 10)
+        bs_rect = bs_rect.move(offset, 0)
         draw.rect(screen, (255, 255, 0), bs_rect)
 
 
@@ -252,9 +248,9 @@ def move_bird(p, birds, bird_p, sprites):
 
 def move_slugBullets(bull):
     for b in bull:
-        b[2] = v_bull[0]
+##        b[2] = v_bull[0]
         b[0] += b[2]
-        b[1] == b[3]
+        b[1] += b[3]
         if b[0] < 0:
             bull.remove(b)
 
