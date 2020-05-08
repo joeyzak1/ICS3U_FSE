@@ -11,7 +11,7 @@ X = 0; Y = 1; ROW = 2; COL = 3; W = 2
 introRects = [Rect(337, 275, 350, 75), Rect(337, 375, 350, 75)]
 highlight_rects = [(255, 255, 255), (255, 255, 255)]
 
-option_images = [image.load("Intro Pictures/%s%02d.png" %("intro", i)) for i in range(2)]
+option_images = [image.load("Intro Pictures/%s%02d.png" %("intro", i)).convert() for i in range(2)]
 
 logo = image.load("Intro Pictures/logo.png")
 logoHeight = int((logo.get_height())*0.33)

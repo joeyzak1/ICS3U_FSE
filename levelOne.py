@@ -5,7 +5,8 @@ from shortcutFunctions import *
 size = width, height = 1024, 768
 screen = display.set_mode(size)
 
-backPic = image.load("Level One/background_levelOne.png") #background
+backPic = image.load("Level One/background_levelOne.png").convert() #background
+
 
 
 GROUND = 677; bottom = GROUND #ground and jump variables for jumping, platforms, etc.
