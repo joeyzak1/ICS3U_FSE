@@ -2,6 +2,8 @@
 
 from pygame import *
 
+init()
+
 screen = display.set_mode((1024, 768))
 myClock = time.Clock()
 

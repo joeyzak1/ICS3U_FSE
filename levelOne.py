@@ -53,6 +53,10 @@ isJump = False #variable for checking jumps
 health = 2
 pHitbox = Rect(0, 0, 0, 0)
 
+seconds = 0
+timeLimit = []
+current_time = 240
+
 myClock = time.Clock()
 
 
@@ -254,7 +258,7 @@ def move_slugBullets(bull):
         b[0] += b[2]
         b[1] += b[3]
         if extra:
-            print("extra 5 pixels left")
+            # print("extra 5 pixels left")
             b[0]-=5
         if b[0] < 0:
             bull.remove(b)
@@ -277,6 +281,8 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq):
     global isJump
     global health
+    global seconds
+    global timeLimit
 
     row = player[ROW]
     col = int(player[COL])
@@ -370,7 +376,9 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
                 v[Y] += gravity
 
-        print (health)
+        # print (health)
+
+    timer (seconds, timeLimit)
 
 
 
@@ -443,7 +451,7 @@ def checkHealthSq (healthSq):
         if pHitbox.colliderect(h) and health < 2:
             health += 1
 
-    print (health)
+    # print (health)
 
 
 
@@ -471,7 +479,17 @@ def birdCollision(p, player, birds):
                 health -= 1
 
 
-
 def hitBlocks(x, y, blocks):
     playerRect = Rect(x, y, 35, 50)
     return playerRect.collidelist(blocks)
+
+def timer(counter, myList):
+    global current_time
+    if counter % 60 == 0:
+        current_time -= 1
+
+    if current_time == 0:
+        quit()
+
+    counter += 1
+    print (current_time)
