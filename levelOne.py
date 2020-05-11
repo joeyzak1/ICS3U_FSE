@@ -1,4 +1,5 @@
 from pygame import *
+from math import *
 from shortcutFunctions import *
 
 
@@ -247,10 +248,6 @@ def move_bird(p, birds, bird_p, sprites):
 
 
 
-
-
-
-
 def move_slugBullets(bull):
     global extra
     for b in bull:
@@ -483,13 +480,11 @@ def hitBlocks(x, y, blocks):
     playerRect = Rect(x, y, 35, 50)
     return playerRect.collidelist(blocks)
 
+
 def timer(counter, myList):
     global current_time
     if counter % 60 == 0:
-        current_time -= 1
-
-    if current_time == 0:
-        quit()
+        myList.append ('time')
 
     counter += 1
-    print (current_time)
+    print (240 - len(myList))
