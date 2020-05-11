@@ -66,81 +66,85 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     global rapid
     global pHitbox
 
-    offset = v[SCREENX]-p[X] #offset to move screen with eveything
-    screen.blit(backPic, (offset, 0)) #background
+    if check_levelTwo(door, p):
+        screen.fill((0))
+
+    else:
+
+        offset = v[SCREENX]-p[X] #offset to move screen with eveything
+        screen.blit(backPic, (offset, 0)) #background
+
+        for plat in plats: #this for loop blits all platforms in the correct position
+            plat = plat.move(offset, 0)
+            # draw.rect(screen, (0), plat)
+        # drawPlats(plats)
+
+        for block in blocks: #this loop blits all blocks
+            block = block.move(offset, 0)
+            # draw.rect(screen, (255, 0, 0), block)
+
+        for sq in sqblocks: #this for loop blits all squared blocks
+            sq = sq.move(offset, 0)
+            # draw.rect(screen, (0, 0, 255), sq)
+
+        for slug in slugs: #this blits the slugs
+            slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
+
+            if rapid < 100 and player[X] + 500 <= slug[X]: #checking for bullet speed
+                rapid += 1
+
+            if slug[0] <= 1400 and rapid == 100 and player[X] < slug[X]: #checking if bullet speed is slow enough to shoot
+                b_slugs.append([slug[X], (slug[Y] + (slug[Y]+slug[H]))//2, v_bull[0], 0])
+                rapid = 0
+
+        for b in b_slugs: #bullets
+            bs_rect = Rect(b[0], b[1], 20, 10)
+            draw.rect(screen, (255, 255, 0), bs_rect)
 
 
-    for plat in plats: #this for loop blits all platforms in the correct position
-        plat = plat.move(offset, 0)
-        # draw.rect(screen, (0), plat)
-    # drawPlats(plats)
+        for b in b_s: #birds
+            # b = b.move(offset, 0)
+            row = int(b[ROW])
+            # print (row)
+            if row > 4:
+                row = 0
+            pic_bird = sprites_b[row]
 
-    for block in blocks: #this loop blits all blocks
-        block = block.move(offset, 0)
-        # draw.rect(screen, (255, 0, 0), block)
+            screen.blit(pic_bird, createHitbox(pic_bird, b[X], b[Y]).move(offset, 0))
+            draw.rect(screen, (255, 0, 0), createHitbox(pic_bird, b[X], b[Y]).move(offset, 0), 1)
 
-    for sq in sqblocks: #this for loop blits all squared blocks
-        sq = sq.move(offset, 0)
-        # draw.rect(screen, (0, 0, 255), sq)
+            # screen.blit(pic_bird, get_hitbox(pic_bird, b))
 
-    for slug in slugs: #this blits the slugs
-        slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
+        for border in borders:
+            border = border.move(offset, 0)
+            # draw.rect(screen, (255, 0, 0), border, 3)
 
-        if rapid < 100 and player[X] + 500 <= slug[X]: #checking for bullet speed
-            rapid += 1
+        #health
+        screen.blit(healthBar(health, hearts), (0, 0))
 
-        if slug[0] <= 1400 and rapid == 100 and player[X] < slug[X]: #checking if bullet speed is slow enough to shoot
-            b_slugs.append([slug[X], (slug[Y] + (slug[Y]+slug[H]))//2, v_bull[0], 0])
-            rapid = 0
+        door = door.move(offset, 0)
+        # draw.rect(screen, (123, 213, 7), door)
 
-    for b in b_slugs: #bullets
-        bs_rect = Rect(b[0], b[1], 20, 10)
-        draw.rect(screen, (255, 255, 0), bs_rect)
+        row = player[ROW]
+        col = int(player[COL])
+        if row == 0 and col == 5:
+            col = 0
+
+        pic = sprites[row][col]
+        # sprite_width = pic.get_width()
+        # sprite_height = pic.get_height()
+
+        # hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
+        pHitbox = createHitbox(pic, v[SCREENX], p[Y])
+
+        screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y]))
+        draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2)
+
+        display.update()
+        myClock.tick(60)
+        display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
 
 
-    for b in b_s: #birds
-        # b = b.move(offset, 0)
-        row = int(b[ROW])
-        # print (row)
-        if row > 4:
-            row = 0
-        pic_bird = sprites_b[row]
-
-        screen.blit(pic_bird, createHitbox(pic_bird, b[X], b[Y]).move(offset, 0))
-        draw.rect(screen, (255, 0, 0), createHitbox(pic_bird, b[X], b[Y]).move(offset, 0), 1)
-
-        # screen.blit(pic_bird, get_hitbox(pic_bird, b))
-
-    for border in borders:
-        border = border.move(offset, 0)
-        # draw.rect(screen, (255, 0, 0), border, 3)
-
-    #health
-    screen.blit(healthBar(health, hearts), (0, 0))
-
-    door = door.move(offset, 0)
-    # draw.rect(screen, (123, 213, 7), door)
-
-    row = player[ROW]
-    col = int(player[COL])
-    if row == 0 and col == 5:
-        col = 0
-
-    pic = sprites[row][col]
-    # sprite_width = pic.get_width()
-    # sprite_height = pic.get_height()
-
-    # hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
-    pHitbox = createHitbox(pic, v[SCREENX], p[Y])
-
-    screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y]))
-    draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2)
-
-    display.update()
-    myClock.tick(60)
-    display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps())))
-
-    #print(b_slugs)
 
 def healthBar(health, pics):
     for i in range(3):

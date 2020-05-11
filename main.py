@@ -90,18 +90,24 @@ def level_One(action):
                 action = 'end'
 
 
-        levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
-        levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
-        # levelOne.move_slugBullets(bullets_slugs)
-        levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq)
-        levelOne.check_bullSlug(bullets_slugs, p)
+        # levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
+        # levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
+        # # levelOne.move_slugBullets(bullets_slugs)
+        # levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq)
+        # levelOne.check_bullSlug(bullets_slugs, p)
 
         if levelOne.check_levelTwo(levelOne.doorRect, p):
             level_Two('lev2')
 
-        levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
-            levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
-            levelOne.doorRect, health_img, levelOne.health)
+        else:
+            levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
+            levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
+            # levelOne.move_slugBullets(bullets_slugs)
+            levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq)
+            levelOne.check_bullSlug(bullets_slugs, p)
+            levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
+                levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
+                levelOne.doorRect, health_img, levelOne.health)
 
 
         
