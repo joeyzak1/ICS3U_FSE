@@ -16,7 +16,7 @@ H = 3; COL = 3
 jumpSpeed = -20
 gravity = 1
 
-GROUND = 575
+GROUND = 574
 bottom = GROUND
 
 vPlayer = [0, 0, bottom]
@@ -72,3 +72,11 @@ def move(player, sprites):
     player[X] += vPlayer[X]
     vPlayer[Y] += gravity
 
+def check(player):
+    player[Y] += v[Y]
+
+    if player[Y] + hitBox[H] >= GROUND:
+        print('hi')
+        v[BOT] = GROUND
+        player[Y] = GROUND - hitBox[H]
+        v[Y] = 0
