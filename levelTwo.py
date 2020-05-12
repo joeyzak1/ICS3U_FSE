@@ -13,7 +13,7 @@ Y = 1
 W = 2; ROW = 2; BOT = 2
 H = 3; COL = 3
 
-jumpSpeed = -20
+jumpSpeed = -21
 gravity = 1
 
 GROUND = 574
@@ -29,17 +29,21 @@ backHeight = background.get_height()
 player = [250, 529, 4, 0]
 hitList = []
 
-def drawScene(player, sprites):
-    global hitBox
+plats = [Rect(700, 400, 200, 15)]
+
+def drawScene(player, sprites, plats):
     global moveBackground
 
     mx, my = mouse.get_pos()
     screen.blit(background, (0, -backHeight + int(moveBackground) + 768))
 
+    shortcutFunctions.drawPlats (plats, moveBackground)
+
     shortcutFunctions.playerSprites(player, sprites)
     hitBox = shortcutFunctions.playerSprites(player, sprites)
     # addList(hitBox)
     draw.rect(screen, (255, 0, 0), hitBox, 2)
+    draw.line (screen, (255, 0, 0), (0, vPlayer[BOT] + moveBackground), (1024, vPlayer[BOT] + moveBackground), 3) #ground line
 
 
     myClock.tick(60)
@@ -59,7 +63,7 @@ def move(player, sprites):
 
     # pRect = Rect(player[X], player[Y], 20, 20)
 
-    if keys[K_SPACE] and vPlayer[Y] == 0 and player[Y] + hitBox[H] == vPlayer[BOT]:
+    if keys[K_SPACE] and hitBox[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0:
         print ('jump')
         vPlayer[Y] = jumpSpeed
         
@@ -85,7 +89,8 @@ def move(player, sprites):
 
     player[X] += vPlayer[X]
     vPlayer[Y] += gravity
-    print(vPlayer[BOT])
+
+    print(vPlayer[Y])
     vPlayer[BOT] += int(moveBackground)
 
 def check(player, sprites):
@@ -101,7 +106,10 @@ def check(player, sprites):
 
     player[Y] += vPlayer[Y]
 
-    if player[Y] + hitBox[H] >= GROUND:
+    if hitBox[Y] + hitBox[H] == vPlayer[BOT]:
+        player[Y] = vPlayer[BOT] - hitBox[H] + int(moveBackground)
+
+    if hitBox[Y] + hitBox[H] >= GROUND:
         vPlayer[BOT] = GROUND
         player[Y] = GROUND - hitBox[H] + int(moveBackground)
         vPlayer[Y] = 0
