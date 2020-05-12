@@ -1,12 +1,8 @@
 #shortcutFunctions.py
 # this program has useful functions that can shorten code
 from pygame import *
-# import main
-# from levelOne import *
-# from main import *
 
-# vscreenX = 512
-# offset = vscreenX - main.p[X]
+screen = display.set_mode((1024, 768))
 
 jumpSpeed = -20; gravity = 1
 
@@ -45,3 +41,12 @@ def createHitbox (pic, x, y):
     pic_height = pic.get_height()
     hitbox = Rect (x, y, pic_width, pic_height)
     return hitbox
+
+def playerSprites (player, sprites):
+    row = player[ROW]
+    col = int(player[COL])
+    pic = sprites[row][col]
+
+    pictureRect = createHitbox(pic, player[X], player[Y])
+
+    screen.blit(pic, pictureRect)

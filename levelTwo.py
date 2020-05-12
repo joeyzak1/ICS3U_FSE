@@ -1,6 +1,7 @@
 #levelTwo.py
 
 from pygame import *
+import shortcutFunctions
 
 init()
 
@@ -9,8 +10,8 @@ myClock = time.Clock()
 
 X = 0
 Y = 1
-W = 2
-H = 3
+W = 2; ROW = 2
+H = 3; COL = 3
 
 GROUND = 600
 bottom = GROUND
@@ -22,13 +23,15 @@ backHeight = background.get_height()
 
 player = [250, 600, 4, 0]
 
-def drawScene(player):
-    # screen.fill((0))
-    pRect = Rect(player[X], player[Y], 20, 20)
-    screen.blit(background, ((background.get_height()-600), 0))
-    draw.rect(screen, (255, 0, 0), pRect)
+def drawScene(player, sprites):
+    mx, my = mouse.get_pos()
+    screen.blit(background, (0, -backHeight + 768))
+
+    shortcutFunctions.playerSprites(player, sprites)
+
     myClock.tick(60)
     display.update()
+    print (my)
 
 
 
@@ -37,13 +40,23 @@ def move(player, sprites):
 
     pRect = Rect(player[X], player[Y], 20, 20)
 
-    if keys[K_RIGHT]:
-        vPlayer[X] += 5
+    if keys[K_RIGHT] and pRect[X] < 950:
+        player[ROW] = 4
+        vPlayer[X] = 5
 
-    elif keys[K_LEFT]:
-        vPlayer[X] -= 5
+
+    elif keys[K_LEFT] and pRect[X] > 24:
+        player[ROW] = 3
+        vPlayer[X] = -5
 
     else:
+        player[COL] = 0
+        player[COL] -= 0.2
         vPlayer[X] = 0
+
+    player[COL] += 0.2
+
+    if player[COL] >= len(sprites[ROW]):
+        player[COL] = 1
 
     player[X] += vPlayer[X]
