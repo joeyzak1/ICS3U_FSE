@@ -50,3 +50,5 @@ def playerSprites (player, sprites):
     pictureRect = createHitbox(pic, player[X], player[Y])
 
     screen.blit(pic, pictureRect)
+
+    return pictureRect
