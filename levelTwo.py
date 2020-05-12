@@ -21,41 +21,55 @@ bottom = GROUND
 
 vPlayer = [0, 0, bottom]
 
+moveBackground = 0
+
 background = image.load('Backgrounds/LevelTwo_backPic.png').convert()
 backHeight = background.get_height()
 
 player = [250, 529, 4, 0]
+hitList = []
 
 def drawScene(player, sprites):
     global hitBox
+    global moveBackground
+
     mx, my = mouse.get_pos()
-    screen.blit(background, (0, -backHeight + 768))
+    screen.blit(background, (0, -backHeight + int(moveBackground) + 768))
 
     shortcutFunctions.playerSprites(player, sprites)
     hitBox = shortcutFunctions.playerSprites(player, sprites)
+    # addList(hitBox)
+    draw.rect(screen, (255, 0, 0), hitBox, 2)
 
 
     myClock.tick(60)
     display.update()
-    print ("Ground: 575, Player Hitbox Ground:", hitBox[Y] + hitBox[H])
+    moveBackground += 0.5
+    
+
+    # print ("Ground: 575, Player Hitbox Ground:", hitBox[Y] + hitBox[H])
 
 
 
 def move(player, sprites):
     keys = key.get_pressed()
 
-    pRect = Rect(player[X], player[Y], 20, 20)
+    shortcutFunctions.playerSprites(player, sprites)
+    hitBox = shortcutFunctions.playerSprites(player, sprites)
 
-    if keys[K_SPACE] and vPlayer[Y] == 0 and player[Y] + hitBox[H] >= vPlayer[2]:
+    # pRect = Rect(player[X], player[Y], 20, 20)
+
+    if keys[K_SPACE] and vPlayer[Y] == 0 and player[Y] + hitBox[H] == vPlayer[BOT]:
+        print ('jump')
         vPlayer[Y] = jumpSpeed
         
 
-    if keys[K_RIGHT] and pRect[X] < 950:
+    if keys[K_RIGHT] and player[X] < 950:
         player[ROW] = 4
         vPlayer[X] = 5
 
 
-    elif keys[K_LEFT] and pRect[X] > 24:
+    elif keys[K_LEFT] and player[X] > 24:
         player[ROW] = 3
         vPlayer[X] = -5
 
@@ -71,12 +85,26 @@ def move(player, sprites):
 
     player[X] += vPlayer[X]
     vPlayer[Y] += gravity
+    print(vPlayer[BOT])
+    vPlayer[BOT] += int(moveBackground)
 
-def check(player):
-    player[Y] += v[Y]
+def check(player, sprites):
+    global moveBackground
+
+    shortcutFunctions.playerSprites(player, sprites)
+    hitBox = shortcutFunctions.playerSprites(player, sprites)
+
+    # playerRect = Rect(player[X], player[Y], hitBox[W], hitBox[H])
+
+    # if 573 < (playerRect[Y] + playerRect[H]) < 578:
+    #     player[Y] = GROUND - hitBox[H]
+
+    player[Y] += vPlayer[Y]
 
     if player[Y] + hitBox[H] >= GROUND:
-        print('hi')
-        v[BOT] = GROUND
-        player[Y] = GROUND - hitBox[H]
-        v[Y] = 0
+        vPlayer[BOT] = GROUND
+        player[Y] = GROUND - hitBox[H] + int(moveBackground)
+        vPlayer[Y] = 0
+
+def addList(hitbox):
+    hitList.append(hitbox)
