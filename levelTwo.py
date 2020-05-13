@@ -81,7 +81,7 @@ def move(player, sprites):
     vPlayer[Y] += gravity
     moveBack += 0.5
 
-def check(player, sprites):
+def check(player, sprites, plats):
     global vPlayer
     global GROUND
 
@@ -89,11 +89,21 @@ def check(player, sprites):
 
     hitBox = shortcutFunctions.playerSprites(player, sprites)
 
-    # if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
-    #     player[Y] = vPlayer[BOT] - hitBox[H]
-
     player[Y] += vPlayer[Y]
     vPlayer[BOT] += int(moveBack)
+
+    for plat in plats:
+        print(player, hitBox, plat)
+        if int(player[X]) + int(hitBox[W]) > int(plat[X]) and int(player[X]) < int(plat[X]) + int(plat[W]) and int(player[Y]) + int(hitBox[H]) <= int(plat[Y]) \
+            and int(player[Y]) + int(hitBox[H]) + int(vPlayer[Y]) > int(plat[Y]):
+            vPlayer[BOT] = plat[Y]
+            plat[Y] = vPlayer[BOT] - hitBox[H]
+            vPlayer[Y] = 0
+
+
+
+
+
 
     if vPlayer[Y] == 0 and player[Y] + hitBox[H] == vPlayer[BOT]:
         if keys[K_SPACE]:
@@ -101,16 +111,7 @@ def check(player, sprites):
         else:
             vPlayer[Y] = 0
         player[Y] == vPlayer[BOT] - hitBox[H]
-        # vPlayer[Y] = 0
 
-
-    # GROUND += int(moveBack)
-
-    # if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
-    #     player[Y] = vPlayer[BOT] - hitBox[H]
-
-    # if player[Y] + hitBox[H] == vPlayer[BOT]:
-    #     player[Y] += int(moveBack)
 
     if player[Y] + hitBox[H] >= GROUND + int(moveBack):
         vPlayer[BOT] = GROUND + int(moveBack)
@@ -120,3 +121,5 @@ def check(player, sprites):
             vPlayer[Y] = jumpSpeed
         else:
             vPlayer[Y] = 0
+
+    # shortcutFunctions.checkPlats(player, hitBox, vPlayer, plats)

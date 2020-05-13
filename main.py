@@ -121,7 +121,7 @@ def level_Two(action):
                 action = 'end'
 
         lev2.move(lev2.player, ch1_sprites)
-        lev2.check(lev2.player, ch1_sprites)
+        lev2.check(lev2.player, ch1_sprites, lev2.vPlayer)
         lev2.drawScene(lev2.player, ch1_sprites, lev2.plats)
 
 
