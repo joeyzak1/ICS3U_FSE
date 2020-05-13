@@ -90,8 +90,8 @@ def check(player, sprites):
     vPlayer[BOT] += int(moveBack)
     GROUND += int(moveBack)
 
-    if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
-        player[Y] = vPlayer[BOT] - hitBox[H]
+    # if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
+    #     player[Y] = vPlayer[BOT] - hitBox[H]
 
     # if player[Y] + hitBox[H] == vPlayer[BOT]:
     #     player[Y] += int(moveBack)
