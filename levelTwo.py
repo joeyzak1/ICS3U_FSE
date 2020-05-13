@@ -1,70 +1,56 @@
-#levelTwo.py
-
 from pygame import *
 import shortcutFunctions
 
 init()
-
-screen = display.set_mode((1024, 768))
 myClock = time.Clock()
+screen = display.set_mode((1024, 768))
 
 X = 0
 Y = 1
-W = 2; ROW = 2; BOT = 2
-H = 3; COL = 3
+W = 2
+H = 3
+ROW = 2
+COL = 3
+BOT = 2
 
-jumpSpeed = -21
+jumpSpeed = -20
 gravity = 1
 
 GROUND = 574
 bottom = GROUND
 
-vPlayer = [0, 0, bottom]
+moveBack = 0
 
-moveBackground = 0
+vPlayer = [0, 0, bottom]
 
 background = image.load('Backgrounds/LevelTwo_backPic.png').convert()
 backHeight = background.get_height()
 
 player = [250, 529, 4, 0]
-hitList = []
 
-plats = [Rect(700, 400, 200, 15)]
-
-def drawScene(player, sprites, plats):
-    global moveBackground
-
+def drawScene(player, sprites):
     mx, my = mouse.get_pos()
-    screen.blit(background, (0, -backHeight + int(moveBackground) + 768))
-
-    shortcutFunctions.drawPlats (plats, moveBackground)
+    screen.blit(background, (0, -backHeight + 768 + moveBack))
 
     shortcutFunctions.playerSprites(player, sprites)
     hitBox = shortcutFunctions.playerSprites(player, sprites)
-    # addList(hitBox)
-    draw.rect(screen, (255, 0, 0), hitBox, 2)
-    draw.line (screen, (255, 0, 0), (0, vPlayer[BOT] + moveBackground), (1024, vPlayer[BOT] + moveBackground), 3) #ground line
 
+    draw.rect(screen, (255, 0, 0), hitBox, 2)
 
     myClock.tick(60)
     display.update()
-    moveBackground += 0.5
-    
-
-    # print ("Ground: 575, Player Hitbox Ground:", hitBox[Y] + hitBox[H])
-
-
 
 def move(player, sprites):
+    global vPlayer
+    global moveBack
+
     keys = key.get_pressed()
 
-    shortcutFunctions.playerSprites(player, sprites)
     hitBox = shortcutFunctions.playerSprites(player, sprites)
 
     # pRect = Rect(player[X], player[Y], 20, 20)
 
-    if keys[K_SPACE] and hitBox[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0:
-        print ('jump')
+    if keys[K_SPACE] and player[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0:
         vPlayer[Y] = jumpSpeed
         
 
@@ -89,30 +75,29 @@ def move(player, sprites):
 
     player[X] += vPlayer[X]
     vPlayer[Y] += gravity
-
-    print(vPlayer[Y])
-    vPlayer[BOT] += int(moveBackground)
+    moveBack += 0.5
 
 def check(player, sprites):
-    global moveBackground
+    global vPlayer
+    global GROUND
 
-    shortcutFunctions.playerSprites(player, sprites)
     hitBox = shortcutFunctions.playerSprites(player, sprites)
 
-    # playerRect = Rect(player[X], player[Y], hitBox[W], hitBox[H])
-
-    # if 573 < (playerRect[Y] + playerRect[H]) < 578:
-    #     player[Y] = GROUND - hitBox[H]
+    # if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
+    #     player[Y] = vPlayer[BOT] - hitBox[H]
 
     player[Y] += vPlayer[Y]
+    vPlayer[BOT] += int(moveBack)
+    GROUND += int(moveBack)
 
-    if hitBox[Y] + hitBox[H] == vPlayer[BOT]:
-        player[Y] = vPlayer[BOT] - hitBox[H] + int(moveBackground)
+    if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
+        player[Y] = vPlayer[BOT] - hitBox[H]
 
-    if hitBox[Y] + hitBox[H] >= GROUND:
+    # if player[Y] + hitBox[H] == vPlayer[BOT]:
+    #     player[Y] += int(moveBack)
+
+    if player[Y] + hitBox[H] >= GROUND:
         vPlayer[BOT] = GROUND
-        player[Y] = GROUND - hitBox[H] + int(moveBackground)
+        player[Y] = GROUND - hitBox[H]
+        # player[Y] += int(moveBack)
         vPlayer[Y] = 0
-
-def addList(hitbox):
-    hitList.append(hitbox)
