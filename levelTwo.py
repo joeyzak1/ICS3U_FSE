@@ -28,9 +28,13 @@ backHeight = background.get_height()
 
 player = [250, 529, 4, 0]
 
-def drawScene(player, sprites):
+plats = [Rect(700, 400, 200, 15), Rect(450, 300, 200, 15), Rect(50, 200, 200, 15)]
+
+def drawScene(player, sprites, plats):
     mx, my = mouse.get_pos()
     screen.blit(background, (0, -backHeight + 768 + moveBack))
+
+    shortcutFunctions.drawPlats (plats, moveBack)
 
     shortcutFunctions.playerSprites(player, sprites)
     hitBox = shortcutFunctions.playerSprites(player, sprites)
@@ -81,6 +85,8 @@ def check(player, sprites):
     global vPlayer
     global GROUND
 
+    keys = key.get_pressed()
+
     hitBox = shortcutFunctions.playerSprites(player, sprites)
 
     # if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
@@ -88,7 +94,17 @@ def check(player, sprites):
 
     player[Y] += vPlayer[Y]
     vPlayer[BOT] += int(moveBack)
-    GROUND += int(moveBack)
+
+    if vPlayer[Y] == 0 and player[Y] + hitBox[H] == vPlayer[BOT]:
+        if keys[K_SPACE]:
+            vPlayer[Y] = jumpSpeed
+        else:
+            vPlayer[Y] = 0
+        player[Y] == vPlayer[BOT] - hitBox[H]
+        # vPlayer[Y] = 0
+
+
+    # GROUND += int(moveBack)
 
     # if player[Y] + hitBox[H] == vPlayer[BOT] or player[Y] + hitBox[H] == GROUND:
     #     player[Y] = vPlayer[BOT] - hitBox[H]
@@ -96,8 +112,11 @@ def check(player, sprites):
     # if player[Y] + hitBox[H] == vPlayer[BOT]:
     #     player[Y] += int(moveBack)
 
-    if player[Y] + hitBox[H] >= GROUND:
-        vPlayer[BOT] = GROUND
-        player[Y] = GROUND - hitBox[H]
+    if player[Y] + hitBox[H] >= GROUND + int(moveBack):
+        vPlayer[BOT] = GROUND + int(moveBack)
+        player[Y] = (GROUND + int(moveBack)) - hitBox[H]
         # player[Y] += int(moveBack)
-        vPlayer[Y] = 0
+        if keys[K_SPACE]:
+            vPlayer[Y] = jumpSpeed
+        else:
+            vPlayer[Y] = 0
