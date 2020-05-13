@@ -88,17 +88,23 @@ def check(player, sprites, plats):
     keys = key.get_pressed()
 
     hitBox = shortcutFunctions.playerSprites(player, sprites)
+    p = Rect(player[X], player[Y], hitBox[W], hitBox[H])
 
     player[Y] += vPlayer[Y]
     vPlayer[BOT] += int(moveBack)
 
     for plat in plats:
-        print(player, hitBox, plat)
-        if int(player[X]) + int(hitBox[W]) > int(plat[X]) and int(player[X]) < int(plat[X]) + int(plat[W]) and int(player[Y]) + int(hitBox[H]) <= int(plat[Y]) \
-            and int(player[Y]) + int(hitBox[H]) + int(vPlayer[Y]) > int(plat[Y]):
-            vPlayer[BOT] = plat[Y]
-            plat[Y] = vPlayer[BOT] - hitBox[H]
-            vPlayer[Y] = 0
+        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] \
+            and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
+            print('plat')
+
+    # for plat in plats:
+    #     print(player, hitBox, plat)
+    #     if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] \
+    #         and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
+    #         vPlayer[BOT] = plat[Y]
+    #         plat[Y] = vPlayer[BOT] - hitBox[H]
+    #         vPlayer[Y] = 0
 
 
 
