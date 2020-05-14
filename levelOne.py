@@ -491,4 +491,4 @@ def timer(counter, myList):
         myList.append ('time')
 
     counter += 1
-    print (240 - len(myList))
+    # print (240 - len(myList))

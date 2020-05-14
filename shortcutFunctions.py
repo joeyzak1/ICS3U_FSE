@@ -12,7 +12,8 @@ def drawPlats(plats, moveBackground):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects'
     # global offset
     for plat in plats:
-        plat = Rect(plat[X], plat[Y] + moveBackground, plat[W], plat[H])
+        plat = plat.move(0, moveBackground)
+        plat = Rect(plat[X], plat[Y], plat[W], plat[H])
         # plat = plat.move(offset, 0)
         draw.rect(screen, (0), plat)
 
@@ -53,3 +54,16 @@ def playerSprites (player, sprites):
     screen.blit(pic, pictureRect)
 
     return pictureRect
+
+def checkPlats(plats, player, hitbox, vPlayer, moveBackground):
+    keys = key.get_pressed()
+
+    for plat in plats:
+        if player[X] + hitbox[W] > plat[X] and player[X] < plat[X] + plat[W] and player[Y] + hitbox[H] <= plat[Y] and player[Y] + hitbox[H] + vPlayer[Y] > plat[Y]:
+            vPlayer[BOT] = plat[Y]
+        if vPlayer[BOT] == plat[Y]:
+            player[Y] = plat[Y] - hitbox[H]
+            if keys[K_SPACE]:
+                vPlayer[Y] = jumpSpeed
+            else:
+                vPlayer[Y] = 0

@@ -25,14 +25,24 @@ vPlayer = [0, 0, bottom]
 
 background = image.load('Backgrounds/LevelTwo_backPic.png').convert()
 backHeight = background.get_height()
+backWidth = background.get_width()
+backRect = Rect(0, 0, backWidth, backHeight)
 
 player = [250, 529, 4, 0]
 
 plats = [Rect(700, 400, 200, 15), Rect(450, 300, 200, 15), Rect(50, 200, 200, 15)]
+# plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
+#         Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)]
+
+EVERYTHING = []
 
 def drawScene(player, sprites, plats):
+    global backRect
+
     mx, my = mouse.get_pos()
-    screen.blit(background, (0, -backHeight + 768 + moveBack))
+
+    backRect = backRect.move(0, moveBack)
+    screen.blit(background, (0, -backHeight + 768))
 
     shortcutFunctions.drawPlats (plats, moveBack)
 
@@ -85,37 +95,20 @@ def check(player, sprites, plats):
     global vPlayer
     global GROUND
 
+    print (vPlayer[BOT])
+
     keys = key.get_pressed()
 
     hitBox = shortcutFunctions.playerSprites(player, sprites)
     p = Rect(player[X], player[Y], hitBox[W], hitBox[H])
 
     player[Y] += vPlayer[Y]
-    vPlayer[BOT] += int(moveBack)
+    # vPlayer[BOT] += int(moveBack)
 
-    for plat in plats:
-        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] \
-            and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
-            print('plat')
-
-    # for plat in plats:
-    #     print(player, hitBox, plat)
-    #     if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] \
-    #         and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
-    #         vPlayer[BOT] = plat[Y]
-    #         plat[Y] = vPlayer[BOT] - hitBox[H]
-    #         vPlayer[Y] = 0
-
-
-
-
+    shortcutFunctions.checkPlats(plats, player, hitBox, vPlayer, moveBack)
 
 
     if vPlayer[Y] == 0 and player[Y] + hitBox[H] == vPlayer[BOT]:
-        if keys[K_SPACE]:
-            vPlayer[Y] = jumpSpeed
-        else:
-            vPlayer[Y] = 0
         player[Y] == vPlayer[BOT] - hitBox[H]
 
 
