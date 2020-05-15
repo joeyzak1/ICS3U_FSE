@@ -42,7 +42,7 @@ def drawScene(player, sprites, plats):
     mx, my = mouse.get_pos()
 
     backRect = backRect.move(0, moveBack)
-    screen.blit(background, (0, -backHeight + 768))
+    screen.blit(background, (0, -backRect[Y] - backHeight + 768 ))
 
     shortcutFunctions.drawPlats (plats, moveBack)
 
@@ -53,6 +53,7 @@ def drawScene(player, sprites, plats):
 
     myClock.tick(60)
     display.update()
+    
 
 def move(player, sprites):
     global vPlayer
@@ -89,7 +90,8 @@ def move(player, sprites):
 
     player[X] += vPlayer[X]
     vPlayer[Y] += gravity
-    moveBack += 0.5
+    moveBack -= 0.5
+
 
 def check(player, sprites, plats):
     global vPlayer
