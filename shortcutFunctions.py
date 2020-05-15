@@ -8,14 +8,18 @@ jumpSpeed = -20; gravity = 1
 
 X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 
-def drawPlats(plats, moveBackground):
+def drawPlats(plats, offset):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects'
     # global offset
     for plat in plats:
-        plat = plat.move(0, moveBackground)
-        plat = Rect(plat[X], plat[Y], plat[W], plat[H])
-        # plat = plat.move(offset, 0)
+        plat = plat.move(offset, 0)
         draw.rect(screen, (0), plat)
+
+def drawSpikes(spikes, offset):
+    for sp in spikes:
+        for ground in sp:
+            ground = ground.move(offset, 0)
+            draw.rect(screen, (0, 255, 0), ground)
 
 def drawBlocks(blocks):
     'this function draws blocks - blocks must be in a LIST and have offset'
@@ -67,3 +71,28 @@ def checkPlats(plats, player, hitbox, vPlayer, moveBackground):
                 vPlayer[Y] = jumpSpeed
             else:
                 vPlayer[Y] = 0
+
+def moveGuyLeft(p, vPlayer):
+    keys = key.get_pressed()
+
+    p[ROW] = 3
+
+    if keys[K_LSHIFT] or keys[K_RSHIFT]:
+        vPlayer[X] = -10
+
+    else:
+        vPlayer[X] = -5
+
+    if vPlayer[SCREENX] > 259:
+        vPlayer[SCREENX] -= 5
+
+def moveGuyRight(p, vPlayer):
+    keys = key.get_pressed()
+
+    p[ROW] = 4
+
+    if keys[K_LSHIFT] or keys[K_RSHIFT]:
+        vPlayer[X] = 10
+    
+    else:
+        vPlayer[X] = 5

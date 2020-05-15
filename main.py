@@ -9,7 +9,7 @@ from shortcutFunctions import *
 import os
 import intro #intro.py
 import levelOne #levelOne.py
-import levelTwo as lev2
+import newLevelTwo as lev2
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
@@ -79,7 +79,7 @@ def menu(action):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
             screen.fill((0))
-            level_One('lev1')
+            level_Two('lev2')
 
         
 
@@ -121,8 +121,8 @@ def level_Two(action):
                 action = 'end'
 
         lev2.move(lev2.player, ch1_sprites)
-        lev2.check(lev2.player, ch1_sprites, lev2.plats)
-        lev2.drawScene(lev2.player, ch1_sprites, lev2.plats)
+        lev2.check(lev2.player, ch1_sprites)
+        lev2.drawScene(lev2.player, ch1_sprites, lev2.plats, lev2.spikes)
 
 
         display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))

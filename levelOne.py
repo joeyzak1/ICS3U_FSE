@@ -386,6 +386,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
         
     # checkHealthSq(healthSq)
     birdCollision(p, player, birds)
+
     check_attack(p, player, sprites, slugs, birds)
 
     # print (isJump)
