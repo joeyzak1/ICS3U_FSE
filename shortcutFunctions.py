@@ -60,8 +60,13 @@ def playerSprites (player, sprites, vPlayer):
     return pictureRect
 
 def checkPlats(plats, p, vPlayer):
+    # for plat in plats:
+    #     if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
+    #         vPlayer[BOT] = plat[Y]
+    #         p[Y] = vPlayer[BOT] - p[H]
+    #         vPlayer[Y] = 0
     for plat in plats:
-        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
+        if p[X]+p[W] > plat[X] and p[X]< plat[X]+plat[W] and p[Y] + p[H] <= plat[Y] and p[Y]+p[H]+vPlayer[Y]>plat[Y]:
             vPlayer[BOT] = plat[Y]
             p[Y] = vPlayer[BOT] - p[H]
             vPlayer[Y] = 0
