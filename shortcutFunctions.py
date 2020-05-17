@@ -50,36 +50,30 @@ def createHitbox (pic, x, y):
     hitbox = Rect (x, y, pic_width, pic_height)
     return hitbox
 
-def playerSprites (player, sprites):
+def playerSprites (player, sprites, vPlayer):
     'this function gets the sprite of a character'
     row = player[ROW]
     col = int(player[COL])
     pic = sprites[row][col]
-    pictureRect = createHitbox(pic, player[X], player[Y])
+    pictureRect = createHitbox(pic, vPlayer[SCREENX], player[Y])
     screen.blit(pic, pictureRect)
     return pictureRect
 
-def checkPlats(plats, player, hitbox, vPlayer, moveBackground):
-    'this function check if a character is on a platform'
-    keys = key.get_pressed()
+def checkPlats(plats, p, vPlayer):
     for plat in plats:
-        if player[X] + hitbox[W] > plat[X] and player[X] < plat[X] + plat[W] and player[Y] + hitbox[H] <= plat[Y] and player[Y] + hitbox[H] + vPlayer[Y] > plat[Y]:
+        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
             vPlayer[BOT] = plat[Y]
-        if vPlayer[BOT] == plat[Y]:
-            player[Y] = plat[Y] - hitbox[H]
-            if keys[K_SPACE]:
-                vPlayer[Y] = jumpSpeed
-            else:
-                vPlayer[Y] = 0
+            p[Y] = vPlayer[BOT] - p[H]
+            vPlayer[Y] = 0
+
 
 def moveGuyLeft(p, vPlayer):
     'this function moves the guy to the left'
     keys = key.get_pressed()
     p[ROW] = 3
+    vPlayer[X] = -5
     if keys[K_LSHIFT] or keys[K_RSHIFT]:
         vPlayer[X] = -10
-    else:
-        vPlayer[X] = -5
     if vPlayer[SCREENX] > 250:
         vPlayer[SCREENX] -= 5
 
@@ -87,9 +81,8 @@ def moveGuyRight(p, vPlayer):
     'this function moves the guy to the right'
     keys = key.get_pressed()
     p[ROW] = 4
+    vPlayer[X] = 5
     if keys[K_LSHIFT] or keys[K_RSHIFT]:
         vPlayer[X] = 10
-    else:
-        vPlayer[X] = 5
-    if vPlayer[SCREENX] > 700:
-        vPlayer[SCREENX] += 10
+    if vPlayer[SCREENX] < 700:
+        vPlayer[SCREENX] += 5

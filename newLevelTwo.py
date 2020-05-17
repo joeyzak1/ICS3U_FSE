@@ -27,16 +27,20 @@ vPlayer = [0, 0, bottom, 250]
 
 player = [250, 529, 4, 0]
 
-plats = [Rect(600, 375, 200, 15)]
+plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15)]
 
 #this list branches off into 2 2d lists one for ground spikes and one for wall spikes
-spikes = [[Rect(800, GROUND, 400, -50), Rect(3400, 275, 400, 50), Rect(3900, 475, 200, -50)], [Rect(1900, GROUND, 75, -300)]]
+spikes = [[Rect(800, GROUND, 400, -50), Rect(3400, 275, 400, 50), Rect(3900, 475, 200, -50),
+        Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50)],
+        [Rect(1900, GROUND, 75, -300)]]
 
 borders = [Rect(2800, 475, 2375, GROUND-475), Rect(2800, 275, 2100, -275), Rect(4900, 174, 2500, -174),
             Rect(5175, GROUND, 100, -200), Rect(5275, 374, 2875, GROUND-374)]
 
 
 def drawScene(p, sprites, plats, spikes, borders):
+    global vPlayer
+
     offset = vPlayer[SCREENX] - p[X]
     screen.blit(backPic, (offset, 0))
 
@@ -44,9 +48,9 @@ def drawScene(p, sprites, plats, spikes, borders):
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
 
-    shortcutFunctions.playerSprites(p, sprites)
-    hitBox = shortcutFunctions.playerSprites(p, sprites)
-    draw.rect(screen, (255, 0, 0), hitBox, 2)
+    shortcutFunctions.playerSprites(p, sprites, vPlayer)
+    hitBox = shortcutFunctions.playerSprites(p, sprites, vPlayer)
+    draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], hitBox[Y], hitBox[W], hitBox[H]], 2)
 
     display.update()
     myClock.tick(60)
@@ -88,11 +92,17 @@ def move(p, sprites):
     p[X] += vPlayer[X]
     vPlayer[Y] += gravity
 
-def check(p, sprites):
-    shortcutFunctions.playerSprites(p, sprites)
-    hitBox = shortcutFunctions.playerSprites(p, sprites)
+def check(p, sprites, plats):
+    global vPlayer
+
+    shortcutFunctions.playerSprites(p, sprites, vPlayer)
+    hitBox = shortcutFunctions.playerSprites(p, sprites, vPlayer)
+
+    shortcutFunctions.checkPlats(plats, hitBox, vPlayer)
 
     p[Y] += vPlayer[Y]
+
+    
 
     if p[Y] + hitBox[H] >= GROUND:
         vPlayer[BOT] = GROUND
