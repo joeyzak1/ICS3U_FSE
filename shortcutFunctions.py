@@ -8,6 +8,10 @@ jumpSpeed = -20; gravity = 1
 
 X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 
+vel_bird = [0, 0]
+vBird_vertical = 30
+vBrid_gravity = -1
+
 def drawPlats(plats, offset):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects'
     # global offset
@@ -42,6 +46,12 @@ def drawBorders (borders, offset):
     for border in borders:
         border = border.move(offset, 0)
         draw.rect(screen, (255, 0, 0), border)
+
+def drawTempBird(birds, offset):
+    for bird in birds:
+        bird = bird.move(offset, 0)
+        draw.rect(screen, (120, 255, 89), [bird[X], bird[Y], 60, 30])
+
 
 def createHitbox (pic, x, y):
     'this function creates a hitbox'
@@ -91,3 +101,16 @@ def moveGuyRight(p, vPlayer):
         vPlayer[X] = 10
     if vPlayer[SCREENX] < 700:
         vPlayer[SCREENX] += 5
+
+def moveBird(player, birds):
+    for bird in birds:
+        if player[X] + 400 >= bird[X]:
+            vel_bird[Y] = vBird_vertical
+            vel_bird[X] = -15
+
+            if bird[X] <= player[X] + 200 and bird[Y] >= player[Y]:
+                vel_bird[Y] = 0
+
+            bird[Y] += vel_bird[Y]
+            bird[X] += vel_bird[X]
+
