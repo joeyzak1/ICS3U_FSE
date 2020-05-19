@@ -89,16 +89,17 @@ def move(p, player, sprites):
         shortcutFunctions.moveGuyRight(p, player, vPlayer)
 
     else:
-        p[COL] = 0
-        p[COL] -= 0.2
+        player[COL] = 0
+        player[COL] -= 0.2
         vPlayer[X] = 0
 
-    p[COL] += 0.2
+    player[COL] += 0.2
 
-    if p[COL] >= len(sprites[ROW]):
-        p[COL] = 1
+    if player[COL] >= len(sprites[ROW]):
+        player[COL] = 1
 
     p[X] += vPlayer[X]
+    player[X] = p[X]
     vPlayer[Y] += gravity
 
 
@@ -108,7 +109,7 @@ def moveBad(player, bird):
 
 
 
-def check(p, player, sprites, plats, spikes):
+def check(p, player, sprites, plats, spikes, borders):
     global vPlayer
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
@@ -116,6 +117,7 @@ def check(p, player, sprites, plats, spikes):
 
     shortcutFunctions.checkPlats(plats, p, hitBox, vPlayer)
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer)
+    shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
 
     # for plat in plats:
     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
@@ -124,6 +126,7 @@ def check(p, player, sprites, plats, spikes):
     #         vPlayer[Y] = 0
 
     p[Y] += vPlayer[Y]
+    player[Y] += vPlayer[Y]
 
     
 

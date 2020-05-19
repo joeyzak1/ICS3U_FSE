@@ -52,7 +52,6 @@ def drawTempBird(birds, offset):
         bird = bird.move(offset, 0)
         draw.rect(screen, (120, 255, 89), [bird[X], bird[Y], 60, 30])
 
-
 def createHitbox (pic, x, y):
     'this function creates a hitbox'
     pic_width = pic.get_width()
@@ -76,7 +75,6 @@ def checkPlats(plats, p, hitBox, vPlayer):
             p[Y] = vPlayer[BOT] - hitBox[H]
             vPlayer[Y] = 0
 
-
 def moveGuyLeft(p, player, vPlayer):
     'this function moves the guy to the left'
     keys = key.get_pressed()
@@ -90,7 +88,7 @@ def moveGuyLeft(p, player, vPlayer):
 def moveGuyRight(p, player, vPlayer):
     'this function moves the guy to the right'
     keys = key.get_pressed()
-    p[ROW] = 4
+    player[ROW] = 4
     vPlayer[X] = 5
     if keys[K_LSHIFT] or keys[K_RSHIFT]:
         vPlayer[X] = 10
@@ -123,3 +121,16 @@ def checkSpikes(p, hitbox, spikes, vPlayer):
             vPlayer[Y] = 0
             vPlayer[Y] += gravity
 
+def checkBorders(p, hitbox, vPlayer, borders):
+    for border in borders:
+        if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] >= 574:
+            vPlayer[BOT] = border[Y]
+            p[Y] = vPlayer[BOT] - hitbox[H]
+            vPlayer[Y] = 0
+
+        if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] <= 0:
+            p[Y] = border[Y] + border[H]
+
+
+        elif p[X] + 5 + hitbox[W] >= border[X] and vPlayer[BOT] != border:
+            vPlayer[X] = 0

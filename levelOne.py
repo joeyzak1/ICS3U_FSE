@@ -311,7 +311,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
             v[Y] = 0
 
     for border in borders:
-        if p[X]+5 + p[W] > border[X] and p[X] < border[X] + border[W]  and v[BOT] == GROUND:
+        if p[X]+5 + p[W] > border[X] and p[X] < border[X] + border[W] and v[BOT] == GROUND:
             v[X] = 0
 
         if p[X] + p[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + p[H] >= border[Y] and p[Y] + p[H] + v[Y] > border[Y]:
