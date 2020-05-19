@@ -60,39 +60,34 @@ def createHitbox (pic, x, y):
     hitbox = Rect (x, y, pic_width, pic_height)
     return hitbox
 
-def playerSprites (player, sprites, vPlayer):
+def playerSprites (player, p, sprites, vPlayer):
     'this function gets the sprite of a character'
     row = player[ROW]
     col = int(player[COL])
     pic = sprites[row][col]
-    pictureRect = createHitbox(pic, vPlayer[SCREENX], player[Y])
+    pictureRect = createHitbox(pic, vPlayer[SCREENX], p[Y])
     screen.blit(pic, pictureRect)
     return pictureRect
 
-def checkPlats(plats, p, vPlayer):
-    # for plat in plats:
-    #     if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
-    #         vPlayer[BOT] = plat[Y]
-    #         p[Y] = vPlayer[BOT] - p[H]
-    #         vPlayer[Y] = 0
+def checkPlats(plats, p, hitBox, vPlayer):
     for plat in plats:
-        if p[X]+p[W] > plat[X] and p[X]< plat[X]+plat[W] and p[Y] + p[H] <= plat[Y] and p[Y]+p[H]+vPlayer[Y]>plat[Y]:
+        if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
             vPlayer[BOT] = plat[Y]
-            p[Y] = vPlayer[BOT] - p[H]
+            p[Y] = vPlayer[BOT] - hitBox[H]
             vPlayer[Y] = 0
 
 
-def moveGuyLeft(p, vPlayer):
+def moveGuyLeft(p, player, vPlayer):
     'this function moves the guy to the left'
     keys = key.get_pressed()
-    p[ROW] = 3
+    player[ROW] = 3
     vPlayer[X] = -5
     if keys[K_LSHIFT] or keys[K_RSHIFT]:
         vPlayer[X] = -10
     if vPlayer[SCREENX] > 250:
         vPlayer[SCREENX] -= 5
 
-def moveGuyRight(p, vPlayer):
+def moveGuyRight(p, player, vPlayer):
     'this function moves the guy to the right'
     keys = key.get_pressed()
     p[ROW] = 4
@@ -113,4 +108,18 @@ def moveBird(player, birds):
 
             bird[Y] += vel_bird[Y]
             bird[X] += vel_bird[X]
+
+def checkSpikes(p, hitbox, spikes, vPlayer):
+    for grnd in spikes[0]:
+        if Rect(p[X] + 5, p[Y], hitbox[W], hitbox[H]).colliderect(grnd) or Rect(p[X] - 5, p[Y], hitbox[W], hitbox[H]).colliderect(grnd):
+            vPlayer[X] = 0
+
+        elif Rect(p[X], p[Y] + 5, hitbox[W], hitbox[H]).colliderect(grnd):
+            vPlayer[BOT] = grnd[Y]
+            p[Y] = vPlayer[BOT] - hitbox[H]
+            vPlayer[Y] = 0
+
+        elif Rect(p[X], p[Y] - 5, hitbox[W], hitbox[H]).colliderect(grnd):
+            vPlayer[Y] = 0
+            vPlayer[Y] += gravity
 

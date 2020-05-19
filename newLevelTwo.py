@@ -26,9 +26,10 @@ BOT = 2
 vPlayer = [0, 0, bottom, 250]
 
 player = [250, 529, 4, 0]
+pRect = Rect(250, 529, 4, 0)
 
 plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
-        Rect(9050, 287, 200, -15)]
+        Rect(9050, 287-15, 200, 15)]
 
 #this list branches off into 2 2d lists one for ground spikes and one for wall spikes
 spikes = [[Rect(800, GROUND, 400, -50), Rect(3400, 275, 400, 50), Rect(3900, 475, 200, -50),
@@ -41,33 +42,37 @@ borders = [Rect(2800, 475, 2375, GROUND-475), Rect(2800, 275, 2100, -275), Rect(
             Rect(5175, GROUND, 100, -200), Rect(5275, 374, 2875, GROUND-374)]
 
 
-def drawScene(p, sprites, plats, spikes, borders, birds):
+def drawScene(p, player, sprites, plats, spikes, borders, birds):
     global vPlayer
 
     offset = vPlayer[SCREENX] - p[X]
     screen.blit(backPic, (offset, 0))
 
     shortcutFunctions.drawPlats(plats, offset)
+    # for plat in plats:
+    #     plat = plat.move(offset, 0)
+    #     draw.rect(screen, (0), plat)
+
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
     shortcutFunctions.drawTempBird(birds, offset)
 
-    shortcutFunctions.playerSprites(p, sprites, vPlayer)
-    hitBox = shortcutFunctions.playerSprites(p, sprites, vPlayer)
-    draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], hitBox[Y], hitBox[W], hitBox[H]], 2)
+    shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
+    draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
     display.update()
     myClock.tick(60)
 
-def move(p, sprites):
+def move(p, player, sprites):
     global vPlayer
     keys = key.get_pressed()
 
     if keys[K_SPACE]:
         vPlayer[Y] = jumpSpeed
 
-    if keys[K_LEFT] and p[X] < 400:
-        shortcutFunctions.moveGuyLeft(p, vPlayer)
+    if keys[K_LEFT]:
+        shortcutFunctions.moveGuyLeft(p, player, vPlayer)
 
         # p[ROW] = 3
 
@@ -81,7 +86,7 @@ def move(p, sprites):
         #     vPlayer[SCREENX] -= 5
 
     elif keys[K_RIGHT]:
-        shortcutFunctions.moveGuyRight(p, vPlayer)
+        shortcutFunctions.moveGuyRight(p, player, vPlayer)
 
     else:
         p[COL] = 0
@@ -103,13 +108,20 @@ def moveBad(player, bird):
 
 
 
-def check(p, sprites, plats):
+def check(p, player, sprites, plats, spikes):
     global vPlayer
 
-    shortcutFunctions.playerSprites(p, sprites, vPlayer)
-    hitBox = shortcutFunctions.playerSprites(p, sprites, vPlayer)
+    shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
 
-    shortcutFunctions.checkPlats(plats, hitBox, vPlayer)
+    shortcutFunctions.checkPlats(plats, p, hitBox, vPlayer)
+    shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer)
+
+    # for plat in plats:
+    #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
+    #         vPlayer[BOT] = plat[Y]
+    #         p[Y] = vPlayer[BOT] - hitBox[H]
+    #         vPlayer[Y] = 0
 
     p[Y] += vPlayer[Y]
 
