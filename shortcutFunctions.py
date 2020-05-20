@@ -43,9 +43,10 @@ def drawSlugs(slugs):
 
 def drawBorders (borders, offset):
     'this function draws borders'
-    for border in borders:
-        border = border.move(offset, 0)
-        draw.rect(screen, (255, 0, 0), border)
+    for lists in borders:
+        for border in lists:
+            border = border.move(offset, 0)
+            draw.rect(screen, (255, 0, 0), border)
 
 def drawTempBird(birds, offset):
     for bird in birds:
@@ -75,7 +76,7 @@ def checkPlats(plats, p, hitBox, vPlayer):
             p[Y] = vPlayer[BOT] - hitBox[H]
             vPlayer[Y] = 0
 
-def moveGuyLeft(p, player, vPlayer):
+def moveGuyLeft(p, player, vPlayer, borders, hitbox):
     'this function moves the guy to the left'
     keys = key.get_pressed()
     player[ROW] = 3
@@ -85,7 +86,7 @@ def moveGuyLeft(p, player, vPlayer):
     if vPlayer[SCREENX] > 250:
         vPlayer[SCREENX] -= 5
 
-def moveGuyRight(p, player, vPlayer):
+def moveGuyRight(p, player, vPlayer, borders, hitbox):
     'this function moves the guy to the right'
     keys = key.get_pressed()
     player[ROW] = 4
@@ -121,16 +122,51 @@ def checkSpikes(p, hitbox, spikes, vPlayer):
             vPlayer[Y] = 0
             vPlayer[Y] += gravity
 
-def checkBorders(p, hitbox, vPlayer, borders):
-    for border in borders:
-        if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] >= 574:
-            vPlayer[BOT] = border[Y]
+def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
+    for b in borders[0]:
+
+        if (p[X] + 5) + hitbox[W] == b[X]:
+            vPlayer[X] = 0
+            p[X] = b[X] - 5
+            p[Y] = vPlayer[BOT] - hitbox[H]
+
+        elif p[X] - 5 == b[X] + b[W]:
+            vPlayer[X] = 0 
+            p[X] = b[X] + b[W] + 5
+            p[Y] = vPlayer[BOT] - hitbox[H]
+
+        if p[X] + hitbox[W] > b[X] and p[X] < b[X] + b[W] and p[Y] + hitbox[H] >= b[Y] and p[Y] + hitbox[H] + vPlayer[Y] > b[Y]:
+            vPlayer[BOT] = b[Y]
             p[Y] = vPlayer[BOT] - hitbox[H]
             vPlayer[Y] = 0
 
-        if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] <= 0:
-            p[Y] = border[Y] + border[H]
+    for b in borders[1]:
 
-
-        elif p[X] + 5 + hitbox[W] >= border[X] and vPlayer[BOT] != border:
+        if (p[X] + 5) + hitbox[W] == b[X]:
             vPlayer[X] = 0
+            p[X] = b[X] - 5
+
+        elif p[X] - 5 == b[X] + b[W]:
+            vPlayer[X] = 0 
+            p[X] = b[X] + b[W] + 5
+
+        if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(b):
+            vPlayer[TOP] = b[Y] + b[H]
+            p[Y] = vPlayer[TOP]
+            if p[Y] > b[H] + b[Y]:
+                vPlayer[Y] = 0
+
+
+
+    # for border in borders:
+    #     if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] >= 574:
+    #         vPlayer[BOT] = border[Y]
+    #         p[Y] = vPlayer[BOT] - hitbox[H]
+    #         vPlayer[Y] = 0
+
+    #     if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] <= 0:
+    #         p[Y] = border[Y] + border[H]
+
+
+    #     elif p[X] + 5 + hitbox[W] >= border[X] and vPlayer[BOT] != border:
+    #         vPlayer[X] = 0
