@@ -110,31 +110,56 @@ def moveBird(player, birds):
 
 def checkSpikes(p, hitbox, spikes, vPlayer):
     for grnd in spikes[0]:
+        # if p[X] + 5 + hitbox[W] == grnd[X]:
+        #     vPlayer[X] = 0
+        #     p[X] = grnd[X] - 5 - hitbox[W]
+        #     p[Y] = vPlayer[BOT] - hitbox[H]
+
+        # elif p[X] - 5 + hitbox[W] == grnd[X]:
+        #     vPlayer[X] = 0
+        #     p[X] = grnd[X] + grnd[W] + 5
+        #     p[Y] = vPlayer[BOT] - hitbox[H]
+
         if p[X] + hitbox[W] > grnd[X] and p[X] < grnd[X] + grnd[W] and p[Y] + hitbox[H] >= grnd[Y] and p[Y] + hitbox[H] + vPlayer[Y] > grnd[Y]:
             vPlayer[BOT] = grnd[Y]
             p[Y] = vPlayer[BOT] - hitbox[H]
             vPlayer[Y] = 0
+            
+
+    for air in spikes[1]:
+        # if p[X] + 5  + hitbox[W] == air[X]:
+        #     vPlayer[X] = 0
+        #     p[X] = air[X] - 5
+
+        # elif p[X] - 5 == air[X] + air[W]:
+        #     vPlayer[X] = 0 
+        #     p[X] = air[X] + air[W] + 5
+        #     p[Y] = vPlayer[BOT] - hitbox[H]
+
+        if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(air):
+            vPlayer[TOP] = air[Y] + air[H]
+            p[Y] = vPlayer[TOP]
+            if p[Y] > air[H] + air[Y]:
+                vPlayer[Y] = 0
+
+    for wall in spikes[2]:
+        if p[X] + hitbox[W] > wall[X] and p[X] < wall[X] + wall[W] and p[Y] + hitbox[H] >= wall[Y] and p[Y] + wall[H] + vPlayer[Y] > wall[Y]:
+            vPlayer[BOT] = wall[Y]
+            p[Y] = vPlayer[BOT] - hitbox[H]
+            vPlayer[Y] = 0
+
+                    
 
 
-    # for grnd in spikes[0]:
-    #     if Rect(p[X] + 5, p[Y], hitbox[W], hitbox[H]).colliderect(grnd) or Rect(p[X] - 5, p[Y], hitbox[W], hitbox[H]).colliderect(grnd):
-    #         vPlayer[X] = 0
+            
 
-    #     elif Rect(p[X], p[Y] + 5, hitbox[W], hitbox[H]).colliderect(grnd):
-    #         vPlayer[BOT] = grnd[Y]
-    #         p[Y] = vPlayer[BOT] - hitbox[H]
-    #         vPlayer[Y] = 0
-
-    #     elif Rect(p[X], p[Y] - 5, hitbox[W], hitbox[H]).colliderect(grnd):
-    #         vPlayer[Y] = 0
-    #         vPlayer[Y] += gravity
 
 def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
     for b in borders[0]:
 
         if (p[X] + 5) + hitbox[W] == b[X]:
             vPlayer[X] = 0
-            p[X] = b[X] - 5
+            p[X] = b[X] - 5 - hitbox[W]
             p[Y] = vPlayer[BOT] - hitbox[H]
 
         elif p[X] - 5 == b[X] + b[W]:
@@ -164,16 +189,10 @@ def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
                 vPlayer[Y] = 0
 
 
+def hitSpikes(x, y, hitbox ,spikes):
+    collisionList = []
+    for spike in spikes:
+        playerRect = Rect(x, y, hitbox[W], hitbox[H])
+        collisionList.append(playerRect.collidelist(spike))
 
-    # for border in borders:
-    #     if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] >= 574:
-    #         vPlayer[BOT] = border[Y]
-    #         p[Y] = vPlayer[BOT] - hitbox[H]
-    #         vPlayer[Y] = 0
-
-    #     if p[X] + hitbox[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + hitbox[H] >= border[Y] and p[Y] + hitbox[H] + vPlayer[Y] > border[Y] and border[Y] + border[H] <= 0:
-    #         p[Y] = border[Y] + border[H]
-
-
-    #     elif p[X] + 5 + hitbox[W] >= border[X] and vPlayer[BOT] != border:
-    #         vPlayer[X] = 0
+    return collisionList[-1]

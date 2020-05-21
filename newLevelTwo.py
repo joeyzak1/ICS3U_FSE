@@ -33,9 +33,9 @@ plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200,
         Rect(9050, 287-15, 200, 15)]
 
 #this list branches off into 2 2d lists one for ground spikes and one for wall spikes
-spikes = [[Rect(800, GROUND, 400, -50), Rect(3400, 275, 400, 50), Rect(3900, 475, 200, -50),
-        Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50), Rect(8550, GROUND, 400, -50)],
-        [Rect(1900, GROUND, 75, -300), Rect(8350, GROUND, 75, -475), Rect(9400, 374, 75, -475)]]
+spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50)],
+        [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50)],
+        [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475), Rect(9400, 0, 75, 374)]]
 
 birds = [Rect(2800, 50, 60, 30), Rect(9600, 50, 60, 30)]
 
@@ -65,10 +65,11 @@ def drawScene(p, player, sprites, plats, spikes, borders, birds):
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
+
     display.update()
     myClock.tick(60)
 
-def move(p, player, sprites, borders):
+def move(p, player, sprites, borders, spikes):
     global vPlayer
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
@@ -79,7 +80,7 @@ def move(p, player, sprites, borders):
     if keys[K_SPACE]:
         vPlayer[Y] = jumpSpeed
 
-    if keys[K_LEFT]:
+    if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes):
         shortcutFunctions.moveGuyLeft(p, player, vPlayer, borders, hitBox)
 
         # p[ROW] = 3
@@ -93,13 +94,17 @@ def move(p, player, sprites, borders):
         # if vPlayer[SCREENX] > 350:
         #     vPlayer[SCREENX] -= 5
 
-    elif keys[K_RIGHT]:
+    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes):
         shortcutFunctions.moveGuyRight(p, player, vPlayer, borders, hitBox)
+
 
     else:
         player[COL] = 0
         player[COL] -= 0.2
         vPlayer[X] = 0
+
+    print(shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes), shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes))
+
 
     player[COL] += 0.2
 
