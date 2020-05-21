@@ -24,29 +24,32 @@ SCREENX = 3
 BOT = 2
 TOP = 4
 
-vPlayer = [0, 0, bottom, 250, 0]
+vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 
-player = [250, 529, 4, 0]
+player = [250, 529, 4, 0] #player rect and list
 pRect = Rect(250, 529, 4, 0)
 
 plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
-        Rect(9050, 287-15, 200, 15)]
+        Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15)] #platforms
 
-#this list branches off into 2 2d lists one for ground spikes and one for wall spikes
-spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50)],
-        [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50)],
-        [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475), Rect(9400, 0, 75, 374)]]
+#this list branches off into 2d lists - for spikes
+spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50), Rect(10000, 524, 400, 50)], #this list is for spikes on the ground or vBOT
+        [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50)], #this list is for spikes NOT on vBot
+        [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475)],  #this list is for WALL spikes on vBOT
+        [Rect(9400, 0, 75, 374)]] #this list is for WALL spikes NOT on v[BOT]
 
-birds = [Rect(2800, 50, 60, 30), Rect(9600, 50, 60, 30)]
+birds = [Rect(2800, 50, 60, 30), Rect(12000, 50, 60, 30)] #bird rects
 
-borders = [Rect(2800, 475, 2375, GROUND-475), Rect(2800, 275, 2100, -275), Rect(4900, 174, 2500, -174),
-            Rect(5175, GROUND, 100, -200), Rect(5275, 374, 2875, GROUND-374)]
+# borders = [Rect(2800, 475, 2375, GROUND-475), Rect(2800, 275, 2100, -275), Rect(4900, 174, 2500, -174),
+#             Rect(5175, GROUND, 100, -200), Rect(5275, 374, 2875, GROUND-374)] #border rect list
 
 #seperating borders into 2d lists
-borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374, 2875, 200)],
-            [Rect(2800, 0, 2100, 275), Rect(4900, 0, 2500, 174)]]
+borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374, 2875, 200), Rect(11500, 475, 500, 99), Rect(12000, 159, 4000, 415)], #borders for touching vBOT
+            [Rect(2800, 0, 2100, 275), Rect(4900, 0, 2500, 174), Rect(11500, 0, 100, 275), Rect(11600, 0, 4000, 60)]] #borders for touching top
 
-def drawScene(p, player, sprites, plats, spikes, borders, birds):
+healthBlocks = [Rect(10100, 325, 50, 50)]
+
+def drawScene(p, player, sprites, plats, spikes, borders, birds, healthBlocks):
     global vPlayer
 
     offset = vPlayer[SCREENX] - p[X]
@@ -60,6 +63,7 @@ def drawScene(p, player, sprites, plats, spikes, borders, birds):
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
     shortcutFunctions.drawTempBird(birds, offset)
+    shortcutFunctions.drawHealthBlocks(healthBlocks, offset)
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)

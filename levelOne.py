@@ -35,7 +35,7 @@ healthSq = [squared_blocks[1]]
 
 slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)] #slugs rect list
 
-birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15)] #rect list for birds
+birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15), Rect(1200, 50, 50, 15)] #rect list for birds
 bird_p = [[birds[i][X], birds[i][Y], 0] for i in range(len(birds))]
 bird_hitboxes = []
 

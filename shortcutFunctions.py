@@ -37,6 +37,11 @@ def drawSqBlocks(sq_blocks):
         sq = sq.move(offset, 0)
         draw.rect(screen, (0, 0, 255), sq)
 
+def drawHealthBlocks(healthB, offset):
+    for h in healthB:
+        h = h.move(offset, 0)
+        draw.rect(screen, (0, 0, 255), h)
+
 def drawSlugs(slugs):
     'this function draws slugs - work on these LATER'
     return 1 
