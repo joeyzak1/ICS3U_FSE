@@ -9,6 +9,9 @@ import shortcutFunctions
 screen = display.set_mode((1024, 768))
 myClock = time.Clock()
 
+player = [50, 600, 4, 0]
+pRect = Rect(50, 600, 50, 50)
+
 def drawScene():
     screen.fill((0))
 
