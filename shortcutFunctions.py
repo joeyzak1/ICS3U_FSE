@@ -81,25 +81,43 @@ def checkPlats(plats, p, hitBox, vPlayer):
             p[Y] = vPlayer[BOT] - hitBox[H]
             vPlayer[Y] = 0
 
-def moveGuyLeft(p, player, vPlayer, borders, hitbox):
+def moveGuyLeft(p, player, vPlayer, borders, hitbox, leftEnd, rightEnd):
     'this function moves the guy to the left'
     keys = key.get_pressed()
-    player[ROW] = 3
-    vPlayer[X] = -5
-    if keys[K_LSHIFT] or keys[K_RSHIFT]:
-        vPlayer[X] = -10
-    if vPlayer[SCREENX] > 250:
-        vPlayer[SCREENX] -= 5
 
-def moveGuyRight(p, player, vPlayer, borders, hitbox):
+    if leftEnd < p[X] + 5 < rightEnd:
+        player[ROW] = 3
+        vPlayer[X] = -5
+        if keys[K_LSHIFT] or keys[K_RSHIFT]:
+            vPlayer[X] = -10
+        if vPlayer[SCREENX] > 250:
+            vPlayer[SCREENX] -= 5
+
+    elif p[X] > rightEnd:
+        if vPlayer[X] == 0:
+            if keys[K_LSHIFT] or keys[K_RSHIFT]:
+                vPlayer[X] = -10
+            else:
+                vPlayer[X] = -5
+
+
+def moveGuyRight(p, player, vPlayer, borders, hitbox, leftEnd, rightEnd):
     'this function moves the guy to the right'
     keys = key.get_pressed()
-    player[ROW] = 4
-    vPlayer[X] = 5
-    if keys[K_LSHIFT] or keys[K_RSHIFT]:
-        vPlayer[X] = 10
-    if vPlayer[SCREENX] < 700:
-        vPlayer[SCREENX] += 5
+
+    if leftEnd < p[X] + 5 < rightEnd:
+        player[ROW] = 4
+        vPlayer[X] = 5
+        if keys[K_LSHIFT] or keys[K_RSHIFT]:
+            vPlayer[X] = 10
+        if vPlayer[SCREENX] < 700:
+            vPlayer[SCREENX] += 5
+
+    elif p[X] > rightEnd:
+        player[COL] = 0
+        if vPlayer[X] > 0:
+            vPlayer[X] = 0
+
 
 def moveBird(player, birds):
     for bird in birds:

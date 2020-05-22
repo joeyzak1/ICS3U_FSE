@@ -24,6 +24,9 @@ SCREENX = 3
 BOT = 2
 TOP = 4
 
+leftEnd = 50
+rightEnd = 15850
+
 vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 
 player = [250, 529, 4, 0] #player rect and list
@@ -33,8 +36,8 @@ plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200,
         Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15), Rect(11650, 330, 200, 15)] #platforms
 
 #this list branches off into 2d lists - for spikes
-spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50), Rect(10000, 524, 400, 50), Rect(13000, 140, 300, 19)], #this list is for spikes on the ground or vBOT
-        [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50), Rect(11600, 60, 400, 30), Rect(14000, )], #this list is for spikes NOT on vBot
+spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50), Rect(10000, 524, 400, 50), Rect(13000, 140, 300, 19), Rect(14500, 140, 300, 19), Rect(15000, 140, 300, 19)], #this list is for spikes on the ground or vBOT
+        [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50), Rect(11600, 60, 400, 30), Rect(14000, 60, 200, 30)], #this list is for spikes NOT on vBot
         [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475)],  #this list is for WALL spikes on vBOT
         [Rect(9400, 0, 75, 374)]] #this list is for WALL spikes NOT on v[BOT]
 
@@ -69,12 +72,14 @@ def drawScene(p, player, sprites, plats, spikes, borders, birds, healthBlocks):
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
-
+    print(p[X])
     display.update()
     myClock.tick(60)
 
 def move(p, player, sprites, borders, spikes):
     global vPlayer
+    global leftEnd
+    global rightEnd
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
@@ -85,21 +90,10 @@ def move(p, player, sprites, borders, spikes):
         vPlayer[Y] = jumpSpeed
 
     if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes):
-        shortcutFunctions.moveGuyLeft(p, player, vPlayer, borders, hitBox)
-
-        # p[ROW] = 3
-
-        # if keys[K_LSHIFT] or keys[K_RSHIFT]:
-        #     vPlayer[X] = -10
-
-        # else:
-        #     vPlayer[X] = -5
-
-        # if vPlayer[SCREENX] > 350:
-        #     vPlayer[SCREENX] -= 5
+        shortcutFunctions.moveGuyLeft(p, player, vPlayer, borders, hitBox, leftEnd, rightEnd)
 
     elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes):
-        shortcutFunctions.moveGuyRight(p, player, vPlayer, borders, hitBox)
+        shortcutFunctions.moveGuyRight(p, player, vPlayer, borders, hitBox, leftEnd, rightEnd)
 
 
     else:
@@ -107,7 +101,7 @@ def move(p, player, sprites, borders, spikes):
         player[COL] -= 0.2
         vPlayer[X] = 0
 
-    print(shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes), shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes))
+    # print(shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes), shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes))
 
 
     player[COL] += 0.2
