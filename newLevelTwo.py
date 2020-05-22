@@ -30,11 +30,11 @@ player = [250, 529, 4, 0] #player rect and list
 pRect = Rect(250, 529, 4, 0)
 
 plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
-        Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15)] #platforms
+        Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15), Rect(11650, 330, 200, 15)] #platforms
 
 #this list branches off into 2d lists - for spikes
-spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50), Rect(10000, 524, 400, 50)], #this list is for spikes on the ground or vBOT
-        [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50)], #this list is for spikes NOT on vBot
+spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50), Rect(10000, 524, 400, 50), Rect(13000, 140, 300, 19)], #this list is for spikes on the ground or vBOT
+        [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50), Rect(11600, 60, 400, 30), Rect(14000, )], #this list is for spikes NOT on vBot
         [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475)],  #this list is for WALL spikes on vBOT
         [Rect(9400, 0, 75, 374)]] #this list is for WALL spikes NOT on v[BOT]
 
