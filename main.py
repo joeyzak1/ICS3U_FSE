@@ -10,6 +10,7 @@ import os
 import intro #intro.py
 import levelOne #levelOne.py
 import newLevelTwo as lev2
+import levelThree as lv3
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
@@ -79,7 +80,7 @@ def menu(action):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
             screen.fill((0))
-            level_Two('lev2')
+            level_Three('lev3')
 
         
 
@@ -129,6 +130,17 @@ def level_Two(action):
         display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
         display.update()
         myClock.tick(60)
+
+def level_Three(action):
+    while action == 'lev3':
+        for evt in event.get():
+            if evt.type == QUIT:
+                action = 'end'
+
+        lv3.move(lv3.pRect, lv3.player, ch1_sprites)
+        lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
+
+        
 
 
 

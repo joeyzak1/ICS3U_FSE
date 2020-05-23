@@ -81,7 +81,7 @@ def checkPlats(plats, p, hitBox, vPlayer):
             p[Y] = vPlayer[BOT] - hitBox[H]
             vPlayer[Y] = 0
 
-def moveGuyLeft(p, player, vPlayer, borders, hitbox, leftEnd, rightEnd):
+def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left'
     keys = key.get_pressed()
 
@@ -101,7 +101,7 @@ def moveGuyLeft(p, player, vPlayer, borders, hitbox, leftEnd, rightEnd):
                 vPlayer[X] = -5
 
 
-def moveGuyRight(p, player, vPlayer, borders, hitbox, leftEnd, rightEnd):
+def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the right'
     keys = key.get_pressed()
 
