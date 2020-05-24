@@ -30,7 +30,7 @@ gravity = 1
 player = [300, 600, 4, 0]
 pRect = Rect(300, 600, 50, 50)
 
-doorRect = Rect(3600, 300, 300, GROUND-300)
+doorRect = Rect(3200, 300, 300, GROUND-300)
 
 
 def drawScene(p, player, sprites, doorRect):
@@ -53,7 +53,7 @@ def move(p, player, sprites):
     global v
 
     leftEnd = 300
-    rightEnd = 4050
+    rightEnd = 3900
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
         v[Y] = jumpSpeed

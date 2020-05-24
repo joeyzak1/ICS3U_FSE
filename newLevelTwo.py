@@ -90,10 +90,10 @@ def move(p, player, sprites, borders, spikes):
         vPlayer[Y] = jumpSpeed
 
     if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes):
-        shortcutFunctions.moveGuyLeft(p, player, vPlayer, borders, hitBox, leftEnd, rightEnd)
+        shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd)
 
     elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes):
-        shortcutFunctions.moveGuyRight(p, player, vPlayer, borders, hitBox, leftEnd, rightEnd)
+        shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd)
 
 
     else:
