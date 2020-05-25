@@ -115,7 +115,6 @@ def level_One(action):
 
         
 
-
 def level_Two(action):
     while action == 'lev2':
         for evt in event.get():
@@ -151,10 +150,10 @@ def boss(action):
             if evt.type == QUIT:
                 action = 'end'
 
-        bs.moveGuy()
+        bs.moveGuy(bs.pRect, bs.player, ch1_sprites)
         bs.moveBoss()
-        bs.checkCollision()
-        bs.drawScene()
+        bs.checkCollision(bs.pRect, bs.player, ch1_sprites)
+        bs.drawScene(bs.pRect, bs.player, ch1_sprites)
         
 
 

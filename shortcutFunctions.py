@@ -65,12 +65,12 @@ def createHitbox (pic, x, y):
     hitbox = Rect (x, y, pic_width, pic_height)
     return hitbox
 
-def playerSprites (player, p, sprites, vPlayer):
+def playerSprites (player, p, sprites, vPlayer, x):
     'this function gets the sprite of a character'
     row = player[ROW]
     col = int(player[COL])
     pic = sprites[row][col]
-    pictureRect = createHitbox(pic, vPlayer[SCREENX], p[Y])
+    pictureRect = createHitbox(pic, x, p[Y])
     screen.blit(pic, pictureRect)
     return pictureRect
 
@@ -112,6 +112,38 @@ def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
             vPlayer[X] = 10
         if vPlayer[SCREENX] < 700:
             vPlayer[SCREENX] += 5
+
+    elif p[X] > rightEnd:
+        player[COL] = 0
+        if vPlayer[X] > 0:
+            vPlayer[X] = 0
+
+def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
+    'this function moves the guy to the left only for boss'
+    keys = key.get_pressed()
+
+    if leftEnd < p[X] + 5 < rightEnd:
+        player[ROW] = 3
+        vPlayer[X] = -5
+        if keys[K_LSHIFT] or keys[K_RSHIFT]:
+            vPlayer[X] = -10
+
+    elif p[X] > rightEnd:
+        if vPlayer[X] == 0:
+            if keys[K_LSHIFT] or keys[K_RSHIFT]:
+                vPlayer[X] = -10
+            else:
+                vPlayer[X] = -5
+
+def moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd):
+    'this function moves the guy to the right'
+    keys = key.get_pressed()
+
+    if leftEnd < p[X] + 5 < rightEnd:
+        player[ROW] = 4
+        vPlayer[X] = 5
+        if keys[K_LSHIFT] or keys[K_RSHIFT]:
+            vPlayer[X] = 10
 
     elif p[X] > rightEnd:
         player[COL] = 0

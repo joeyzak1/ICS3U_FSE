@@ -42,8 +42,8 @@ def drawScene(p, player, sprites, doorRect):
     doorRect = doorRect.move(offset, 0)
     draw.rect(screen, (255, 0, 0), doorRect)
 
-    shortcutFunctions.playerSprites(player, p, sprites, v)
-    hitbox = shortcutFunctions.playerSprites(player, p, sprites, v)
+    shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
+    hitbox = shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
 
     myClock.tick(60)
     display.update()
@@ -81,8 +81,8 @@ def move(p, player, sprites):
 def check(p, player, sprites):
     global v
 
-    shortcutFunctions.playerSprites(player, p, sprites, v)
-    hitBox = shortcutFunctions.playerSprites(player, p, sprites, v)
+    shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
 
     p[Y] += v[Y]
     player[Y] += v[Y]

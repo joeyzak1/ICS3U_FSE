@@ -68,8 +68,8 @@ def drawScene(p, player, sprites, plats, spikes, borders, birds, healthBlocks):
     shortcutFunctions.drawTempBird(birds, offset)
     shortcutFunctions.drawHealthBlocks(healthBlocks, offset)
 
-    shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
-    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
+    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
     print(p[X])
@@ -81,8 +81,8 @@ def move(p, player, sprites, borders, spikes):
     global leftEnd
     global rightEnd
 
-    shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
-    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
+    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
     keys = key.get_pressed()
 
@@ -123,8 +123,8 @@ def moveBad(player, bird):
 def check(p, player, sprites, plats, spikes, borders):
     global vPlayer
 
-    shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
-    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer)
+    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
     shortcutFunctions.checkPlats(plats, p, hitBox, vPlayer)
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer)
