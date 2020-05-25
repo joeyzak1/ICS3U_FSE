@@ -97,4 +97,10 @@ def check(p, player, sprites):
         p[Y] = GROUND - hitBox[H]
         v[Y] = 0
 
+def checkBoss(door, p):
+    keys = key.get_pressed()
+    if keys[K_RETURN] and p.colliderect(door):
+        return True
+    return False
+
 

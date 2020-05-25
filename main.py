@@ -11,6 +11,7 @@ import intro #intro.py
 import levelOne #levelOne.py
 import newLevelTwo as lev2
 import levelThree as lv3
+import boss as bs
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
@@ -80,7 +81,7 @@ def menu(action):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
             screen.fill((0))
-            level_Two('lev2')
+            level_Three('lev3')
 
         
 
@@ -137,9 +138,23 @@ def level_Three(action):
             if evt.type == QUIT:
                 action = 'end'
 
-        lv3.move(lv3.pRect, lv3.player, ch1_sprites)
-        lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
+        if lv3.checkBoss(lv3.pRect, lv3.doorRect):
+            boss('boss')
 
+        else:
+            lv3.move(lv3.pRect, lv3.player, ch1_sprites)
+            lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
+
+def boss(action):
+    while action == 'boss':
+        for evt in event.get():
+            if evt.type == QUIT:
+                action = 'end'
+
+        bs.moveGuy()
+        bs.moveBoss()
+        bs.checkCollision()
+        bs.drawScene()
         
 
 
