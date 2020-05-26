@@ -81,7 +81,7 @@ def menu(action):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
             screen.fill((0))
-            level_Three('lev3')
+            boss('boss')
 
         
 
@@ -151,7 +151,7 @@ def boss(action):
                 action = 'end'
 
         bs.moveGuy(bs.pRect, bs.player, ch1_sprites)
-        bs.moveBoss()
+        bs.moveBoss(bs.bossRect)
         bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
         bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
         

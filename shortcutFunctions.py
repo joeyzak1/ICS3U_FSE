@@ -70,6 +70,8 @@ def playerSprites (player, p, sprites, vPlayer, x):
     'this function gets the sprite of a character'
     row = player[ROW]
     col = int(player[COL])
+    if row == 0 and col == 5:
+        col = 0
     pic = sprites[row][col]
     pictureRect = createHitbox(pic, x, p[Y])
     screen.blit(pic, pictureRect)
@@ -80,21 +82,56 @@ def drawBossBullets(bullets):
     for b in bullets:
         draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4)
 
-def createBossBullets(bullets, SPEED, bossR):
-    for i in range(-3, 3):
-        ang = atan2(bossR[Y]*i - 318, bossR[X]*i - 424)
+def createBossBullets(bullets, SPEED, bossR, rapid):
+    for i in range(12):
+        ang = atan2(bossR[Y] - 318, bossR[X] - 424)
+        ang *= i
         vx = cos(ang)*SPEED #horizontal component
         vy = sin(ang)*SPEED #vertical component
 
         bullets.append([bossR[X], bossR[Y], vx, vy])   
+    
 
 def checkBossBullets(bullets):
     for b in bullets[:]: #[:] is a COPY of the bullets list
         b[0] += b[2]
         b[1] += b[3]
 
-        if b[0] > 978 or b[0] < 0 or b[1] < 0: #off screen
+        if b[0] > 978 or b[0] < 46 or b[1] < 0: #off screen
             bullets.remove(b)
+
+#move boss between attacks ------------------------------------
+def moveBossBetween(boss, b, v):
+    v[X] = 0
+    for i in range(2):
+        if b[X] > 550:
+            v[X] = -3
+
+        elif 600 < b[X] < 625:
+            v[X] = 3
+
+#move boss close to player
+def moveBossPhaseTwo(boss, b, v, player, p):
+    if b[Y] > 40:
+        v[Y] = -4
+    
+    else:
+        v[Y] = 0
+
+    if b[X] < p[X] + p[H]:
+        v[X] = -6
+    else:
+        v[X] = 0
+        
+    if b[X] <= p[X] + p[H] and b[Y] == 40:
+        v[X] = 0
+        v[Y] = 3
+    
+
+
+
+
+
 
 
 def checkPlats(plats, p, hitBox, vPlayer):
