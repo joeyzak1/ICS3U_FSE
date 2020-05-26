@@ -152,8 +152,8 @@ def boss(action):
 
         bs.moveGuy(bs.pRect, bs.player, ch1_sprites)
         bs.moveBoss()
-        bs.checkCollision(bs.pRect, bs.player, ch1_sprites)
-        bs.drawScene(bs.pRect, bs.player, ch1_sprites)
+        bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
+        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
         
 
 

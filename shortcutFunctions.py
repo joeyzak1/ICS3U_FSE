@@ -1,6 +1,7 @@
 #shortcutFunctions.py
 # this program has useful functions that can shorten code
 from pygame import *
+from math import *
 
 screen = display.set_mode((1024, 768))
 
@@ -74,12 +75,38 @@ def playerSprites (player, p, sprites, vPlayer, x):
     screen.blit(pic, pictureRect)
     return pictureRect
 
+# boss bullets --------------------------------------------------
+def drawBossBullets(bullets):
+    for b in bullets:
+        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4)
+
+def createBossBullets(bullets, SPEED, bossR):
+    for i in range(-3, 3):
+        ang = atan2(bossR[Y]*i - 318, bossR[X]*i - 424)
+        vx = cos(ang)*SPEED #horizontal component
+        vy = sin(ang)*SPEED #vertical component
+
+        bullets.append([bossR[X], bossR[Y], vx, vy])   
+
+def checkBossBullets(bullets):
+    for b in bullets[:]: #[:] is a COPY of the bullets list
+        b[0] += b[2]
+        b[1] += b[3]
+
+        if b[0] > 978 or b[0] < 0 or b[1] < 0: #off screen
+            bullets.remove(b)
+
+
 def checkPlats(plats, p, hitBox, vPlayer):
     for plat in plats:
         if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
             vPlayer[BOT] = plat[Y]
             p[Y] = vPlayer[BOT] - hitBox[H]
             vPlayer[Y] = 0
+
+
+
+
 
 def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left'

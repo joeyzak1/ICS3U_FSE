@@ -25,15 +25,25 @@ gravity = 1
 player = [150, 650, 4, 0]
 pRect = Rect(150, 650, 20, 45)
 
+boss = [600, 450, 0, 0]
+bossRect = Rect(600, 450, 300, GROUND-450)
+
 vPlayer = [0, 0, bottom]
 
-def drawScene(p, player, sprites):
+bullSpeed = 5
+bullets = []
+
+def drawScene(p, player, sprites, boss, b, bullets):
     global vPlayer
 
     screen.blit(backPic, (0, 0))
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
+
+    shortcutFunctions.drawBossBullets(bullets)
+    draw.rect(screen, (255, 0, 0), b)
+
 
     display.update()
     myClock.tick(60)
@@ -73,10 +83,11 @@ def moveGuy(p, player, sprites):
 def moveBoss():
     screen.fill((0))
 
-def checkCollision(p, player, sprites):
+def checkCollision(p, player, sprites, boss, b, bullets):
     keys = key.get_pressed()
 
     global vPlayer
+    global bullSpeed
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
@@ -86,6 +97,9 @@ def checkCollision(p, player, sprites):
 
     p[H] = hitBox[H]
     p[W] = hitBox[W]
+
+    shortcutFunctions.createBossBullets(bullets, bullSpeed, b)
+    shortcutFunctions.checkBossBullets(bullets)
 
 
     if p[Y] + hitBox[H] >= GROUND:
