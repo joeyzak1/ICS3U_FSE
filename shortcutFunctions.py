@@ -24,7 +24,7 @@ def drawSpikes(spikes, offset):
     for sp in spikes:
         for ground in sp:
             ground = ground.move(offset, 0)
-            draw.rect(screen, (0, 255, 0), ground)
+            # draw.rect(screen, (0, 255, 0), ground)
 
 def drawBlocks(blocks):
     'this function draws blocks - blocks must be in a LIST and have offset'
@@ -52,7 +52,6 @@ def drawBorders (borders, offset):
     for lists in borders:
         for border in lists:
             border = border.move(offset, 0)
-            draw.rect(screen, (255, 0, 0), border)
 
 def drawTempBird(birds, offset):
     for bird in birds:

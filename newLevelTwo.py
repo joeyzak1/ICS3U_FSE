@@ -7,6 +7,7 @@ screen = display.set_mode((1024, 768))
 myClock = time.Clock()
 
 backPic = image.load('Backgrounds/LevelTwo_backPic.png').convert()
+platPic = image.load('Other/plat.png')
 
 GROUND = 574
 bottom = GROUND
@@ -36,7 +37,7 @@ plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200,
         Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15), Rect(11650, 330, 200, 15)] #platforms
 
 #this list branches off into 2d lists - for spikes
-spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(6000, 174, 200, 50), Rect(10000, 524, 400, 50), Rect(13000, 140, 300, 19), Rect(14500, 140, 300, 19), Rect(15000, 140, 300, 19)], #this list is for spikes on the ground or vBOT
+spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(10000, 524, 400, 50), Rect(13000, 140, 300, 19), Rect(14500, 140, 300, 19), Rect(15000, 140, 300, 19)], #this list is for spikes on the ground or vBOT
         [Rect(3400, 275, 400, 50), Rect(5400, 174, 200, 50), Rect(6000, 174, 200, 50), Rect(11600, 60, 400, 30), Rect(14000, 60, 200, 30)], #this list is for spikes NOT on vBot
         [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475)],  #this list is for WALL spikes on vBOT
         [Rect(9400, 0, 75, 374)]] #this list is for WALL spikes NOT on v[BOT]
@@ -59,6 +60,9 @@ def drawScene(p, player, sprites, plats, spikes, borders, birds, healthBlocks):
     screen.blit(backPic, (offset, 0))
 
     shortcutFunctions.drawPlats(plats, offset)
+    for plat in plats:
+        plat = plat.move(offset, 0)
+        screen.blit(platPic, (plat[X], plat[Y]))
     # for plat in plats:
     #     plat = plat.move(offset, 0)
     #     draw.rect(screen, (0), plat)
