@@ -5,6 +5,7 @@ ICS3U FSE
 from pygame import *
 
 screen = display.set_mode((1024, 768))
+helpDialog = False
 
 X = 0; Y = 1; ROW = 2; COL = 3; W = 2
 
@@ -22,8 +23,15 @@ b1 = [0, 0, 1024]; b2 = [1024, 0, 1024]; speed = 7
 
 myClock = time.Clock()
 
+timePassed = []
+timeCounter = 0
+
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
+    global helpDialog
+    global timePassed
+    global timeCounter
+
     mx, my = mouse.get_pos()
     mb = mouse.get_pressed()
 
@@ -32,6 +40,7 @@ def draw_introScene(player, picList, mB, mW):
     col = int(player[COL]) #getting the col number for pic
 
     pic = picList[4][col]
+
     if player[X] == 683:
         screen.blit(background_imgs[0], (b1[X], b1[Y]))
         screen.blit(background_imgs[1], (b2[X], b2[Y]))
@@ -62,6 +71,11 @@ def draw_introScene(player, picList, mB, mW):
             else:
                 highlight_rects[i] = (255, 255, 255)
 
+        if mb[0] == 1 and introRects[1].collidepoint(mx, my):
+            helpDialog = True
+
+        help(timePassed, timeCounter)
+
     else:
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
 
@@ -89,8 +103,23 @@ def move_intro(player, picList, mB, mW):
     if player[COL]>=len(picList[ROW]):
         player[COL] = 1   
 
+def help(timePassed, counter):
+    global helpDialog
+    if helpDialog:
+        screen.blit(helpImg, (0, 0))
 
-background_imgs = [image.load("Backgrounds/back_" + str(i) + ".png") for i in range(2)]
+        if counter % 60 == 0:
+            timePassed.append('t')
+
+        if len(timePassed) > 400:
+            helpDialog = False
+            for t in timePassed:
+                timePassed.remove(t)
+
+        counter += 1
+
+background_imgs = [image.load("Backgrounds/back_" + str(i) + ".png").convert() for i in range(2)]
+helpImg = image.load('Intro Pictures/Help.png')
 
 
 

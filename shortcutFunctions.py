@@ -13,16 +13,17 @@ vel_bird = [0, 0]
 vBird_vertical = 30
 vBrid_gravity = -1
 
-def drawPlats(plats, offset):
+def drawPlats(plats, offset, pic):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects'
     # global offset
     for plat in plats:
         plat = plat.move(offset, 0)
-        draw.rect(screen, (0), plat)
+        screen.blit(pic, (plat[X], plat[Y]))
 
 def drawSpikes(spikes, offset):
+    'this functions draws spikes'
     for sp in spikes:
-        for ground in sp:
+        for ground in sp: #went through two loops to get to desired spikes (2d list)
             ground = ground.move(offset, 0)
             # draw.rect(screen, (0, 255, 0), ground)
 
@@ -124,12 +125,18 @@ def moveBossPhaseTwo(boss, b, v, player, p):
 
 
 
-def checkPlats(plats, p, hitBox, vPlayer):
+def checkPlats(plats, p, player, hitBox, v):
+    # for plat in plats:
+    #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
+    #         vPlayer[BOT] = plat[Y]
+    #         p[Y] = vPlayer[BOT] - hitBox[H]
+    #         player[Y] = vPlayer[BOT] - hitBox[H]
+    #         vPlayer[Y] = 0
     for plat in plats:
-        if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
-            vPlayer[BOT] = plat[Y]
-            p[Y] = vPlayer[BOT] - hitBox[H]
-            vPlayer[Y] = 0
+        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]:
+            v[BOT] = plat[Y]
+            p[Y] = v[BOT] - p[H]
+            v[Y] = 0
 
 
 

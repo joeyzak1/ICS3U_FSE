@@ -53,20 +53,13 @@ borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374
 
 healthBlocks = [Rect(10100, 325, 50, 50)]
 
-def drawScene(p, player, sprites, plats, spikes, borders, birds, healthBlocks):
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, healthBlocks):
     global vPlayer
 
     offset = vPlayer[SCREENX] - p[X]
     screen.blit(backPic, (offset, 0))
 
-    shortcutFunctions.drawPlats(plats, offset)
-    for plat in plats:
-        plat = plat.move(offset, 0)
-        screen.blit(platPic, (plat[X], plat[Y]))
-    # for plat in plats:
-    #     plat = plat.move(offset, 0)
-    #     draw.rect(screen, (0), plat)
-
+    shortcutFunctions.drawPlats(plats, offset, platPic)
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
     shortcutFunctions.drawTempBird(birds, offset)
@@ -130,7 +123,7 @@ def check(p, player, sprites, plats, spikes, borders):
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
-    shortcutFunctions.checkPlats(plats, p, hitBox, vPlayer)
+    shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
 
@@ -142,6 +135,9 @@ def check(p, player, sprites, plats, spikes, borders):
 
     p[Y] += vPlayer[Y]
     player[Y] += vPlayer[Y]
+
+    p[W] = hitBox[W]
+    p[H] = hitBox[H]
 
     
 
