@@ -150,7 +150,7 @@ def boss(action):
             if evt.type == QUIT:
                 action = 'end'
 
-        bs.moveGuy(bs.pRect, bs.player, ch1_sprites)
+        bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect)
         bs.moveBoss(bs.bossRect)
         bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
         bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)

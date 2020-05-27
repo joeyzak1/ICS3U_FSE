@@ -112,21 +112,12 @@ def moveBossBetween(boss, b, v):
 
 #move boss close to player
 def moveBossPhaseTwo(boss, b, v, player, p):
-    if b[Y] > 40:
+    if b[X] <= p[X] + p[H]:
+        v[X] = 0
+        v[Y] = 15
+    else:
         v[Y] = -4
-    
-    else:
-        v[Y] = 0
-
-    if b[X] < p[X] + p[H]:
-        v[X] = -6
-    else:
-        v[X] = 0
-        
-    if b[X] <= p[X] + p[H] and b[Y] == 40:
-        v[X] = 0
-        v[Y] = 3
-    
+        v[X] = -4
 
 
 

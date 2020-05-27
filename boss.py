@@ -25,8 +25,8 @@ gravity = 1
 player = [150, 650, 4, 0]
 pRect = Rect(150, 650, 20, 45)
 
-boss = [600, 450, 0, 0]
-bossRect = Rect(600, 450, 300, GROUND-450)
+boss = [600, 449, 0, 0]
+bossRect = Rect(600, 449, 300, 272)
 
 vPlayer = [0, 0, bottom]
 vBoss = [0, 0, bottom]
@@ -55,11 +55,11 @@ def drawScene(p, player, sprites, boss, b, bullets):
         timePassed.append('t')
 
     myTime += 1
-    print (timePassed)
+    # print(p.colliderect(b))
     display.update()
     myClock.tick(60)
 
-def moveGuy(p, player, sprites):
+def moveGuy(p, player, sprites, b):
     global vPlayer
     global rapid
 
@@ -75,10 +75,10 @@ def moveGuy(p, player, sprites):
     if keys[K_x] and rapid == 20:
         player[ROW] = 0
 
-    elif keys[K_LEFT] and p[X] > leftEnd:
+    elif keys[K_LEFT] and p[X] > leftEnd and Rect(p[X] -5, p[Y], p[W], p[H]).colliderect(b) == 0:
         shortcutFunctions.moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd)
 
-    elif keys[K_RIGHT] and p[X] < rightEnd:
+    elif keys[K_RIGHT] and p[X] < rightEnd and Rect(p[X] + 5, p[Y], p[W], p[H]).colliderect(b) == 0:
         shortcutFunctions.moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd)
 
     else:
@@ -140,3 +140,8 @@ def checkCollision(p, player, sprites, boss, b, bullets):
         vPlayer[BOT] = GROUND
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
+
+    if b[Y] + b[H] >= GROUND:
+        vBoss[BOT] = GROUND
+        b[Y] = GROUND - b[H]
+        vBoss[Y] = 0
