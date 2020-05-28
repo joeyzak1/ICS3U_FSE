@@ -224,7 +224,14 @@ def moveBird(player, birds):
             bird[Y] += vel_bird[Y]
             bird[X] += vel_bird[X]
 
-def checkSpikes(p, hitbox, spikes, vPlayer):
+def checkSpikes(p, hitbox, spikes, vPlayer, health):
+    for spike in spikes:
+        for sp in spike:
+            if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(sp):
+                health -= 1
+                if health < 0:
+                    health = 0
+            
     for grnd in spikes[0]:
         # if p[X] + 5 + hitbox[W] == grnd[X]:
         #     vPlayer[X] = 0
@@ -237,6 +244,7 @@ def checkSpikes(p, hitbox, spikes, vPlayer):
         #     p[Y] = vPlayer[BOT] - hitbox[H]
 
         if p[X] + hitbox[W] > grnd[X] and p[X] < grnd[X] + grnd[W] and p[Y] + hitbox[H] >= grnd[Y] and p[Y] + hitbox[H] + vPlayer[Y] > grnd[Y]:
+
             vPlayer[BOT] = grnd[Y]
             p[Y] = vPlayer[BOT] - hitbox[H]
             vPlayer[Y] = 0
@@ -312,3 +320,9 @@ def hitSpikes(x, y, hitbox ,spikes):
         collisionList.append(playerRect.collidelist(spike))
 
     return collisionList[-1]
+
+def healthBar(health, pics):
+    for i in range(3):
+        if i == health:
+            pic = pics[i]
+            return pic

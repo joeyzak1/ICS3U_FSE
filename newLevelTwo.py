@@ -28,6 +28,8 @@ TOP = 4
 leftEnd = 50
 rightEnd = 15850
 
+health = 2
+
 vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 
 player = [250, 529, 4, 0] #player rect and list
@@ -53,8 +55,9 @@ borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374
 
 healthBlocks = [Rect(10100, 325, 50, 50)]
 
-def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, healthBlocks):
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, healthBlocks, healthPicList):
     global vPlayer
+    global health
 
     offset = vPlayer[SCREENX] - p[X]
     screen.blit(backPic, (offset, 0))
@@ -65,11 +68,13 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, health
     shortcutFunctions.drawTempBird(birds, offset)
     shortcutFunctions.drawHealthBlocks(healthBlocks, offset)
 
+    screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
+
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
-    print(p[X])
+    # print(p[X])
     display.update()
     myClock.tick(60)
 
@@ -77,6 +82,7 @@ def move(p, player, sprites, borders, spikes):
     global vPlayer
     global leftEnd
     global rightEnd
+    global health
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
@@ -117,14 +123,15 @@ def moveBad(player, bird):
 
 
 
-def check(p, player, sprites, plats, spikes, borders):
+def check(p, player, sprites, plats, spikes, borders, healthPicList):
+    global health
     global vPlayer
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
     shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
-    shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer)
+    shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
 
     # for plat in plats:
@@ -138,6 +145,7 @@ def check(p, player, sprites, plats, spikes, borders):
 
     p[W] = hitBox[W]
     p[H] = hitBox[H]
+
 
     
 
