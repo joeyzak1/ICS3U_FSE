@@ -211,7 +211,7 @@ def moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd):
         if vPlayer[X] > 0:
             vPlayer[X] = 0
 
-
+#bird ----------------------------------------------------------------------------
 def moveBird(player, birds):
     for bird in birds:
         if player[X] + 400 >= bird[X]:
@@ -221,56 +221,75 @@ def moveBird(player, birds):
             if bird[X] <= player[X] + 200 and bird[Y] >= player[Y]:
                 vel_bird[Y] = 0
 
+            bird[ROW] += 0.2
+
             bird[Y] += vel_bird[Y]
             bird[X] += vel_bird[X]
 
+def birdSprites(bird, sprites, offset):
+    # for b in birds:
+    row = int(bird[ROW])
+    if row > 4:
+        row = 0
+    pic = sprites[row]
+    pictureRect = createHitbox(pic, bird[X], bird[Y])
+    pictureRect = pictureRect.move(offset, 0)
+    screen.blit(pic, pictureRect)
+    return pictureRect
+
+def checkBirdCollision(birds, p, health):
+    # if p.collidelist(birds):
+    for bird in birds:
+        birdRect = Rect(bird[X], bird[Y], 100, 80)
+        if p.colliderect(birdRect):
+            health -= 1
+            if health < 0:
+                health = 0
+
+
 def checkSpikes(p, hitbox, spikes, vPlayer, health):
-    for spike in spikes:
-        for sp in spike:
-            if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(sp):
-                health -= 1
-                if health < 0:
-                    health = 0
+    # for spike in spikes:
+    #     for sp in spike:
+    #         if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(sp):
+    #             health -= 1
+    #             if health < 0:
+    #                 health = 0
             
     for grnd in spikes[0]:
-        # if p[X] + 5 + hitbox[W] == grnd[X]:
-        #     vPlayer[X] = 0
-        #     p[X] = grnd[X] - 5 - hitbox[W]
-        #     p[Y] = vPlayer[BOT] - hitbox[H]
-
-        # elif p[X] - 5 + hitbox[W] == grnd[X]:
-        #     vPlayer[X] = 0
-        #     p[X] = grnd[X] + grnd[W] + 5
-        #     p[Y] = vPlayer[BOT] - hitbox[H]
-
         if p[X] + hitbox[W] > grnd[X] and p[X] < grnd[X] + grnd[W] and p[Y] + hitbox[H] >= grnd[Y] and p[Y] + hitbox[H] + vPlayer[Y] > grnd[Y]:
-
             vPlayer[BOT] = grnd[Y]
             p[Y] = vPlayer[BOT] - hitbox[H]
             vPlayer[Y] = 0
-            
 
     for air in spikes[1]:
-        # if p[X] + 5  + hitbox[W] == air[X]:
-        #     vPlayer[X] = 0
-        #     p[X] = air[X] - 5
-
-        # elif p[X] - 5 == air[X] + air[W]:
-        #     vPlayer[X] = 0 
-        #     p[X] = air[X] + air[W] + 5
-        #     p[Y] = vPlayer[BOT] - hitbox[H]
-
-        if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(air):
+        if vPlayer[Y] > 0 and p.collidelist(spikes[1]) != -1:
             vPlayer[TOP] = air[Y] + air[H]
             p[Y] = vPlayer[TOP]
-            if p[Y] > air[H] + air[Y]:
-                vPlayer[Y] = 0
-
-    for wall in spikes[2]:
-        if p[X] + hitbox[W] > wall[X] and p[X] < wall[X] + wall[W] and p[Y] + hitbox[H] >= wall[Y] and p[Y] + wall[H] + vPlayer[Y] > wall[Y]:
-            vPlayer[BOT] = wall[Y]
-            p[Y] = vPlayer[BOT] - hitbox[H]
             vPlayer[Y] = 0
+
+            
+
+    # for air in spikes[1]:
+    #     # if p[X] + 5  + hitbox[W] == air[X]:
+    #     #     vPlayer[X] = 0
+    #     #     p[X] = air[X] - 5
+
+    #     # elif p[X] - 5 == air[X] + air[W]:
+    #     #     vPlayer[X] = 0 
+    #     #     p[X] = air[X] + air[W] + 5
+    #     #     p[Y] = vPlayer[BOT] - hitbox[H]
+
+    #     if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(air):
+    #         vPlayer[TOP] = air[Y] + air[H]
+    #         p[Y] = vPlayer[TOP]
+    #         if p[Y] > air[H] + air[Y]:
+    #             vPlayer[Y] = 0
+
+    # for wall in spikes[2]:
+    #     if p[X] + hitbox[W] > wall[X] and p[X] < wall[X] + wall[W] and p[Y] + hitbox[H] >= wall[Y] and p[Y] + wall[H] + vPlayer[Y] > wall[Y]:
+    #         vPlayer[BOT] = wall[Y]
+    #         p[Y] = vPlayer[BOT] - hitbox[H]
+    #         vPlayer[Y] = 0
 
                     
 
@@ -317,9 +336,7 @@ def hitSpikes(x, y, hitbox ,spikes):
     collisionList = []
     for spike in spikes:
         playerRect = Rect(x, y, hitbox[W], hitbox[H])
-        collisionList.append(playerRect.collidelist(spike))
-
-    return collisionList[-1]
+        return playerRect.collidelist(spike)
 
 def healthBar(health, pics):
     for i in range(3):

@@ -44,7 +44,8 @@ spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(10000, 524, 4
         [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475)],  #this list is for WALL spikes on vBOT
         [Rect(9400, 0, 75, 374)]] #this list is for WALL spikes NOT on v[BOT]
 
-birds = [Rect(2800, 50, 60, 30), Rect(12000, 50, 60, 30)] #bird rects
+# birds = [Rect(2800, 50, 60, 30), Rect(12000, 50, 60, 30)] #bird rects
+birds = [[2800, 50, 0], [12000, 50, 0]]
 
 # borders = [Rect(2800, 475, 2375, GROUND-475), Rect(2800, 275, 2100, -275), Rect(4900, 174, 2500, -174),
 #             Rect(5175, GROUND, 100, -200), Rect(5275, 374, 2875, GROUND-374)] #border rect list
@@ -55,7 +56,7 @@ borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374
 
 healthBlocks = [Rect(10100, 325, 50, 50)]
 
-def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, healthBlocks, healthPicList):
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList):
     global vPlayer
     global health
 
@@ -65,11 +66,14 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, health
     shortcutFunctions.drawPlats(plats, offset, platPic)
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
-    shortcutFunctions.drawTempBird(birds, offset)
     shortcutFunctions.drawHealthBlocks(healthBlocks, offset)
 
     screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
 
+    for b in birds:
+        shortcutFunctions.birdSprites(b, birdSprites, offset)
+
+    
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
@@ -89,13 +93,13 @@ def move(p, player, sprites, borders, spikes):
 
     keys = key.get_pressed()
 
-    if keys[K_SPACE]:
+    if keys[K_SPACE] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
         vPlayer[Y] = jumpSpeed
 
-    if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes):
+    if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1:
         shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd)
 
-    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes):
+    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1:
         shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd)
 
 
@@ -123,7 +127,7 @@ def moveBad(player, bird):
 
 
 
-def check(p, player, sprites, plats, spikes, borders, healthPicList):
+def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     global health
     global vPlayer
 
@@ -133,6 +137,7 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList):
     shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
+    shortcutFunctions.checkBirdCollision(birds, p, health)
 
     # for plat in plats:
     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
