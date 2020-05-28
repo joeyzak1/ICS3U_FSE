@@ -81,8 +81,8 @@ def menu(action):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
             screen.fill((0))
-            level_Two('lev2')
-            # boss('boss')
+            # level_Two('lev2')
+            boss('boss')
 
         
 

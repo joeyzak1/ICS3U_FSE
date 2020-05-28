@@ -132,8 +132,12 @@ def checkCollision(p, player, sprites, boss, b, bullets):
     elif len(timePassed) == 15:
         shortcutFunctions.moveBossBetween(boss, b, vBoss)
     
-    elif len(timePassed) == 20:
-        shortcutFunctions.moveBossPhaseTwo(boss, b, vBoss, player, p)
+    # elif len(timePassed) == 20:
+    #     shortcutFunctions.moveBossPhaseTwo(boss, b, vBoss, player, p)
+
+    elif len(timePassed) == 25:
+        shortcutFunctions.createBossBulletsPhase2(bullets, rapid, b)
+        shortcutFunctions.checkBossBullets(bullets)
 
 
     if p[Y] + hitBox[H] >= GROUND:

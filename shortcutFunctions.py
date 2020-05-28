@@ -100,6 +100,14 @@ def checkBossBullets(bullets):
         if b[0] > 978 or b[0] < 46 or b[1] < 0: #off screen
             bullets.remove(b)
 
+def createBossBulletsPhase2(bullets, rapid, boss):
+    if rapid == 20:
+        bullets.append([boss[X], boss[Y], -5, 0])
+
+    if rapid < 20:
+        rapid += 1
+
+
 #move boss between attacks ------------------------------------
 def moveBossBetween(boss, b, v):
     v[X] = 0
