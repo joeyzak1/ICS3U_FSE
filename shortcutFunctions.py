@@ -83,13 +83,18 @@ def drawBossBullets(bullets):
         draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4)
 
 def createBossBullets(bullets, SPEED, bossR, rapid):
-    for i in range(12):
-        ang = atan2(bossR[Y] - 318, bossR[X] - 424)
-        ang *= i
-        vx = cos(ang)*SPEED #horizontal component
-        vy = sin(ang)*SPEED #vertical component
+    myList = [] #for bullets
+    if rapid < 20:
+        rapid += 1
 
-        bullets.append([bossR[X], bossR[Y], vx, vy])   
+    if rapid == 20:
+        for i in range(12):
+            ang = atan2(bossR[Y] - 318, bossR[X] - 424)
+            ang *= i
+            vx = cos(ang)*SPEED #horizontal component
+            vy = sin(ang)*SPEED #vertical component
+            bullets.append([bossR[X], bossR[Y], vx, vy])
+        rapid = 0
     
 
 def checkBossBullets(bullets):
@@ -97,7 +102,7 @@ def checkBossBullets(bullets):
         b[0] += b[2]
         b[1] += b[3]
 
-        if b[0] > 978 or b[0] < 46 or b[1] < 0: #off screen
+        if b[0] > 978 or b[0] < 46 or b[1] < 0 or b[1] > 722: #off screen
             bullets.remove(b)
 
 def createBossBulletsPhase2(bullets, rapid, boss):
@@ -109,23 +114,29 @@ def createBossBulletsPhase2(bullets, rapid, boss):
 
 
 #move boss between attacks ------------------------------------
-def moveBossBetween(boss, b, v):
+def moveBossBetween(boss, b, v, time):
+    # if len(time) > 15:
+        # v[X] = -3
+        # if b[X] > 400:
+        #     v[X] = 0
     v[X] = 0
     for i in range(2):
-        if b[X] > 550:
+        if b[X] > 300:
             v[X] = -3
+                
 
-        elif 600 < b[X] < 625:
-            v[X] = 3
+            # elif  < b[X] < 625:
+            #     v[X] = 3
 
 #move boss close to player
-def moveBossPhaseTwo(boss, b, v, player, p):
-    if b[X] <= p[X] + p[H]:
-        v[X] = 0
-        v[Y] = 15
-    else:
-        v[Y] = -4
-        v[X] = -4
+def moveBossPhaseTwo(boss, b, v, player):
+    gravityBoss = 3
+    bossUp = -15
+    if b[Y] < 0:
+        b[Y] += bossUp
+
+    # v[Y] += gravityBoss
+
 
 
 

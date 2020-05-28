@@ -152,7 +152,7 @@ def boss(action):
                 action = 'end'
 
         bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect)
-        bs.moveBoss(bs.bossRect)
+        bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect)
         bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
         bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
         
