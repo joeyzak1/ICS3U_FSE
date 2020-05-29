@@ -206,6 +206,7 @@ def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left only for boss'
     keys = key.get_pressed()
 
+
     if leftEnd < p[X] + 5 < rightEnd:
         player[ROW] = 3
         vPlayer[X] = -5
@@ -236,41 +237,45 @@ def moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd):
 
 #bird ----------------------------------------------------------------------------
 def moveBird(player, birds):
-    for bird in birds:
-        if player[X] + 400 >= bird[X]:
-            vel_bird[Y] = vBird_vertical
-            vel_bird[X] = -15
+    'moving the bird when close to the player'
+    for bird in birds: #going through the birds list
+        if player[X] + 400 >= bird[X]: #checking if the player + 400 px is >= birds x val
+            vel_bird[Y] = vBird_vertical #sets the birds y velocty
+            vel_bird[X] = -15 #set the bird x velocity
 
-            if bird[X] <= player[X] + 200 and bird[Y] >= player[Y]:
-                vel_bird[Y] = 0
+            if bird[X] <= player[X] + 200 and bird[Y] >= player[Y]: # checking if bird [y] val is close to player y val
+                vel_bird[Y] = 0 #stop moving VERTICALLY
 
-            bird[ROW] += 0.2
+            bird[ROW] += 0.2 #frame for sprite
 
-            bird[Y] += vel_bird[Y]
+            bird[Y] += vel_bird[Y] #move the bird
             bird[X] += vel_bird[X]
 
 def birdSprites(bird, sprites, offset):
+    'get the bird sprites'
     # for b in birds:
-    row = int(bird[ROW])
-    if row > 4:
+    row = int(bird[ROW]) #get the frame
+    if row > 4: #for crashes
         row = 0
-    pic = sprites[row]
-    pictureRect = createHitbox(pic, bird[X], bird[Y])
-    pictureRect = pictureRect.move(offset, 0)
-    screen.blit(pic, pictureRect)
+    pic = sprites[row] #get the pic (1-d array)
+    pictureRect = createHitbox(pic, bird[X], bird[Y]) #create a hitbox w previous function
+    pictureRect = pictureRect.move(offset, 0) #same as previous sprite function
+    screen.blit(pic, pictureRect) #blit bird pic
     return pictureRect
 
 def checkBirdCollision(birds, p, health):
+    'check for bird collision with PLAYER'
     # if p.collidelist(birds):
-    for bird in birds:
-        birdRect = Rect(bird[X], bird[Y], 100, 80)
-        if p.colliderect(birdRect):
-            health -= 1
-            if health < 0:
+    for bird in birds: #go through the bird list
+        birdRect = Rect(bird[X], bird[Y], 100, 80) #create a rect for the bird
+        if p.colliderect(birdRect): #checking if the player touched the bird
+            health -= 1 #take 1 away from health
+            if health < 0: #fix later
                 health = 0
 
 
 def checkSpikes(p, hitbox, spikes, vPlayer, health):
+    'checking if spikes and player touch'
     # for spike in spikes:
     #     for sp in spike:
     #         if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(sp):
@@ -278,7 +283,7 @@ def checkSpikes(p, hitbox, spikes, vPlayer, health):
     #             if health < 0:
     #                 health = 0
             
-    for grnd in spikes[0]:
+    for grnd in spikes[0]: #go through spikes on ground, may not need
         if p[X] + hitbox[W] > grnd[X] and p[X] < grnd[X] + grnd[W] and p[Y] + hitbox[H] >= grnd[Y] and p[Y] + hitbox[H] + vPlayer[Y] > grnd[Y]:
             vPlayer[BOT] = grnd[Y]
             p[Y] = vPlayer[BOT] - hitbox[H]
@@ -321,6 +326,7 @@ def checkSpikes(p, hitbox, spikes, vPlayer, health):
 
 
 def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
+    'checking if borders are touched'
     for b in borders[0]:
 
         if (p[X] + 5) + hitbox[W] == b[X]:
