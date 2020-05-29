@@ -14,24 +14,23 @@ vBird_vertical = 30
 vBrid_gravity = -1
 
 def drawPlats(plats, offset, pic):
-    'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects'
+    'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects, pic is a pic of a plat'
     # global offset
-    for plat in plats:
+    for plat in plats: #taking every element from list of plats
         plat = plat.move(offset, 0)
-        screen.blit(pic, (plat[X], plat[Y]))
+        screen.blit(pic, (plat[X], plat[Y])) #blitting each plat pic in plat pos
 
 def drawSpikes(spikes, offset):
     'this functions draws spikes'
-    for sp in spikes:
+    for sp in spikes: 
         for ground in sp: #went through two loops to get to desired spikes (2d list)
-            ground = ground.move(offset, 0)
-            # draw.rect(screen, (0, 255, 0), ground)
+            ground = ground.move(offset, 0) #move according to offset
 
 def drawBlocks(blocks):
     'this function draws blocks - blocks must be in a LIST and have offset'
     for block in blocks: #this loop blits all blocks
         block = block.move(offset, 0)
-        draw.rect(screen, (255, 0, 0), block)
+        draw.rect(screen, (255, 0, 0), block) #draws the block
 
 def drawSqBlocks(sq_blocks):
     'this function draws squared blocks - param needs to be a list'
@@ -40,6 +39,7 @@ def drawSqBlocks(sq_blocks):
         draw.rect(screen, (0, 0, 255), sq)
 
 def drawHealthBlocks(healthB, offset):
+    'this function draws the health blocks'
     for h in healthB:
         h = h.move(offset, 0)
         draw.rect(screen, (0, 0, 255), h)
@@ -50,32 +50,33 @@ def drawSlugs(slugs):
 
 def drawBorders (borders, offset):
     'this function draws borders'
-    for lists in borders:
+    for lists in borders: #go through all lists in borders
         for border in lists:
             border = border.move(offset, 0)
 
 def drawTempBird(birds, offset):
+    'old func'
     for bird in birds:
         bird = bird.move(offset, 0)
         draw.rect(screen, (120, 255, 89), [bird[X], bird[Y], 60, 30])
 
 def createHitbox (pic, x, y):
     'this function creates a hitbox'
-    pic_width = pic.get_width()
-    pic_height = pic.get_height()
-    hitbox = Rect (x, y, pic_width, pic_height)
-    return hitbox
+    pic_width = pic.get_width() #get the width of the sprite frame
+    pic_height = pic.get_height() #get the height of the sprite frame
+    hitbox = Rect (x, y, pic_width, pic_height) #create rect object with width and height
+    return hitbox #return the hitbox rect
 
 def playerSprites (player, p, sprites, vPlayer, x):
     'this function gets the sprite of a character'
-    row = player[ROW]
-    col = int(player[COL])
-    if row == 0 and col == 5:
-        col = 0
-    pic = sprites[row][col]
-    pictureRect = createHitbox(pic, x, p[Y])
-    screen.blit(pic, pictureRect)
-    return pictureRect
+    row = player[ROW] #get the row of the player, its player[2]
+    col = int(player[COL]) #get the col of the sprites, its player[4], this is the frame
+    if row == 0 and col == 5: #checking if on attacking (to prevent crash)
+        col = 0 #set the sprite to first frame 
+    pic = sprites[row][col] #get the pic from the sprites list
+    pictureRect = createHitbox(pic, x, p[Y]) #call hitbox function to get the pic rect
+    screen.blit(pic, pictureRect) #blits the picture
+    return pictureRect #returns the pic rect
 
 # boss bullets --------------------------------------------------
 def drawBossBullets(bullets):
