@@ -7,7 +7,8 @@ screen = display.set_mode((1024, 768))
 myClock = time.Clock()
 
 backPic = image.load('Backgrounds/LevelTwo_backPic.png').convert()
-platPic = image.load('Other/plat.png')
+platPic = image.load('Other/plat.png').convert()
+doorPic = image.load('Other/doorLev2.png')
 
 GROUND = 574
 bottom = GROUND
@@ -56,7 +57,9 @@ borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374
 
 healthBlocks = [Rect(10100, 325, 50, 50)]
 
-def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList):
+doorRect = Rect(15650, 80, 40, 75)
+
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door):
     global vPlayer
     global health
 
@@ -67,6 +70,10 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
     shortcutFunctions.drawHealthBlocks(healthBlocks, offset)
+
+    door = door.move(offset, 0)
+    screen.blit(doorPic, door)
+
 
     screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
 
@@ -79,6 +86,7 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
     # print(p[X])
+    display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
     display.update()
     myClock.tick(60)
 

@@ -360,6 +360,11 @@ def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
             if p[Y] > b[H] + b[Y]:
                 vPlayer[Y] = 0
 
+def checkDoor(p, door):
+    keys = key.get_pressed()
+    if keys[K_RETURN] and p.colliderect(door):
+        return True
+
 
 def hitSpikes(x, y, hitbox ,spikes):
     collisionList = []

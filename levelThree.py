@@ -45,6 +45,7 @@ def drawScene(p, player, sprites, doorRect):
     shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
 
+    display.set_caption("Super Swordy Boy - Level Three     FPS = " + str(int(myClock.get_fps())))
     myClock.tick(60)
     display.update()
 

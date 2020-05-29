@@ -57,6 +57,7 @@ def drawScene(p, player, sprites, boss, b, bullets):
 
     myTime += 1
     # print(p.colliderect(b))
+    display.set_caption("Super Swordy Boy - FINAL BOSS     FPS = " + str(int(myClock.get_fps())))
     display.update()
     myClock.tick(60)
 

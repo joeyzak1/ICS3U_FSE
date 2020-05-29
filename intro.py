@@ -78,6 +78,7 @@ def draw_introScene(player, picList, mB, mW):
 
     else:
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
+        print(len(timePassed))
 
     display.update()
     myClock.tick(60)

@@ -28,18 +28,19 @@ moveBackground = 0; moveWalking = 0
 #ADDING SPRITES -----------------------------------------------------------------------------------
 def add_ch1_sprites(name, start, end):
     my_ch1Sprites = [image.load("Sprites/Character1/%s%03d.png" %(name, i)) for i in range(start, end+1)] #adding all the sprites required using list comprehension
-    return my_ch1Sprites
+    return my_ch1Sprites #return a list of sprites
 
-ch1_sprites = [] #2d list
+ch1_sprites = [] #2d list of sprites
+#adding all the sprites as seperate lists
 ch1_sprites.append(add_ch1_sprites("Ch1_", 0, 4)); ch1_sprites.append(add_ch1_sprites("Ch1_", 5, 9)); ch1_sprites.append(add_ch1_sprites("Ch1_", 10, 15))
 ch1_sprites.append(add_ch1_sprites("Ch1_", 16, 28)); ch1_sprites.append(add_ch1_sprites("Ch1_", 29, 41))
 
-bird_images = ['Sprites/Bird/tile00' + str(i) + '.png' for i in range (5)]
-bird_sprites = []
-for i in bird_images:
+bird_images = ['Sprites/Bird/tile00' + str(i) + '.png' for i in range (5)] #getting all the bird sprites
+bird_sprites = [] #for loaded
+for i in bird_images: #going through the pictures
     i = image.load(i)
-    i = transform.scale(i, (100, 80))
-    bird_sprites.append(i)
+    i = transform.scale(i, (100, 80)) #resize to 100 by 80
+    bird_sprites.append(i) #add to sprite list
     
 
 # X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
@@ -80,9 +81,9 @@ def menu(action):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
-            screen.fill((0))
-            # level_Two('lev2')
-            boss('boss')
+            level_Two('lev2')
+            # level_Three('lev3')
+            # boss('boss')
 
         
 
@@ -121,16 +122,19 @@ def level_Two(action):
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
+            
+        if checkDoor(lev2.pRect, lev2.doorRect):
+            level_Three('lev3')
 
-        lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
-        lev2.moveBad(lev2.player, lev2.birds)
-        lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds)
-        lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img)
+        else:
+            lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
+            lev2.moveBad(lev2.player, lev2.birds)
+            lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds)
+            lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect)
 
 
-        display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
-        display.update()
-        myClock.tick(60)
+        
+
 
 def level_Three(action):
     while action == 'lev3':
