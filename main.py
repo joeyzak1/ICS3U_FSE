@@ -13,6 +13,7 @@ import newLevelTwo as lev2
 import levelThree as lv3
 import boss as bs
 
+
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
 init()
@@ -80,8 +81,7 @@ def menu(action):
         mx, my = mouse.get_pos(); mb = mouse.get_pressed()
 
         intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
-        intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking, intro.music)
-        intro.musicPlayer(intro.music, intro.m)
+        intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking)
 
 
 
