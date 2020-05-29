@@ -80,31 +80,33 @@ def playerSprites (player, p, sprites, vPlayer, x):
 
 # boss bullets --------------------------------------------------
 def drawBossBullets(bullets):
-    for b in bullets:
-        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4)
+    'draws boss bullets'
+    for b in bullets: #go through the bullets list
+        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4) #draw the bullet
 
 def createBossBullets(bullets, SPEED, bossR, rapid):
-    myList = [] #for bullets
-    if rapid < 20:
-        rapid += 1
+    'create boss bullets'
+    if rapid < 20:#for how often bullets appear
+        rapid += 1 #increase by 1
 
-    if rapid == 20:
+    if rapid == 20: #checking if time is right
         for i in range(12):
-            ang = atan2(bossR[Y] - 318, bossR[X] - 424)
-            ang *= i
+            ang = atan2(bossR[Y] - 318, bossR[X] - 424) #gets the angle
+            ang *= i #multiply the angle by i (for multiple angles)
             vx = cos(ang)*SPEED #horizontal component
             vy = sin(ang)*SPEED #vertical component
-            bullets.append([bossR[X], bossR[Y], vx, vy])
-        rapid = 0
+            bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
+        rapid = 0 #set rapid to 0
     
 
 def checkBossBullets(bullets):
-    for b in bullets[:]: #[:] is a COPY of the bullets list
-        b[0] += b[2]
-        b[1] += b[3]
+    'check and move boss bullets'
+    for b in bullets[:]: #[:] is a COPY of the bullets list, goes through bullets list
+        b[0] += b[2] #add x val to speed
+        b[1] += b[3] #add y-val to speed
 
         if b[0] > 978 or b[0] < 46 or b[1] < 0 or b[1] > 722: #off screen
-            bullets.remove(b)
+            bullets.remove(b) #remove from screen
 
 def createBossBulletsPhase2(bullets, rapid, boss):
     if rapid == 20:
@@ -146,6 +148,7 @@ def moveBossPhaseTwo(boss, b, v, player):
 
 
 def checkPlats(plats, p, player, hitBox, v):
+    'checking for platform collision'
     # for plat in plats:
     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
     #         vPlayer[BOT] = plat[Y]
@@ -153,10 +156,10 @@ def checkPlats(plats, p, player, hitBox, v):
     #         player[Y] = vPlayer[BOT] - hitBox[H]
     #         vPlayer[Y] = 0
     for plat in plats:
-        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]:
-            v[BOT] = plat[Y]
-            p[Y] = v[BOT] - p[H]
-            v[Y] = 0
+        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]: #check if player is ON TOP of platform
+            v[BOT] = plat[Y] #set v bottom to platform y coord
+            p[Y] = v[BOT] - p[H] #set player pos [Y] to plat
+            v[Y] = 0 #set player y velocity to 0
 
 
 
@@ -166,38 +169,38 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left'
     keys = key.get_pressed()
 
-    if leftEnd < p[X] + 5 < rightEnd:
-        player[ROW] = 3
-        vPlayer[X] = -5
-        if keys[K_LSHIFT] or keys[K_RSHIFT]:
-            vPlayer[X] = -10
-        if vPlayer[SCREENX] > 250:
-            vPlayer[SCREENX] -= 5
+    if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
+        player[ROW] = 3 #set sprite row to left moving
+        vPlayer[X] = -5 #set velocity of player to -5 (left moving)
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if chift was held
+            vPlayer[X] = -10 #increase velocity
+        if vPlayer[SCREENX] > 250: #checking if screen pos is correct
+            vPlayer[SCREENX] -= 5 
 
-    elif p[X] > rightEnd:
-        if vPlayer[X] == 0:
-            if keys[K_LSHIFT] or keys[K_RSHIFT]:
-                vPlayer[X] = -10
-            else:
-                vPlayer[X] = -5
+    elif p[X] > rightEnd: #checking if right end is touched
+        if vPlayer[X] == 0: #checking if players velocity is 0
+            if keys[K_LSHIFT] or keys[K_RSHIFT]: #if shift clicked
+                vPlayer[X] = -10 #v = -10 (left faster)
+            else: #anything else
+                vPlayer[X] = -5 #v = -5 (slower)
 
 
 def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the right'
     keys = key.get_pressed()
 
-    if leftEnd < p[X] + 5 < rightEnd:
-        player[ROW] = 4
-        vPlayer[X] = 5
-        if keys[K_LSHIFT] or keys[K_RSHIFT]:
-            vPlayer[X] = 10
-        if vPlayer[SCREENX] < 700:
-            vPlayer[SCREENX] += 5
+    if leftEnd < p[X] + 5 < rightEnd: #checking if good with borders
+        player[ROW] = 4 #sprite row to right moving 
+        vPlayer[X] = 5 #player x velocity set to 5 (moving right)
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if shift is clicked
+            vPlayer[X] = 10 #v = 10 (faster)
+        if vPlayer[SCREENX] < 700: #checking if good with screen pos
+            vPlayer[SCREENX] += 5 #increase by 5
 
-    elif p[X] > rightEnd:
-        player[COL] = 0
-        if vPlayer[X] > 0:
-            vPlayer[X] = 0
+    elif p[X] > rightEnd: #checking if good with right end of level
+        player[COL] = 0 #cannot move, therefore must be in idle position
+        if vPlayer[X] > 0: #checking if trying to move
+            vPlayer[X] = 0 #then he cant move
 
 def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left only for boss'
