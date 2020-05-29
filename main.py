@@ -74,10 +74,16 @@ def menu(action):
             if evt.type == QUIT:
                 action = 'end'
 
+        # mixer.music.load(intro.music[intro.m])
+        # mixer.music.play(-1)
+
         mx, my = mouse.get_pos(); mb = mouse.get_pressed()
 
         intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
-        intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking)
+        intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking, intro.music)
+        intro.musicPlayer(intro.music, intro.m)
+
+
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'

@@ -3,9 +3,16 @@ intro.py
 ICS3U FSE
 '''
 from pygame import *
+init()
+
+m = 0
 
 screen = display.set_mode((1024, 768))
 helpDialog = False
+
+music = ['audio/RunningSoundEffectIntro.mp3', 'audio/MainMenuMusic.mp3']
+# mixer.music.load(music[m])
+# mixer.music.play(-1)
 
 X = 0; Y = 1; ROW = 2; COL = 3; W = 2
 
@@ -26,11 +33,12 @@ myClock = time.Clock()
 timePassed = []
 timeCounter = 0
 
-def draw_introScene(player, picList, mB, mW):
+def draw_introScene(player, picList, mB, mW, music):
     'This function draws the scene'
     global helpDialog
     global timePassed
     global timeCounter
+    global m
 
     mx, my = mouse.get_pos()
     mb = mouse.get_pressed()
@@ -42,6 +50,9 @@ def draw_introScene(player, picList, mB, mW):
     pic = picList[4][col]
 
     if player[X] == 683:
+        m = 1
+        # mixer.music.load(music[m])
+        # mixer.music.play(-1)
         screen.blit(background_imgs[0], (b1[X], b1[Y]))
         screen.blit(background_imgs[1], (b2[X], b2[Y]))
 
@@ -77,6 +88,9 @@ def draw_introScene(player, picList, mB, mW):
         help(timePassed, timeCounter)
 
     else:
+        m = 0
+        # mixer.music.load(music[m])
+        # mixer.music.play(-1)
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
         print(len(timePassed))
 
@@ -121,6 +135,10 @@ def help(timePassed, counter):
 
 background_imgs = [image.load("Backgrounds/back_" + str(i) + ".png").convert() for i in range(2)]
 helpImg = image.load('Intro Pictures/Help.png')
+
+def musicPlayer(music, m):
+    mixer.music.load(music[m])
+    mixer.music.play(-1)
 
 
 
