@@ -3,6 +3,8 @@
 from pygame import *
 from math import *
 
+init()
+
 screen = display.set_mode((1024, 768))
 
 jumpSpeed = -20; gravity = 1
@@ -377,3 +379,7 @@ def healthBar(health, pics):
         if i == health:
             pic = pics[i]
             return pic
+
+def playMusic(music, m):
+    mixer.music.load(music[m])
+    mixer.music.play(music[m])

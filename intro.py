@@ -10,7 +10,7 @@ init()
 screen = display.set_mode((1024, 768))
 helpDialog = False
 
-music = ['audio/RunningSoundEffectIntro.mp3', 'audio/MainMenuMusic.mp3']
+# music = ['audio/RunningSoundEffectIntro.mp3', 'audio/MainMenuMusic.mp3']
 # mixer.music.load(music[m])
 # mixer.music.play(-1)
 
@@ -82,15 +82,15 @@ def draw_introScene(player, picList, mB, mW):
             helpDialog = True
 
         help(timePassed, timeCounter)
-        mixer.music.load('audio/MainMenuMusic.mp3')
-        mixer.music.play(-1)
+        # mixer.music.load('audio/MainMenuMusic.mp3')
+        # mixer.music.play(-1)
 
     else:
         # mixer.music.load(music[m])
         # mixer.music.play(-1)
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
-        mixer.music.load('audio/RunningSoundEffectIntro.mp3')
-        mixer.music.play(-1)
+        # mixer.music.load('audio/RunningSoundEffectIntro.mp3')
+        # mixer.music.play(-1)
         print(len(timePassed))
 
     display.update()
