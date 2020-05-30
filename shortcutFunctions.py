@@ -88,17 +88,19 @@ def drawBossBullets(bullets):
 
 def createBossBullets(bullets, SPEED, bossR, rapid):
     'create boss bullets'
-    if rapid < 20:#for how often bullets appear
-        rapid += 1 #increase by 1
+    # if rapid < 20:#for how often bullets appear
+    #     rapid += 1 #increase by 1
 
-    if rapid == 20: #checking if time is right
-        for i in range(12):
-            ang = atan2(bossR[Y] - 318, bossR[X] - 424) #gets the angle
-            ang *= i #multiply the angle by i (for multiple angles)
-            vx = cos(ang)*SPEED #horizontal component
-            vy = sin(ang)*SPEED #vertical component
+    # if rapid == 20: #checking if time is right
+    for i in range(12):
+        ang = atan2(bossR[Y], bossR[X]) #gets the angle
+        ang *= i #multiply the angle by i (for multiple angles)
+        vx = cos(ang)*SPEED #horizontal component
+        vy = sin(ang)*SPEED #vertical component
+        if len(bullets) < 12:
             bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
-        rapid = 0 #set rapid to 0
+    print(len(bullets))
+        # rapid = 0 #set rapid to 0
     
 
 def checkBossBullets(bullets):
@@ -107,15 +109,15 @@ def checkBossBullets(bullets):
         b[0] += b[2] #add x val to speed
         b[1] += b[3] #add y-val to speed
 
-        if b[0] > 978 or b[0] < 46 or b[1] < 0 or b[1] > 722: #off screen
+        if b[0] > 1800 or b[0] < -800 or b[1] < -500 or b[1] > 1400: #off screen
             bullets.remove(b) #remove from screen
 
 def createBossBulletsPhase2(bullets, rapid, boss):
-    if rapid == 20:
+    # if rapid == 20:
         bullets.append([boss[X], boss[Y], -5, 0])
 
-    if rapid < 20:
-        rapid += 1
+    # if rapid < 20:
+    #     rapid += 1
 
 
 #move boss between attacks ------------------------------------
@@ -125,9 +127,9 @@ def moveBossBetween(boss, b, v, time):
         # if b[X] > 400:
         #     v[X] = 0
     v[X] = 0
-    for i in range(2):
-        if b[X] > 300:
-            v[X] = -3
+    # for i in range(2):
+    if b[X] > 300:
+        v[X] = -3
                 
 
             # elif  < b[X] < 625:

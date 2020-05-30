@@ -71,7 +71,7 @@ def get_hitbox(pic, size):
 
 
 
-def menu(action, m):
+def menu(action):
     while action == 'menu':
         for evt in event.get():
             if evt.type == QUIT:
@@ -90,14 +90,15 @@ def menu(action, m):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
-            level_One('lev1', m)
+            # level_One('lev1')
+            level_Two('lev2')
             # level_Three('lev3')
             # boss('boss')
 
         
 
 
-def level_One(action, m):
+def level_One(action):
     while action == 'lev1':
         for evt in event.get():
             if evt.type == QUIT:
@@ -105,7 +106,7 @@ def level_One(action, m):
 
         m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
-            level_Two('lev2', m)
+            level_Two('lev2')
 
         else:
             levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
@@ -120,48 +121,48 @@ def level_One(action, m):
 
         
 
-def level_Two(action, m):
+def level_Two(action):
     while action == 'lev2':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
             
-        m = 2
+        # m = 2
         if checkDoor(lev2.pRect, lev2.doorRect):
-            level_Three('lev3', m)
+            level_Three('lev3')
 
         else:
             lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
             lev2.moveBad(lev2.player, lev2.birds)
             lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds)
             lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect)
-
+            print(lev2.vPlayer)
 
         
 
 
-def level_Three(action, m):
+def level_Three(action):
     while action == 'lev3':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
 
-        m = 3
+        # m = 3
 
         if lv3.checkBoss(lv3.pRect, lv3.doorRect):
-            boss('boss', m)
+            boss('boss')
 
         else:
             lv3.move(lv3.pRect, lv3.player, ch1_sprites)
             lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
 
-def boss(action, m):
+def boss(action):
     while action == 'boss':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
 
-        m = 4
+        # m = 4
 
         bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect)
         bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect)
@@ -171,5 +172,5 @@ def boss(action, m):
 # playMusic(music, music_pos)
 
 
-menu('menu', music_pos)
+menu('menu')
 quit()

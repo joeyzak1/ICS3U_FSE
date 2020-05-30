@@ -16,6 +16,8 @@ bottom = GROUND
 jumpSpeed = -20
 gravity = 1
 
+platGrav = False
+
 X = 0
 Y = 1
 W = 2
@@ -34,7 +36,7 @@ health = 2
 vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 
 player = [250, 529, 4, 0] #player rect and list
-pRect = Rect(250, 529, 4, 0)
+pRect = Rect(10125, 529, 4, 0)
 
 plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
         Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15), Rect(11650, 330, 200, 15)] #platforms
@@ -58,6 +60,8 @@ borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374
 healthBlocks = [Rect(10125, 200, 50, 50)]
 
 doorRect = Rect(15650, 80, 40, 75)
+
+platCounter = 0
 
 def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door):
     global vPlayer
@@ -95,6 +99,7 @@ def move(p, player, sprites, borders, spikes):
     global leftEnd
     global rightEnd
     global health
+    global platGrav
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
@@ -126,7 +131,11 @@ def move(p, player, sprites, borders, spikes):
 
     p[X] += vPlayer[X]
     player[X] = p[X]
+    # if platGrav == False:
+    # if platCounter != 1:
     vPlayer[Y] += gravity
+    if platCounter == 1:
+        vPlayer[Y] = 0
 
 
 def moveBad(player, bird):
@@ -138,11 +147,32 @@ def moveBad(player, bird):
 def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     global health
     global vPlayer
+    global platGrav
+    global platCounter
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
-    shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
+    # shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
+    # platCounter = 0
+    # for plat in plats:
+    #     if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]: #check if player is ON TOP of platform
+    #         vPlayer[BOT] = plat[Y] #set v bottom to platform y coord
+    #         p[Y] = vPlayer[BOT] - p[H] #set player pos [Y] to plat
+    #         vPlayer[Y] = 0 #set player y velocity to 0
+    #         platCounter += 1
+    for plat in plats:
+        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
+            vPlayer[BOT] = plat[Y]
+            p[Y] = vPlayer[BOT] - p[H]
+            vPlayer[Y] = 0
+            if p[Y] + hitBox[H] >= plat[Y]:
+                p[Y] = plat[Y] - hitBox[H]
+                vPlayer[Y] = 0
+    
+
+    # print(plats[5], p[X], p[Y], vPlayer)
+
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
     shortcutFunctions.checkBirdCollision(birds, p, health)
@@ -154,7 +184,8 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     #         vPlayer[Y] = 0
 
     p[Y] += vPlayer[Y]
-    player[Y] += vPlayer[Y]
+    # player[Y] += vPlayer[Y]
+
 
     p[W] = hitBox[W]
     p[H] = hitBox[H]
@@ -166,3 +197,7 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
         vPlayer[BOT] = GROUND
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
+
+    # if p[Y] + hitBox[H] >= vPlayer[BOT]:
+    #     p[Y] = vPlayer[BOT] - hitBox[H]
+    #     vPlayer[Y] = 0

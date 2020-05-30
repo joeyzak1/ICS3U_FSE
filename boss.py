@@ -28,15 +28,18 @@ pRect = Rect(150, 650, 20, 45)
 boss = [600, 449, 0, 0]
 bossRect = Rect(600, 450, 300, 272)
 
-vPlayer = [0, 0, bottom]
-vBoss = [0, 0, bottom]
+direction = -1
 
-bullSpeed = 20
+vPlayer = [0, 0, bottom]
+vBoss = [0, 0, bottom, direction]
+
+bullSpeed = 5
 bullets = []
 rapid = 0
 
 myTime = 0
 timePassed = []
+direction = -1
 
 def drawScene(p, player, sprites, boss, b, bullets):
     global vPlayer
@@ -47,15 +50,18 @@ def drawScene(p, player, sprites, boss, b, bullets):
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
-    print(hitbox[Y] + hitbox[H])
+    # print(hitbox[Y] + hitbox[H])
 
-    shortcutFunctions.drawBossBullets(bullets)
-    draw.rect(screen, (255, 0, 0), b)
+    # shortcutFunctions.drawBossBullets(bullets)
+    for bull in bullets: #go through the bullets list
+        draw.circle(screen, (0, 255, 0), (int(bull[0]),int(bull[1])), 4) #draw the bullet
+    draw.rect(screen, (255, 0, 0), b, 3)
 
     if myTime % 60 == 0:
         timePassed.append('t')
 
     myTime += 1
+    # print(b)
     # print(p.colliderect(b))
     display.set_caption("Super Swordy Boy - FINAL BOSS     FPS = " + str(int(myClock.get_fps())))
     display.update()
@@ -99,22 +105,38 @@ def moveGuy(p, player, sprites, b):
 
 def moveBoss(boss, b, timePassed, p):
     global vBoss
+    global gravity
 
     # if 5 < len(timePassed) < 10:
-    if len(timePassed) > 5:
-        shortcutFunctions.moveBossBetween(boss, b, vBoss, timePassed)
+    # if len(timePassed) > 12:
+    #     vBoss[X] = 0
+    #     for i in range(2):
+    #         if b[X] < 600:
+    #             vBoss[X] = 12
 
-    elif len(timePassed) > 10:
-        vBoss[Y] = jumpSpeed
+    # elif len(timePassed) > 10:
+    #     vBoss[Y] = jumpSpeed
 
-    elif len(timePassed) > 12:
-        vBoss[X] = 0
-        for i in range(2):
-            if b[X] < 600:
-                vBoss[X] = 12
+    # elif len(timePassed) > 5:
+    #     shortcutFunctions.moveBossBetween(boss, b, vBoss, timePassed)
+
+
+
+
+    # elif len(timePassed) > 12:
+    #     vBoss[X] = 0
+    #     for i in range(2):
+    #         if b[X] < 600:
+    #             vBoss[X] = 12
     # if 11 < len(timePassed) < 16:
     #     shortcutFunctions.moveBossPhaseTwo(boss, b, vBoss, p)
 
+
+
+    b[X] += vBoss[3]
+    if b[X] > 620 or b[X] < 300:
+        vBoss[3] = -vBoss[3]
+        vBoss[Y] = -30
 
     b[X] += vBoss[X]
     vBoss[Y] += gravity
@@ -143,9 +165,10 @@ def checkCollision(p, player, sprites, boss, b, bullets):
 
     b[Y] += vBoss[Y]
 
-    if len(timePassed) == 10:
+    if len(timePassed) % 5 == 0 and len(timePassed) > 0:
         shortcutFunctions.createBossBullets(bullets, bullSpeed, b, rapid)
-        shortcutFunctions.checkBossBullets(bullets)
+
+    
 
     # elif 15 < len(timePassed) < 20:
     #     shortcutFunctions.moveBossBetween(boss, b, vBoss)
@@ -153,9 +176,11 @@ def checkCollision(p, player, sprites, boss, b, bullets):
     # elif len(timePassed) == 20:
     #     shortcutFunctions.moveBossPhaseTwo(boss, b, vBoss, player, p)
 
-    elif len(timePassed) == 25:
-        shortcutFunctions.createBossBulletsPhase2(bullets, rapid, b)
-        shortcutFunctions.checkBossBullets(bullets)
+    # elif len(timePassed) == 25:
+    #     shortcutFunctions.createBossBulletsPhase2(bullets, rapid, b)
+    #     shortcutFunctions.checkBossBullets(bullets)
+
+    shortcutFunctions.checkBossBullets(bullets)
 
 
     if p[Y] + hitBox[H] >= GROUND:
