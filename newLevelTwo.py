@@ -36,9 +36,9 @@ health = 2
 vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 
 player = [250, 529, 4, 0] #player rect and list
-pRect = Rect(10125, 529, 4, 0)
+pRect = Rect(250, 529, 4, 0)
 
-plats = [Rect(600, 375, 200, 15), Rect(1550, 375, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
+plats = [Rect(600, 400, 200, 15), Rect(1550, 400, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
         Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15), Rect(11650, 330, 200, 15)] #platforms
 
 #this list branches off into 2d lists - for spikes
@@ -153,6 +153,8 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
+    startingPos = 250
+
     # shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
     # platCounter = 0
     # for plat in plats:
@@ -176,6 +178,7 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
     shortcutFunctions.checkBirdCollision(birds, p, health)
+    shortcutFunctions.zeroHealth(health, p, startingPos)
 
     # for plat in plats:
     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:

@@ -385,3 +385,8 @@ def healthBar(health, pics):
 def playMusic(music, m):
     mixer.music.load(music[m])
     mixer.music.play(music[m])
+
+def zeroHealth (health, p, x):
+    if health < 0:
+        p[X] = x
+        
