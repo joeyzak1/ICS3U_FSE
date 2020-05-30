@@ -30,7 +30,7 @@ gravity = 1
 player = [300, 600, 4, 0]
 pRect = Rect(300, 600, 50, 50)
 
-doorRect = Rect(3200, 300, 300, GROUND-300)
+doorRect = Rect(3100, 300, 300, GROUND-300)
 
 
 def drawScene(p, player, sprites, doorRect):
@@ -40,7 +40,6 @@ def drawScene(p, player, sprites, doorRect):
     screen.blit(backPic, (offset, 0))
 
     doorRect = doorRect.move(offset, 0)
-    draw.rect(screen, (255, 0, 0), doorRect)
 
     shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])

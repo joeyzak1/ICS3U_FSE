@@ -6,6 +6,7 @@ from shortcutFunctions import *
 size = width, height = 1024, 768
 screen = display.set_mode(size)
 extra=False #for bullets
+minusHealth = False
 
 backPic = image.load("Level One/background_levelOne.png").convert() #background
 
@@ -365,24 +366,33 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
             else:
                 v[Y] = 0
 
+    healthIncrease = 0
 
-        for h in healthSq:
-            if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq):
-                if health < 2:
-                    health += 1
+    for h in healthSq:
+        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq) and health < 2:
+            healthIncrease += 1
 
-                else:
-                    health = health
+        if healthIncrease == 1:
+            if health == 0:
+                health = 1
 
-                v[TOP] = sq[Y] + sq[H]
-                #fixes player going above block
-                if p[Y] > sq[H] + sq[Y]:
-                    v[Y] = 0
+            elif health == 1:
+                health = 2
+            # if health < 2:
+            #     health += 1
 
-                else:
-                    p[Y] = v[TOP]
+            # else:
+            #     health = health
 
-                v[Y] += gravity
+            v[TOP] = sq[Y] + sq[H]
+            #fixes player going above block
+            if p[Y] > sq[H] + sq[Y]:
+                v[Y] = 0
+
+            else:
+                p[Y] = v[TOP]
+
+            v[Y] += gravity
 
         # print (health)
 
@@ -445,6 +455,9 @@ def check_attack(p, player, sprites, slugs, birds):
 
 def checkHealthSq (healthSq):
     global health
+    global minusHealth
+    healthCheck = 0
+
 
     # row = player[ROW]
     # col = int(player[COL])
@@ -456,9 +469,19 @@ def checkHealthSq (healthSq):
     # pHitbox = createHitbox(pic, p[X], p[Y])
 
     for h in healthSq:
+        if pHitbox[Y] - 5 == h[Y] + h[H]:
+        # if pHitbox.colliderect(h):
+            healthCheck += 1
+
+            if healthCheck == 1 and health < 2:
+                health += 1
         # health = health
-        if pHitbox.colliderect(h) and health < 2:
-            health += 1
+        # if pHitbox.colliderect(h) and health < 2 and minusHealth == False:
+        #     health += 1 
+        #     minusHealth = True
+        # if minusHealth:
+        #     health -= 1
+
 
     # print (health)
 

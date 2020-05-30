@@ -90,7 +90,7 @@ def menu(action, m):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
-            level_Two('lev2', m)
+            level_One('lev1', m)
             # level_Three('lev3')
             # boss('boss')
 

@@ -55,7 +55,7 @@ birds = [[2800, 50, 0], [12000, 50, 0]]
 borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374, 2875, 200), Rect(11500, 475, 500, 99), Rect(12000, 159, 4000, 415)], #borders for touching vBOT
             [Rect(2800, 0, 2100, 275), Rect(4900, 0, 2500, 174), Rect(11500, 0, 100, 275), Rect(11600, 0, 4000, 60)]] #borders for touching top
 
-healthBlocks = [Rect(10100, 325, 50, 50)]
+healthBlocks = [Rect(10125, 200, 50, 50)]
 
 doorRect = Rect(15650, 80, 40, 75)
 
