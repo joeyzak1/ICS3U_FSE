@@ -209,10 +209,10 @@ def boss(action):
         # m = 4
         'normal boss fight'
 
-        bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect)
+        bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bs.bullets, bs.playerBullets)
         bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites)
         bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
-        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont)
+        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.playerBullets)
         
 # playMusic(music, music_pos)
 

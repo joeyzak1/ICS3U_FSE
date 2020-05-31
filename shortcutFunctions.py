@@ -86,7 +86,7 @@ def playerSprites (player, p, sprites, vPlayer, x):
 def drawBossBullets(bullets):
     'draws boss bullets'
     for b in bullets: #go through the bullets list
-        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4) #draw the bullet
+        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 10) #draw the bullet
 
 def createBossBullets(bullets, SPEED, bossR, rapid):
     'create boss bullets'
@@ -101,7 +101,7 @@ def createBossBullets(bullets, SPEED, bossR, rapid):
         vy = sin(ang)*SPEED #vertical component
         if len(bullets) < 12:
             bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
-    print(len(bullets))
+    # print(len(bullets))
         # rapid = 0 #set rapid to 0
     
 
@@ -113,6 +113,14 @@ def checkBossBullets(bullets):
 
         if b[0] > 1800 or b[0] < -800 or b[1] < -500 or b[1] > 1400: #off screen
             bullets.remove(b) #remove from screen
+        # elif 
+
+def checkPlayerBullets(bullets):
+    for b in bullets[:]:
+        b[0] += b[2]
+        b[1] += b[3]
+        if b[0] > 46 and b[0] < 978:
+            bullets.remove(b)
 
 def createBossBulletsPhase2(bullets, rapid, boss):
     # if rapid == 20:
@@ -120,6 +128,11 @@ def createBossBulletsPhase2(bullets, rapid, boss):
 
     # if rapid < 20:
     #     rapid += 1
+
+def playerBullets(bullets, rapid, p, SPEED, timePassed):
+    keys = key.get_pressed()
+    if keys[K_z] and len(timePassed) % 5 == 0:
+        bullets.append([p[X], p[Y], SPEED, 0])
 
 
 #move boss between attacks ------------------------------------
@@ -403,6 +416,10 @@ def zeroHealth (health, p, x):
         health = 2
 
 def timeFont(font, timePassed, length):
-    text = font.render(str(int(length-len(timePassed))), True, (255, 255, 255))
-    screen.blit(text, (940, 3))
+    '''this function creates a timer for the level, which counts DOWN 
+    - font is the font requred for the time
+    - timePassed is the list for counting the time
+    - Length is the length of how long the level will give you'''
+    text = font.render(str(int(length-len(timePassed))), True, (255, 255, 255)) #get the text by taking the length of the level minus length of list, convert to string
+    screen.blit(text, (940, 3)) #blit the text
         
