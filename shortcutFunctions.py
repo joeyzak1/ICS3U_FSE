@@ -173,13 +173,16 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left'
     keys = key.get_pressed()
 
-    if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
+    if p[X] > leftEnd and p[X] + 5 < rightEnd: #checking if player is offscreen
         player[ROW] = 3 #set sprite row to left moving
         vPlayer[X] = -5 #set velocity of player to -5 (left moving)
         if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if chift was held
             vPlayer[X] = -10 #increase velocity
         if vPlayer[SCREENX] > 250: #checking if screen pos is correct
             vPlayer[SCREENX] -= 5 
+
+    elif p[X] <= leftEnd and keys[K_LEFT]:
+        vPlayer[X] = 0
 
     elif p[X] > rightEnd: #checking if right end is touched
         if vPlayer[X] == 0: #checking if players velocity is 0
@@ -201,10 +204,16 @@ def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
         if vPlayer[SCREENX] < 700: #checking if good with screen pos
             vPlayer[SCREENX] += 5 #increase by 5
 
-    elif p[X] > rightEnd: #checking if good with right end of level
-        player[COL] = 0 #cannot move, therefore must be in idle position
-        if vPlayer[X] > 0: #checking if trying to move
-            vPlayer[X] = 0 #then he cant move
+    elif p[X] > 7550: #checking if past the right end
+        player[COL] = 0 #idle position
+        if vPlayer[X] > 0: #making sure the velocity will ALWAYS be 0
+            vPlayer[X] = 0
+
+    # elif p[X] >= rightEnd: #checking if good with right end of level
+    #     p[X] = rightEnd - p[W]
+    #     player[COL] = 0 #cannot move, therefore must be in idle position
+    #     if vPlayer[X] > 0 and keys[K_RIGHT]: #checking if trying to move
+    #         vPlayer[X] = 0 #then he cant move
 
 def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left only for boss'
@@ -389,4 +398,5 @@ def playMusic(music, m):
 def zeroHealth (health, p, x):
     if health < 0:
         p[X] = x
+        health = 2
         

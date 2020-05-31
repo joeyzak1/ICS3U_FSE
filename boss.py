@@ -182,6 +182,13 @@ def checkCollision(p, player, sprites, boss, b, bullets):
 
     shortcutFunctions.checkBossBullets(bullets)
 
+    if p[X] > 978 and keys[K_RIGHT]:
+        p[X] = 978 - hitBox[W]
+        vPlayer[X] = 0
+        if vPlayer[X] > 0:
+            vPlayer[X] = 0
+
+
 
     if p[Y] + hitBox[H] >= GROUND:
         vPlayer[BOT] = GROUND

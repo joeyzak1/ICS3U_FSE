@@ -28,7 +28,7 @@ SCREENX = 3
 BOT = 2
 TOP = 4
 
-leftEnd = 50
+leftEnd = 249
 rightEnd = 15850
 
 health = 2
@@ -108,6 +108,9 @@ def move(p, player, sprites, borders, spikes):
 
     if keys[K_SPACE] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
         vPlayer[Y] = jumpSpeed
+
+    if keys[K_x]:
+        player[ROW] = 0
 
     if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1:
         shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd)

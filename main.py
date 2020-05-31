@@ -89,10 +89,12 @@ def menu(action):
 
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
+            intro.running.stop()
+            mixer.music.stop()
             # action = 'lev1'
             # level_One('lev1')
-            level_Two('lev2')
-            # level_Three('lev3')
+            # level_Two('lev2')
+            level_Three('lev3')
             # boss('boss')
 
         
@@ -109,6 +111,10 @@ def level_One(action):
             level_Two('lev2')
 
         else:
+            # if levelOne.health < 0:
+            #     level_One('lev1')
+            #     levelOne.health = 2
+            # else:
             levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
             levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
             # levelOne.move_slugBullets(bullets_slugs)
@@ -117,6 +123,7 @@ def level_One(action):
             levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                 levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
                 levelOne.doorRect, health_img, levelOne.health)
+
 
 
         
@@ -155,6 +162,7 @@ def level_Three(action):
         else:
             lv3.move(lv3.pRect, lv3.player, ch1_sprites)
             lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
+            # print(lv3.pRect)
 
 def boss(action):
     while action == 'boss':
