@@ -75,8 +75,6 @@ def playerSprites (player, p, sprites, vPlayer, x):
     col = int(player[COL]) #get the col of the sprites, its player[4], this is the frame
     if row == 0 and col == 5: #checking if on attacking (to prevent crash)
         col = 0 #set the sprite to first frame 
-    if player[COL] >= len(sprites[ROW]):
-        player[COL] = 0
     pic = sprites[row][col] #get the pic from the sprites list
     pictureRect = createHitbox(pic, x, p[Y]) #call hitbox function to get the pic rect
     screen.blit(pic, pictureRect) #blits the picture
@@ -86,7 +84,7 @@ def playerSprites (player, p, sprites, vPlayer, x):
 def drawBossBullets(bullets):
     'draws boss bullets'
     for b in bullets: #go through the bullets list
-        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 10) #draw the bullet
+        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4) #draw the bullet
 
 def createBossBullets(bullets, SPEED, bossR, rapid):
     'create boss bullets'
@@ -101,7 +99,7 @@ def createBossBullets(bullets, SPEED, bossR, rapid):
         vy = sin(ang)*SPEED #vertical component
         if len(bullets) < 12:
             bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
-    # print(len(bullets))
+    print(len(bullets))
         # rapid = 0 #set rapid to 0
     
 
@@ -113,14 +111,6 @@ def checkBossBullets(bullets):
 
         if b[0] > 1800 or b[0] < -800 or b[1] < -500 or b[1] > 1400: #off screen
             bullets.remove(b) #remove from screen
-        # elif 
-
-def checkPlayerBullets(bullets):
-    for b in bullets[:]:
-        b[0] += b[2]
-        b[1] += b[3]
-        if b[0] > 46 and b[0] < 978:
-            bullets.remove(b)
 
 def createBossBulletsPhase2(bullets, rapid, boss):
     # if rapid == 20:
@@ -128,11 +118,6 @@ def createBossBulletsPhase2(bullets, rapid, boss):
 
     # if rapid < 20:
     #     rapid += 1
-
-def playerBullets(bullets, rapid, p, SPEED, timePassed):
-    keys = key.get_pressed()
-    if keys[K_z] and len(timePassed) % 5 == 0:
-        bullets.append([p[X], p[Y], SPEED, 0])
 
 
 #move boss between attacks ------------------------------------
@@ -188,16 +173,13 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left'
     keys = key.get_pressed()
 
-    if p[X] > leftEnd and p[X] + 5 < rightEnd: #checking if player is offscreen
+    if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
         player[ROW] = 3 #set sprite row to left moving
         vPlayer[X] = -5 #set velocity of player to -5 (left moving)
         if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if chift was held
             vPlayer[X] = -10 #increase velocity
         if vPlayer[SCREENX] > 250: #checking if screen pos is correct
             vPlayer[SCREENX] -= 5 
-
-    elif p[X] <= leftEnd and keys[K_LEFT]:
-        vPlayer[X] = 0
 
     elif p[X] > rightEnd: #checking if right end is touched
         if vPlayer[X] == 0: #checking if players velocity is 0
@@ -219,16 +201,10 @@ def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
         if vPlayer[SCREENX] < 700: #checking if good with screen pos
             vPlayer[SCREENX] += 5 #increase by 5
 
-    elif p[X] > 7550: #checking if past the right end
-        player[COL] = 0 #idle position
-        if vPlayer[X] > 0: #making sure the velocity will ALWAYS be 0
-            vPlayer[X] = 0
-
-    # elif p[X] >= rightEnd: #checking if good with right end of level
-    #     p[X] = rightEnd - p[W]
-    #     player[COL] = 0 #cannot move, therefore must be in idle position
-    #     if vPlayer[X] > 0 and keys[K_RIGHT]: #checking if trying to move
-    #         vPlayer[X] = 0 #then he cant move
+    elif p[X] > rightEnd: #checking if good with right end of level
+        player[COL] = 0 #cannot move, therefore must be in idle position
+        if vPlayer[X] > 0: #checking if trying to move
+            vPlayer[X] = 0 #then he cant move
 
 def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left only for boss'
@@ -409,11 +385,6 @@ def healthBar(health, pics):
 def playMusic(music, m):
     mixer.music.load(music[m])
     mixer.music.play(music[m])
-
-def zeroHealth (health, p, x):
-    if health < 0:
-        p[X] = x
-        health = 2
 
 def timeFont(font, timePassed, length):
     '''this function creates a timer for the level, which counts DOWN 

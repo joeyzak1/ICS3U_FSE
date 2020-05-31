@@ -1,21 +1,12 @@
 from pygame import *
 from math import *
 from shortcutFunctions import *
-import intro
-# from main import*
 
-init()
-
-music = mixer.music.load('audio/LevelOneMusic.mp3')
-running = mixer.Sound('audio/BetterRunningSound Effect.wav')
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
 extra=False #for bullets
 minusHealth = False
-
-# mixer.music.stop()
-# intro.running.stop()
 
 backPic = image.load("Level One/background_levelOne.png").convert() #background
 
@@ -68,10 +59,6 @@ pHitbox = Rect(0, 0, 0, 0)
 seconds = 0
 timeLimit = []
 current_time = 240
-
-
-runningSound = mixer.Sound('audio/RunningSoundEffect.wav')
-
 
 myClock = time.Clock()
 
@@ -136,13 +123,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
             # draw.rect(screen, (255, 0, 0), border, 3)
 
         #health
-
-        # screen.blit(healthBar(health, hearts), (0, 0))
-        for i in range(3):
-            if i == health:
-                pic = hearts[i]
-
-                screen.blit(pic, (0, 0))
+        screen.blit(healthBar(health, hearts), (0, 0))
 
         door = door.move(offset, 0)
         # draw.rect(screen, (123, 213, 7), door)
@@ -162,7 +143,6 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y])) #blit the player
         draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2) #draw the hitbox
 
-        mixer.music.play(-1)
         display.update()
         myClock.tick(60)
         display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps()))) #change the name of the window, with fps
@@ -172,11 +152,9 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 def healthBar(health, pics):
     'this function determines which picture to display for the healthbar'
     for i in range(3):
-        if i == health and health <= 0: #checking if i in the loop is equal to the health
+        if i == health: #checking if i in the loop is equal to the health
             pic = pics[i] #pic is the picture for health (1, 2, or 3 hearts)
             return pic #returns the pixture to blit
-        # elif health < 0:
-        #     level_One('lev1')
 
 
 
@@ -195,7 +173,6 @@ def move(p, player, sprites, blocks, birds):
 
 
     elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks): #checking if left arrow is clicked and it is ok to move left
-        running.play()
         player[ROW] = 3 #sets the sprite category to left moving
 
         if p[X] + 5 < 7550: #checking if player isnt at the end
@@ -220,7 +197,6 @@ def move(p, player, sprites, blocks, birds):
 
 
     elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks): #checking if right arrow is clicked and it is okay to move
-        running.play()
         extra=True #sets this variable to true - to move bullets extra 5 pixels left
         player[ROW] = 4 #sets the sprite category to right moving 
 
@@ -326,8 +302,6 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
     pic = sprites[row][col]
     pHitbox = createHitbox(pic, p[X], p[Y])
 
-    beginningPos = 512
-
     keys = key.get_pressed()
 
     if v[Y] != v[BOT]:
@@ -423,7 +397,6 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
         # print (health)
 
     timer (seconds, timeLimit)
-    # zeroHealth(health, p, beginningPos)
 
 
 

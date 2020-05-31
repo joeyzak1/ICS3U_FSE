@@ -24,12 +24,11 @@ GROUND = 633
 bottom = GROUND
 
 v = [0, 0, bottom, 50]
-
 jumpSpeed = -20
 gravity = 1
 
-player = [300, 583, 4, 0]
-pRect = Rect(300, 583, 50, 50)
+player = [300, 600, 4, 0]
+pRect = Rect(300, 600, 50, 50)
 
 doorRect = Rect(3100, 300, 300, GROUND-300)
 
@@ -56,7 +55,7 @@ def move(p, player, sprites):
     leftEnd = 300
     rightEnd = 3900
 
-    if keys[K_SPACE]: #fix this area
+    if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
         v[Y] = jumpSpeed
 
     if keys[K_LEFT] and player[X] > leftEnd:
@@ -76,7 +75,7 @@ def move(p, player, sprites):
         player[COL] = 1
 
     p[X] += v[X]
-    player[X] += v[X]
+    player[X] = p[X]
     v[Y] += gravity
 
 def check(p, player, sprites):
@@ -91,16 +90,12 @@ def check(p, player, sprites):
     p[H] = hitBox[H]
     p[W] = hitBox[W]
 
-    if p[Y] + p[H] >= GROUND:
+    
+
+    if p[Y] + hitBox[H] >= GROUND:
         v[BOT] = GROUND
-        p[Y] = GROUND - p[H]
+        p[Y] = GROUND - hitBox[H]
         v[Y] = 0
-
-    # if p[Y] + p[H] >= v[BOT]:
-    #     p[Y] = v[BOT] - p[H]
-        # v[Y] = 0
-
-
 
 def checkBoss(door, p):
     keys = key.get_pressed()

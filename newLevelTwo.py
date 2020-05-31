@@ -28,7 +28,7 @@ SCREENX = 3
 BOT = 2
 TOP = 4
 
-leftEnd = 249
+leftEnd = 50
 rightEnd = 15850
 
 health = 2
@@ -38,7 +38,7 @@ vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 player = [250, 529, 4, 0] #player rect and list
 pRect = Rect(250, 529, 4, 0)
 
-plats = [Rect(600, 400, 200, 15), Rect(1550, 400, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
+plats = [Rect(600, 425, 200, 15), Rect(1550, 425, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
         Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15), Rect(11650, 330, 200, 15)] #platforms
 
 #this list branches off into 2d lists - for spikes
@@ -89,6 +89,7 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
+    
     # print(p[X])
     display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
     display.update()
@@ -108,9 +109,6 @@ def move(p, player, sprites, borders, spikes):
 
     if keys[K_SPACE] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
         vPlayer[Y] = jumpSpeed
-
-    if keys[K_x]:
-        player[ROW] = 0
 
     if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1:
         shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd)
@@ -156,8 +154,6 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
-    startingPos = 250
-
     # shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
     # platCounter = 0
     # for plat in plats:
@@ -181,7 +177,6 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
     shortcutFunctions.checkBirdCollision(birds, p, health)
-    shortcutFunctions.zeroHealth(health, p, startingPos)
 
     # for plat in plats:
     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
