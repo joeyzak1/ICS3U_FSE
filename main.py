@@ -7,6 +7,10 @@ Run this to play the game from start to finish
 from pygame import *
 from shortcutFunctions import *
 import os
+from importlib import * #ONLY WORKS FOR PYTHON 3.4 AND ABOVE - for when health goes down to zero, reload the entire module (found from https://www.geeksforgeeks.org/reloading-modules-python/)
+'''IF YOU ARE USING PYTHON VERSION LESS THAN 3.4 (NOT 2), PLEASE COMMENT PREVIOUS LINE AND UNCOMMENT NEXT LINE'''
+# from imp import *
+'''IF YOU ARE USING PYTHON VERSION 2.x, UNCOMMENT BOTH IMPORTLIB AND IMP, nothing is needed'''
 import intro #intro.py
 import levelOne #levelOne.py
 import newLevelTwo as lev2
@@ -82,7 +86,7 @@ def get_hitbox(pic, size):
 
 
 
-def menu(action):
+def menu(action, p):
     while action == 'menu':
         for evt in event.get():
             if evt.type == QUIT:
@@ -103,7 +107,7 @@ def menu(action):
             intro.running.stop()
             mixer.music.stop()
             # action = 'lev1'
-            # level_One('lev1')
+            level_One('lev1', p)
             # level_Two('lev2')
             # level_Three('lev3')
             boss('boss')
@@ -111,7 +115,7 @@ def menu(action):
         
 
 
-def level_One(action):
+def level_One(action, p):
     while action == 'lev1':
         for evt in event.get():
             if evt.type == QUIT:
@@ -119,27 +123,30 @@ def level_One(action):
 
         m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
-            level_Two('lev2')
+            level_Two('lev2', lev2.pRect)
 
         else:
-            # if levelOne.health < 0:
-            #     level_One('lev1')
-            #     levelOne.health = 2
-            # else:
-            levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
-            levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
-            # levelOne.move_slugBullets(bullets_slugs)
-            levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq)
-            levelOne.check_bullSlug(bullets_slugs, p)
-            levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
-                levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
-                levelOne.doorRect, health_img, levelOne.health)
+            if levelOne.health < 0:
+                p = Rect(512, 675, 35, 50) #beginning rect for level one
+                health = 2 #reset health
+                reload(levelOne) #if all health is taken away, restart the level
+                
+            
+            else:
+                levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
+                levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
+                # levelOne.move_slugBullets(bullets_slugs)
+                levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq)
+                levelOne.check_bullSlug(bullets_slugs, p)
+                levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
+                    levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
+                    levelOne.doorRect, health_img, levelOne.health)
 
 
 
         
 
-def level_Two(action):
+def level_Two(action, p):
     while action == 'lev2':
         for evt in event.get():
             if evt.type == QUIT:
@@ -147,19 +154,24 @@ def level_Two(action):
             
         # m = 2
         if checkDoor(lev2.pRect, lev2.doorRect):
-            level_Three('lev3')
+            level_Three('lev3', lv3.pRect)
 
         else:
-            lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
-            lev2.moveBad(lev2.player, lev2.birds)
-            lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds)
-            lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect)
-            print(lev2.vPlayer)
+            if lev2.health < 0:
+                p = Rect(250, 529, 4, 0)
+                health = 2
+                reload(lev2) #restart level 2
+            
+            else:
+                lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
+                lev2.moveBad(lev2.player, lev2.birds)
+                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds)
+                lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect)
 
         
 
 
-def level_Three(action):
+def level_Three(action, p):
     while action == 'lev3':
         for evt in event.get():
             if evt.type == QUIT:
@@ -191,5 +203,5 @@ def boss(action):
 # playMusic(music, music_pos)
 
 
-menu('menu')
+menu('menu', p)
 quit()

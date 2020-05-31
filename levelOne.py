@@ -137,7 +137,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
         #health
 
-        screen.blit(healthBar(health, hearts), (0, 0))
+        # screen.blit(healthBar(health, hearts), (0, 0))
 
         door = door.move(offset, 0)
         # draw.rect(screen, (123, 213, 7), door)
@@ -167,7 +167,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 def healthBar(health, pics):
     'this function determines which picture to display for the healthbar'
     for i in range(3):
-        if i == health: #checking if i in the loop is equal to the health
+        if i == health and health <= 0: #checking if i in the loop is equal to the health
             pic = pics[i] #pic is the picture for health (1, 2, or 3 hearts)
             return pic #returns the pixture to blit
         # elif health < 0:
