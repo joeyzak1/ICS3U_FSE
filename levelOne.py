@@ -138,6 +138,11 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         #health
 
         # screen.blit(healthBar(health, hearts), (0, 0))
+        for i in range(3):
+            if i == health:
+                pic = hearts[i]
+
+                screen.blit(pic, (0, 0))
 
         door = door.move(offset, 0)
         # draw.rect(screen, (123, 213, 7), door)
