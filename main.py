@@ -58,10 +58,11 @@ p = Rect(512, 675, 35, 50) #beginning rect for level one
 bullets_slugs = []
 
 def addBossSprites(name, start, end):
+    'this function adds sprites to a list which is then added to another list of sprites'
     boss_sprites = [image.load("Sprites/Boss/%s%03d.png" %(name, i)) for i in range(start, end+1)] #adding all the sprites required using list comprehension
     return boss_sprites #return a list of sprites
 
-bossSprites = []
+bossSprites = [] #boss sprites list
 bossSprites.append(addBossSprites("tile", 0, 0)) #idle
 bossSprites.append(addBossSprites("tile", 4, 5)) #other
 bossSprites.append(addBossSprites("tile", 8, 10)) #attack
@@ -72,11 +73,12 @@ bossSprites.append(addBossSprites("tile", 16, 19)) #left
 #true or false variables for starting and ending certain functions
 # introRun = True
 # levelOne_Run = False
-display.set_icon(ch1_sprites[4][0])
+display.set_icon(ch1_sprites[4][0]) #sets display icon
 
-health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)]
+health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)] #health images
 
 def get_hitbox(pic, size):
+    'probably never used'
     pic_w = pic.get_width()
     pic_h = pic.get_height()
 
@@ -87,6 +89,7 @@ def get_hitbox(pic, size):
 
 
 def menu(action, p):
+    'Main menu'
     while action == 'menu':
         for evt in event.get():
             if evt.type == QUIT:
@@ -98,41 +101,44 @@ def menu(action, p):
 
         mx, my = mouse.get_pos(); mb = mouse.get_pressed()
 
-        intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
+        #functions from into file
+        intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking) 
         intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking)
 
 
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
-            intro.running.stop()
-            mixer.music.stop()
+            #checking if new gane is clicked
+            intro.running.stop() #stop sound effects
+            mixer.music.stop() #stop intro music
             # action = 'lev1'
-            level_One('lev1', p)
+            level_One('lev1', p) #go to level one
             # level_Two('lev2')
             # level_Three('lev3')
-            boss('boss')
+            # boss('boss')
 
         
 
 
 def level_One(action, p):
+    'Level one'
     while action == 'lev1':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
 
-        m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
-            level_Two('lev2', lev2.pRect)
+            #checking if level two door was eneterd
+            level_Two('lev2', lev2.pRect) #go to level two
 
         else:
-            if levelOne.health < 0:
-                p = Rect(512, 675, 35, 50) #beginning rect for level one
+            if levelOne.health < 0: #checking if health goes below zero (DEAD)
+                p = Rect(512, 675, 35, 50) #beginning rect for level one 
                 health = 2 #reset health
                 reload(levelOne) #if all health is taken away, restart the level
                 
             
-            else:
+            else: #normal level one
                 levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
                 levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
                 # levelOne.move_slugBullets(bullets_slugs)
@@ -147,6 +153,7 @@ def level_One(action, p):
         
 
 def level_Two(action, p):
+    'Level Two'
     while action == 'lev2':
         for evt in event.get():
             if evt.type == QUIT:
@@ -154,15 +161,16 @@ def level_Two(action, p):
             
         # m = 2
         if checkDoor(lev2.pRect, lev2.doorRect):
-            level_Three('lev3', lv3.pRect)
+            #checking if door for level three was entered
+            level_Three('lev3', lv3.pRect) #go to level three
 
         else:
-            if lev2.health < 0:
-                p = Rect(250, 529, 4, 0)
+            if lev2.health < 0: #checking if player died
+                p = Rect(250, 529, 4, 0) #resetting a few things
                 health = 2
                 reload(lev2) #restart level 2
             
-            else:
+            else: #normal level two
                 lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
                 lev2.moveBad(lev2.player, lev2.birds)
                 lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds)
@@ -172,6 +180,7 @@ def level_Two(action, p):
 
 
 def level_Three(action, p):
+    'Level Three - Entrance to boss'
     while action == 'lev3':
         for evt in event.get():
             if evt.type == QUIT:
@@ -180,20 +189,23 @@ def level_Three(action, p):
         # m = 3
 
         if lv3.checkBoss(lv3.pRect, lv3.doorRect):
+            #checking if boss door was entered
             boss('boss')
 
-        else:
+        else: #normal level three
             lv3.move(lv3.pRect, lv3.player, ch1_sprites)
             lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
             # print(lv3.pRect)
 
 def boss(action):
+    'FINAL BOSS'
     while action == 'boss':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
 
         # m = 4
+        'normal boss fight'
 
         bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect)
         bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites)
