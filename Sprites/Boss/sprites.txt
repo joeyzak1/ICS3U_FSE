@@ -1,0 +1,7 @@
+// boss sprites
+
+tile000.png - idle [0]
+tile004 - 005 - ??? [1]
+tile008 - 010 - spreadout bullets [2]
+tile012 - 015 - move right [3]
+tile016 - 019 - move left [4]

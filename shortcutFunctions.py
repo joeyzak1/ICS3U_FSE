@@ -75,6 +75,8 @@ def playerSprites (player, p, sprites, vPlayer, x):
     col = int(player[COL]) #get the col of the sprites, its player[4], this is the frame
     if row == 0 and col == 5: #checking if on attacking (to prevent crash)
         col = 0 #set the sprite to first frame 
+    if player[COL] >= len(sprites[ROW]):
+        player[COL] = 0
     pic = sprites[row][col] #get the pic from the sprites list
     pictureRect = createHitbox(pic, x, p[Y]) #call hitbox function to get the pic rect
     screen.blit(pic, pictureRect) #blits the picture

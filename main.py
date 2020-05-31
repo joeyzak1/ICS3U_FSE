@@ -53,6 +53,17 @@ ch1_levelOne = [512, 675, 4, 0]
 p = Rect(512, 675, 35, 50) #beginning rect for level one
 bullets_slugs = []
 
+def addBossSprites(name, start, end):
+    boss_sprites = [image.load("Sprites/Boss/%s%03d.png" %(name, i)) for i in range(start, end+1)] #adding all the sprites required using list comprehension
+    return boss_sprites #return a list of sprites
+
+bossSprites = []
+bossSprites.append(addBossSprites("tile", 0, 0)) #idle
+bossSprites.append(addBossSprites("tile", 4, 5)) #other
+bossSprites.append(addBossSprites("tile", 8, 10)) #attack
+bossSprites.append(addBossSprites("tile", 12, 15)) #right
+bossSprites.append(addBossSprites("tile", 16, 19)) #left
+
 
 #true or false variables for starting and ending certain functions
 # introRun = True
@@ -173,9 +184,9 @@ def boss(action):
         # m = 4
 
         bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect)
-        bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect)
+        bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites)
         bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
-        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
+        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites)
         
 # playMusic(music, music_pos)
 

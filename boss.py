@@ -25,8 +25,8 @@ gravity = 1
 player = [150, 650, 4, 0]
 pRect = Rect(150, 650, 20, 45)
 
-boss = [600, 449, 0, 0]
-bossRect = Rect(600, 450, 300, 272)
+boss = [600, 430, 0, 0]
+bossRect = Rect(600, 430, 386, 292)
 
 direction = -1
 
@@ -41,21 +41,24 @@ myTime = 0
 timePassed = []
 direction = -1
 
-def drawScene(p, player, sprites, boss, b, bullets):
+def drawScene(p, player, sprites, boss, b, bullets, bossSprites):
     global vPlayer
     global myTime
     global timePassed
+    global vBoss
 
     screen.blit(backPic, (0, 0))
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
+
+    shortcutFunctions.playerSprites(boss, b, bossSprites, vBoss, b[X])
     # print(hitbox[Y] + hitbox[H])
 
     # shortcutFunctions.drawBossBullets(bullets)
     for bull in bullets: #go through the bullets list
         draw.circle(screen, (0, 255, 0), (int(bull[0]),int(bull[1])), 4) #draw the bullet
-    draw.rect(screen, (255, 0, 0), b, 3)
+    # draw.rect(screen, (255, 0, 0), b, 3)
 
     if myTime % 60 == 0:
         timePassed.append('t')
@@ -103,7 +106,7 @@ def moveGuy(p, player, sprites, b):
     player[X] = p[X]
     vPlayer[Y] += gravity
 
-def moveBoss(boss, b, timePassed, p):
+def moveBoss(boss, b, timePassed, p, bossSprites):
     global vBoss
     global gravity
 
@@ -140,6 +143,23 @@ def moveBoss(boss, b, timePassed, p):
 
     b[X] += vBoss[X]
     vBoss[Y] += gravity
+
+    if vBoss[3] < 0:
+        boss[ROW] = 4
+    elif vBoss[3] > 0:
+        boss[ROW] = 3
+    elif len(timePassed) % 5 == 0 and len(timePassed) > 0:
+        boss[ROW] = 2
+    else:
+        boss[COL] = 0
+        boss[COL] -= 0.2
+
+    boss[COL] += 0.05
+
+    if boss[COL] >= len(bossSprites[ROW]):
+        boss[COL] = 0
+
+
     # screen.fill((0))
 
 def checkCollision(p, player, sprites, boss, b, bullets):
