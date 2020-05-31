@@ -25,8 +25,8 @@ gravity = 1
 player = [150, 650, 4, 0]
 pRect = Rect(150, 650, 20, 45)
 
-boss = [600, 430, 0, 0]
-bossRect = Rect(600, 430, 386, 292)
+boss = [600, 330, 0, 0]
+bossRect = Rect(600, 330, 386, 392)
 
 direction = -1
 
@@ -144,12 +144,12 @@ def moveBoss(boss, b, timePassed, p, bossSprites):
     b[X] += vBoss[X]
     vBoss[Y] += gravity
 
-    if vBoss[3] < 0:
+    if len(timePassed) % 5 == 0 and len(timePassed) > 0:
+        boss[ROW] = 2
+    elif vBoss[3] < 0:
         boss[ROW] = 4
     elif vBoss[3] > 0:
         boss[ROW] = 3
-    elif len(timePassed) % 5 == 0 and len(timePassed) > 0:
-        boss[ROW] = 2
     else:
         boss[COL] = 0
         boss[COL] -= 0.2
@@ -215,7 +215,12 @@ def checkCollision(p, player, sprites, boss, b, bullets):
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
 
-    if b[Y] + b[H] >= GROUND:
+    if boss[Y] + b[H] >= GROUND:
         vBoss[BOT] = GROUND
-        b[Y] = GROUND - b[H]
+        boss[Y] = b[Y] = GROUND - b[H]
         vBoss[Y] = 0
+
+    # if b[Y] + b[H] >= GROUND:
+    #     vBoss[BOT] = GROUND
+    #     b[Y] = GROUND - b[H]
+    #     vBoss[Y] = 0

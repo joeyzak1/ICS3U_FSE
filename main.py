@@ -105,8 +105,8 @@ def menu(action):
             # action = 'lev1'
             # level_One('lev1')
             # level_Two('lev2')
-            level_Three('lev3')
-            # boss('boss')
+            # level_Three('lev3')
+            boss('boss')
 
         
 
