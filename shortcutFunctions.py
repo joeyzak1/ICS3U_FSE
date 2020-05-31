@@ -401,4 +401,8 @@ def zeroHealth (health, p, x):
     if health < 0:
         p[X] = x
         health = 2
+
+def timeFont(font, timePassed, length):
+    text = font.render(str(int(length-len(timePassed))), True, (255, 255, 255))
+    screen.blit(text, (940, 3))
         

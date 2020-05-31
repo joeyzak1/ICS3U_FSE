@@ -8,6 +8,7 @@ myClock = time.Clock()
 
 backPic = image.load('Backgrounds/bossBack.png').convert()
 
+#standard variables
 X = 0
 Y = 1
 W = 2
@@ -22,48 +23,54 @@ bottom = GROUND
 jumpSpeed = -20
 gravity = 1
 
+#player objects
 player = [150, 650, 4, 0]
 pRect = Rect(150, 650, 20, 45)
 
+#boss objects
 boss = [600, 330, 0, 0]
 bossRect = Rect(600, 330, 386, 392)
 
-direction = -1
+direction = -1 #direction of movement of the boss
 
-vPlayer = [0, 0, bottom]
-vBoss = [0, 0, bottom, direction]
+vPlayer = [0, 0, bottom] #v for player
+vBoss = [0, 0, bottom, direction] #v for boss
 
+#for bullets
 bullSpeed = 5
 bullets = []
 rapid = 0
 
+#time
 myTime = 0
 timePassed = []
-direction = -1
 
-def drawScene(p, player, sprites, boss, b, bullets, bossSprites):
+def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont):
+    'This function draws the scene'
     global vPlayer
     global myTime
     global timePassed
     global vBoss
 
+    #same few lines as previous files
     screen.blit(backPic, (0, 0))
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
 
     shortcutFunctions.playerSprites(boss, b, bossSprites, vBoss, b[X])
-    # print(hitbox[Y] + hitbox[H])
 
-    # shortcutFunctions.drawBossBullets(bullets)
     for bull in bullets: #go through the bullets list
         draw.circle(screen, (0, 255, 0), (int(bull[0]),int(bull[1])), 4) #draw the bullet
-    # draw.rect(screen, (255, 0, 0), b, 3)
 
-    if myTime % 60 == 0:
+
+    draw.rect(screen, (255, 0, 0), b, 3) #hitbox
+
+    if myTime % 60 == 0: #this is for counting all the time passed
         timePassed.append('t')
 
     myTime += 1
+    shortcutFunctions.timeFont(timeFont, timePassed, 500)
     # print(b)
     # print(p.colliderect(b))
     display.set_caption("Super Swordy Boy - FINAL BOSS     FPS = " + str(int(myClock.get_fps())))

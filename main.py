@@ -77,6 +77,8 @@ display.set_icon(ch1_sprites[4][0]) #sets display icon
 
 health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)] #health images
 
+timeFont = font.Font('fonts/Freshman.ttf', 40)
+
 def get_hitbox(pic, size):
     'probably never used'
     pic_w = pic.get_width()
@@ -112,10 +114,10 @@ def menu(action, p):
             intro.running.stop() #stop sound effects
             mixer.music.stop() #stop intro music
             # action = 'lev1'
-            level_One('lev1', p) #go to level one
+            # level_One('lev1', p) #go to level one
             # level_Two('lev2')
             # level_Three('lev3')
-            # boss('boss')
+            boss('boss')
 
         
 
@@ -210,7 +212,7 @@ def boss(action):
         bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect)
         bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites)
         bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets)
-        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites)
+        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont)
         
 # playMusic(music, music_pos)
 
