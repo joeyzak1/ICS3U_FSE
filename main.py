@@ -31,6 +31,7 @@ RED = (255,0,0); GREY = (127,127,127); BLACK = (0,0,0); WHITE = (255,255,255); B
 running = True; myClock = time.Clock() #pg stuff
 
 moveBackground = 0; moveWalking = 0
+second = False #to know if the game is being played for the second time
 
 
 #ADDING SPRITES -----------------------------------------------------------------------------------
@@ -70,11 +71,11 @@ bossSprites.append(addBossSprites("tile", 8, 10)) #attack
 bossSprites.append(addBossSprites("tile", 12, 15)) #right
 bossSprites.append(addBossSprites("tile", 16, 19)) #left
 
-for i in range(len(bossSprites)):
+for i in range(len(bossSprites)): #go through boss sprites and change size of each sprite to 300 by 272
     for j in range(len(bossSprites[i])):
         bossSprites[i][j] = transform.scale(bossSprites[i][j], (300, 272))
 
-timeFont = font.Font('fonts/Freshman.ttf', 40)
+timeFont = font.Font('fonts/Freshman.ttf', 40) #font for time in corner
 
 
 #true or false variables for starting and ending certain functions
@@ -82,9 +83,10 @@ timeFont = font.Font('fonts/Freshman.ttf', 40)
 # levelOne_Run = False
 display.set_icon(ch1_sprites[4][0])
 
-health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)]
+health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)] #health images
 
 def get_hitbox(pic, size):
+    'hitbox - only used in level one - same as the one used in shortcut functiond'
     pic_w = pic.get_width()
     pic_h = pic.get_height()
 
@@ -95,6 +97,8 @@ def get_hitbox(pic, size):
 
 
 def menu(action, p):
+    'main menu'
+    global second
     while action == 'menu':
         for evt in event.get():
             if evt.type == QUIT:
@@ -105,24 +109,30 @@ def menu(action, p):
 
 
         mx, my = mouse.get_pos(); mb = mouse.get_pressed()
+        if second:
+            reload(outro)
+            second = False
+
+        '''Every single function will follow the same format'''
 
         intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
         intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking)
 
 
 
-        if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
+        if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my): #check if new game was clicked, go to level one
             # action = 'lev1'
-            # level_One('lev1', p)
+            level_One('lev1', p)
             # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
             # boss('boss')
-            outro_func('outro', outro.pRect)
+            # outro_func('outro', outro.pRect)
 
         
 
 
 def level_One(action, p):
+    'level one'
     while action == 'lev1':
         for evt in event.get():
             if evt.type == QUIT:
@@ -130,7 +140,7 @@ def level_One(action, p):
 
         m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
-            level_Two('lev2', lev2.pRect)
+            level_Two('lev2', lev2.pRect) #checking if enetered door at end
 
         else:
             if levelOne.health < 0: #checking if health goes below zero (DEAD)
@@ -138,7 +148,7 @@ def level_One(action, p):
                 health = 2 #reset health
                 reload(levelOne) #if all health is taken away, restart the level
 
-            else:
+            else: #normal game loop
                 levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
                 levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
                 # levelOne.move_slugBullets(bullets_slugs)
@@ -152,13 +162,14 @@ def level_One(action, p):
         
 
 def level_Two(action, p):
+    'level two'
     while action == 'lev2':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
             
         # m = 2
-        if checkDoor(lev2.pRect, lev2.doorRect):
+        if checkDoor(lev2.pRect, lev2.doorRect): #checking if enetered door for level 3, goes to level 3
             level_Three('lev3', lv3.pRect)
 
         else:
@@ -167,7 +178,7 @@ def level_Two(action, p):
                 lev2.health = 2
                 reload(lev2) #restart level 2
 
-            else:
+            else: #normal game loop
                 lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
                 lev2.moveBad(lev2.player, lev2.birds)
                 lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds, lev2.timePassed)
@@ -177,6 +188,7 @@ def level_Two(action, p):
 
 
 def level_Three(action, p):
+    'level three'
     while action == 'lev3':
         for evt in event.get():
             if evt.type == QUIT:
@@ -184,47 +196,51 @@ def level_Three(action, p):
 
         # m = 3
 
-        if lv3.checkBoss(lv3.pRect, lv3.doorRect):
+        if lv3.checkBoss(lv3.pRect, lv3.doorRect): #goes to boss if door was clicked
             boss('boss')
 
-        else:
+        else: #game loop
             lv3.move(lv3.pRect, lv3.player, ch1_sprites)
             lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
 
 def boss(action):
+    'boss'
     while action == 'boss':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
 
         # m = 4
-        if bs.playerHealth < 0 or len(bs.timePassed) >= 500:
+        if bs.playerHealth < 0 or len(bs.timePassed) >= 500: #checking if defeated by by boss
             for b in bs.timePassed:
-                bs.timePassed.remove(b)
+                bs.timePassed.remove(b) #reset time
             pRect = Rect(300, 600, 50, 50)
             bs.playerHealth = 2
             reload(lv3)
             reload(bs)
             level_Three('lev3', pRect)
 
-        else:
+        else: #normal game loop
             bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bossSprites, timeFont, bs.playerBullets)
             bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
             bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets)
             bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, bs.playerHealth, health_img, bs.playerBullets)
 
 def outro_func(action, p):
+    'outro screen'
+    global second
     while action == 'outro':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
 
         if len(outro.timePassed) < 1700:
-            outro.drawScene(outro.player, outro.pRect, ch1_sprites, outro.timePassed, outro.myCounter)
+            outro.drawScene(outro.player, outro.pRect, ch1_sprites, outro.timePassed, outro.myCounter) #only one function for certain amount of time
         
-        else:
+        else: #reset the game after certain amount of time
             reload(intro); reload(levelOne); reload(lev2); reload(lv3); reload(bs); reload(outro)
             ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
+            second = True
             menu('menu', ch1_intro)
 
         

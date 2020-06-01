@@ -6,18 +6,22 @@ import shortcutFunctions
 screen = display.set_mode((1024, 768))
 myClock = time.Clock()
 
+#backgrounds and some objects
 backPic = image.load('Backgrounds/LevelTwo_backPic.png').convert()
 platPic = image.load('Other/plat.png').convert()
 doorPic = image.load('Other/doorLev2.png')
 
+#bottom for velocity
 GROUND = 574
 bottom = GROUND
 
+#jumping variable
 jumpSpeed = -20
 gravity = 1
 
-platGrav = False
+platGrav = False #not needed anymore
 
+#nav variables
 X = 0
 Y = 1
 W = 2
@@ -28,10 +32,11 @@ SCREENX = 3
 BOT = 2
 TOP = 4
 
+#ends of the screen
 leftEnd = 50
 rightEnd = 15850
 
-health = 2
+health = 2 #health of the player
 
 vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 
@@ -47,58 +52,56 @@ spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(10000, 524, 4
         [Rect(1900, 274, 75, 300), Rect(8350, 99, 75, 475)],  #this list is for WALL spikes on vBOT
         [Rect(9400, 0, 75, 374)]] #this list is for WALL spikes NOT on v[BOT]
 
-# birds = [Rect(2800, 50, 60, 30), Rect(12000, 50, 60, 30)] #bird rects
-birds = [[2800, 50, 0], [12000, 50, 0]]
-
-# borders = [Rect(2800, 475, 2375, GROUND-475), Rect(2800, 275, 2100, -275), Rect(4900, 174, 2500, -174),
-#             Rect(5175, GROUND, 100, -200), Rect(5275, 374, 2875, GROUND-374)] #border rect list
+birds = [[2800, 50, 0], [12000, 50, 0]] #birds list
 
 #seperating borders into 2d lists
 borders = [[Rect(2800, 475, 2375, 99), Rect(5175, 374, 100, 200), Rect(5275, 374, 2875, 200), Rect(11500, 475, 500, 99), Rect(12000, 159, 4000, 415)], #borders for touching vBOT
             [Rect(2800, 0, 2100, 275), Rect(4900, 0, 2500, 174), Rect(11500, 0, 100, 275), Rect(11600, 0, 4000, 60)]] #borders for touching top
 
-healthBlocks = [Rect(10125, 200, 50, 50)]
+healthBlocks = [Rect(10125, 200, 50, 50)] #health blocks
 
-doorRect = Rect(15650, 80, 40, 75)
+doorRect = Rect(15650, 80, 40, 75) #door
 
-platCounter = 0
+platCounter = 0 
 
+#for time
 timePassed = []
 myCounter = 0
 hitCounter = 0
 
 def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont):
+    'draws the scene'
     global vPlayer
     global health
     global timePassed
     global myCounter
 
-    offset = vPlayer[SCREENX] - p[X]
+    offset = vPlayer[SCREENX] - p[X] #offset and background
     screen.blit(backPic, (offset, 0))
 
-    shortcutFunctions.drawPlats(plats, offset, platPic)
+    shortcutFunctions.drawPlats(plats, offset, platPic) #objects to draw
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
     shortcutFunctions.drawHealthBlocks(healthBlocks, offset)
 
-    door = door.move(offset, 0)
-    screen.blit(doorPic, door)
+    door = door.move(offset, 0) #door
+    screen.blit(doorPic, door) #door
 
-    if health >= 0:
+    if health >= 0: #blit the health only if health remains
         screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
-    shortcutFunctions.timeFont(timeFont, timePassed, 300)
+    shortcutFunctions.timeFont(timeFont, timePassed, 300) #blits the time in the corner
 
-    for b in birds:
-        shortcutFunctions.birdSprites(b, birdSprites, offset)
+    for b in birds: #go through the birds
+        shortcutFunctions.birdSprites(b, birdSprites, offset) 
 
     
-    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
+    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #sprites
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
-    draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
+    # draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2) #hitbox drawing
 
-    if myCounter % 60 == 0:
+    if myCounter % 60 == 0: #for time
         timePassed.append('t')
-    print(timePassed)
+    # print(timePassed)
 
     
     # print(p[X])

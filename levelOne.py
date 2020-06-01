@@ -20,7 +20,7 @@ v = [0, 0, bottom, 512, 0] #velocity of player
 
 v_bull = [-5, 0] #vel of bullets
 
-v_bird = [0, 0]; vBird_vertical = 30; vBrid_gravity = -1 #velocity of birds
+v_bird = [0, 0]; vBird_vertical = 15; vBrid_gravity = -1 #velocity of birds
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
         Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)] #platform rect list
@@ -141,7 +141,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         pHitbox = createHitbox(pic, v[SCREENX], p[Y]) #create a player hitbox
 
         screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y])) #blit the player
-        draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2) #draw the hitbox
+        # draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2) #draw the hitbox
 
         display.update()
         myClock.tick(60)
@@ -244,16 +244,16 @@ def move_bird(p, birds, bird_p, sprites):
          
         if p[X] + 400 >= b[X]: #check if the player is close to the bird horizontally
 
-            v_bird[Y] = vBird_vertical #sets the bird velocity to 
-            v_bird[X] = -15
+            v_bird[Y] = vBird_vertical #sets the bird velocity to vertical speed
+            v_bird[X] = -8  #sets the bird vel to horizontal one
 
-            if b[X] <= p[X] + 200 and b[Y] >= p[Y]:
-                v_bird[Y] = 0
+            if b[X] <= p[X] + 200 and b[Y] >= p[Y]: #checking if same level with player
+                v_bird[Y] = 0 #no more vertical movement
 
 
-            b[ROW] += 0.2
+            b[ROW] += 0.2 #sprite frame
             
-            b[Y] += v_bird[Y]
+            b[Y] += v_bird[Y] #increase bird pos by vel
             b[X] += v_bird[X]
 
 
@@ -293,6 +293,8 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
     global seconds
     global timeLimit
 
+
+    #redoing the sprites here to use hitbox
     row = player[ROW]
     col = int(player[COL])
 
@@ -304,49 +306,49 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
     keys = key.get_pressed()
 
-    if v[Y] != v[BOT]:
-        isJump = True
+    if v[Y] != v[BOT]: #checking if in the air
+        isJump = True #sets bool variable to true
 
-    for block in blocks:
+    for block in blocks: #go through blocks and squared blocks
         for sq in squared_blocks:
             if p[Y] + p[H] >= GROUND or p[Y] + p[H] == v[BOT] or Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block) or Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq):
-                isJump = False
+                isJump = False #checked if on top of and set bool variable to false
 
-    for plat in plats:
-        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]:
-            v[BOT] = plat[Y]
-            p[Y] = v[BOT] - p[H]
-            v[Y] = 0
+    for plat in plats: #gp through plats
+        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]: #check if on top of plat
+            v[BOT] = plat[Y] #set bottom to plat y-coord
+            p[Y] = v[BOT] - p[H] #set players vert pos to on the platy
+            v[Y] = 0 #sets the vertical velocity to 0
 
-    for border in borders:
-        if p[X]+5 + p[W] > border[X] and p[X] < border[X] + border[W] and v[BOT] == GROUND:
+    for border in borders: #go through the borders list
+        if p[X]+5 + p[W] > border[X] and p[X] < border[X] + border[W] and v[BOT] == GROUND: 
             v[X] = 0
 
-        if p[X] + p[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + p[H] >= border[Y] and p[Y] + p[H] + v[Y] > border[Y]:
-            v[BOT] = border[Y]
+        if p[X] + p[W] > border[X] and p[X] < border[X] + border[W] and p[Y] + p[H] >= border[Y] and p[Y] + p[H] + v[Y] > border[Y]: #checking if on top of
+            v[BOT] = border[Y] #same stuff as checking plats below here
             p[Y] = v[BOT] - p[H]
             v[Y] = 0
 
-    for block in blocks:
-        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(block):
-            v[TOP] = block[Y] + block[H]
-            p[Y] = v[TOP]
-            v[Y] += gravity
+    for block in blocks: #go through list of blocks
+        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(block): #checking if in the air and touching the block from below
+            v[TOP] = block[Y] + block[H] #set v top to block
+            p[Y] = v[TOP] #set players pos to bottom of block
+            v[Y] += gravity #add gravity
 
-        if  not isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block):
+        if  not isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(block): #checking if not in the air and on a block
             # isJump = False
-            v[BOT] = block[Y]
+            v[BOT] = block[Y] #same part as plat here
             p[Y] = v[BOT] - p[H]
 
             if keys[K_SPACE]: #these next 2 sections are for fixing issues with not being able to jump on blocks
-                v[Y] = jumpSpeed
+                v[Y] = jumpSpeed #jump
 
             else:
-                v[Y] = 0
+                v[Y] = 0 #not moving
 
-    for sq in squared_blocks:
-        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq):
-            v[TOP] = sq[Y] + sq[H]
+    for sq in squared_blocks: #go through squared blocks
+        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq): #same as blocks from before
+            v[TOP] = sq[Y] + sq[H] #set v top to bottom of blocks
             #fixes player going above block
             if p[Y] > sq[H] + sq[Y]:
                 v[Y] = 0
@@ -354,9 +356,9 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
             else:
                 p[Y] = v[TOP]
 
-            v[Y] += gravity
+            v[Y] += gravity #add gravity
 
-        if not isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq):
+        if not isJump and Rect(p[X], p[Y] + 5, p[W], p[H]).colliderect(sq): #same as blocks from before (literally copy and paste wtih adjustments)
             v[BOT] = sq[Y]
             p[Y] = v[BOT] - p[H]
 
@@ -366,12 +368,12 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
             else:
                 v[Y] = 0
 
-    healthIncrease = 0
+    healthIncrease = 0  #for increasing health
 
-    for h in healthSq:
-        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq) and health < 2:
+    for h in healthSq: #go through health increase squares
+        if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq) and health < 2: #checking if below the box and touch
             healthIncrease += 1
-
+        #for health increments
         if healthIncrease == 1:
             if health == 0:
                 health = 1
@@ -384,7 +386,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
             # else:
             #     health = health
 
-            v[TOP] = sq[Y] + sq[H]
+            v[TOP] = sq[Y] + sq[H] #same stuff as blocks here
             #fixes player going above block
             if p[Y] > sq[H] + sq[Y]:
                 v[Y] = 0
@@ -396,27 +398,16 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
         # print (health)
 
-    timer (seconds, timeLimit)
+    timer (seconds, timeLimit) #timer
+    birdCollision(p, player, birds) #bird collision
+    check_attack(p, player, sprites, slugs, birds) #checking attacking
 
+    p[Y] += v[Y] #add vert velocity to player 
 
-
-        
-    # checkHealthSq(healthSq)
-    birdCollision(p, player, birds)
-
-    check_attack(p, player, sprites, slugs, birds)
-
-    # print (isJump)
-
-
-
-
-    p[Y] += v[Y]
-
-    if p[Y] + p[H] >= GROUND:
-        v[BOT] = GROUND
-        p[Y] = GROUND-p[H]
-        v[Y] = 0
+    if p[Y] + p[H] >= GROUND: #checking if player is on or past ground
+        v[BOT] = GROUND #set the bottom to the ground
+        p[Y] = GROUND-p[H] #the players y pos to the ground perfectly
+        v[Y] = 0 #vertical velocity is 0
 
 
 
@@ -430,8 +421,10 @@ def check_bullSlug(bull, p):
 
 
 def check_attack(p, player, sprites, slugs, birds):
-    global health
+    'checking if the player attacked'
+    global health 
 
+    #gets sprites for hitbox
     row = player[ROW]
     col = int(player[COL])
 
@@ -441,17 +434,16 @@ def check_attack(p, player, sprites, slugs, birds):
     pic = sprites[row][col]
     pHitbox = createHitbox(pic, p[X], p[Y])
 
-    if player[ROW] == 0:
-        for slug in slugs:
-            if pHitbox.colliderect(slug):
-                slugs.remove(slug)
+    if player[ROW] == 0: #checking if sprites are in attacking position
+        for slug in slugs: #go through slugs
+            if pHitbox.colliderect(slug): #checking if touched the slug
+                slugs.remove(slug) #remove the slugs
 
-        for bird in birds:
-            birdRect = Rect(bird[X], bird[Y], 100, 80)
-
-            if pHitbox.colliderect(birdRect):
+        for bird in birds: #go through the birds
+            birdRect = Rect(bird[X], bird[Y], 100, 80) #create rect object for bird
+            if pHitbox.colliderect(birdRect): #check if touched bird
                 # health += 1
-                birds.remove(bird)
+                birds.remove(bird) #removes the bird
 
 def checkHealthSq (healthSq):
     global health
@@ -488,38 +480,42 @@ def checkHealthSq (healthSq):
 
 
 def check_levelTwo(door, p):
+    'checks if level two door was pressed, this function is used in main.py'
     keys = key.get_pressed()
 
-    if keys[K_RETURN] and p.colliderect(door):
-        return True
+    if keys[K_RETURN] and p.colliderect(door): #checking if entered the door
+        return True  #returns boolean variable
 
     else:
-        return False
+        return False #not in the door
 
 
 def birdCollision(p, player, birds):
+    'check bird collision'
     global health 
     
-    for bird in birds:
-        birdRect = Rect(bird[X], bird[Y], 100, 80)
-        if birdRect.colliderect(p):
-            birds.remove(bird)
-            if player[ROW] == 0:
-                health = health
+    for bird in birds: #go through the birds
+        birdRect = Rect(bird[X], bird[Y], 100, 80) #create rect object for bird
+        if birdRect.colliderect(p): #checking if bird touched the player
+            birds.remove(bird) #remove the bird
+            if player[ROW] == 0: #checking if the player was attacking
+                health = health #health remains the same
 
-            else:
-                health -= 1
+            else: #if player was not attacking
+                health -= 1 #lower health by 1
 
 
 def hitBlocks(x, y, blocks):
-    playerRect = Rect(x, y, 35, 50)
-    return playerRect.collidelist(blocks)
+    'check if hit blocks in a list'
+    playerRect = Rect(x, y, 35, 50) #creates rect object for the player
+    return playerRect.collidelist(blocks) #return if the player collided or not (used in move func)
 
 
 def timer(counter, myList):
+    'timer function - NEED TO FIX'
     global current_time
-    if counter % 60 == 0:
-        myList.append ('time')
+    if counter % 60 == 0: #check if 1 sec passed
+        myList.append ('time') #add to list to take length
 
-    counter += 1
+    counter += 1 #add one to counter
     # print (240 - len(myList))
