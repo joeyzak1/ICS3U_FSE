@@ -16,6 +16,7 @@ import levelOne #levelOne.py
 import newLevelTwo as lev2
 import levelThree as lv3
 import boss as bs
+import outro
 
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
@@ -115,7 +116,8 @@ def menu(action, p):
             # level_One('lev1', p)
             # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            boss('boss')
+            # boss('boss')
+            outro_func('outro', outro.pRect)
 
         
 
@@ -196,7 +198,9 @@ def boss(action):
                 action = 'end'
 
         # m = 4
-        if bs.playerHealth < 0:
+        if bs.playerHealth < 0 or len(bs.timePassed) >= 500:
+            for b in bs.timePassed:
+                bs.timePassed.remove(b)
             pRect = Rect(300, 600, 50, 50)
             bs.playerHealth = 2
             reload(lv3)
@@ -208,6 +212,24 @@ def boss(action):
             bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
             bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets)
             bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, bs.playerHealth, health_img, bs.playerBullets)
+
+def outro_func(action, p):
+    while action == 'outro':
+        for evt in event.get():
+            if evt.type == QUIT:
+                action = 'end'
+
+        if len(outro.timePassed) < 1700:
+            outro.drawScene(outro.player, outro.pRect, ch1_sprites, outro.timePassed, outro.myCounter)
+        
+        else:
+            reload(intro); reload(levelOne); reload(lev2); reload(lv3); reload(bs); reload(outro)
+            ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
+            menu('menu', ch1_intro)
+
+        
+
+        
         
 # playMusic(music, music_pos)
 
