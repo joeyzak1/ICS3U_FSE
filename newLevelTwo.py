@@ -66,6 +66,7 @@ platCounter = 0
 
 #for time
 timePassed = []
+timeHit = []
 myCounter = 0
 hitCounter = 0
 
@@ -166,7 +167,7 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, time
     global platGrav
     global platCounter
     global hitCounter
-    global hitList
+    global timeHit
 
 
     
@@ -214,10 +215,17 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, time
     print(health)
 
     for spike in spikes:
-        if p.collidelist(spike) != -1 and len(hitList) % 3 == 0:
-            health -= 1
-            for h in hitList:
-                hitList.remove(h)
+        if len(timeHit) % 3 == 0:
+            if Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
+                or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
+                    or Rect(p[X], p[Y] + 5, hitBox[W], hitBox[H]).collidelist(spike) != -1\
+                        or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1:
+                health -= 1
+                if hitCounter % 60 == 0:
+                    timeHit.append('h')
+                hitCounter += 1
+    for h in timeHit:
+        timeHit.remove(h)
 
 
     

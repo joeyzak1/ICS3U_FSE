@@ -123,7 +123,8 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
             # draw.rect(screen, (255, 0, 0), border, 3)
 
         #health
-        screen.blit(healthBar(health, hearts), (0, 0))
+        if health > -1:
+            screen.blit(healthBar(health, hearts), (0, 0))
 
         door = door.move(offset, 0)
         # draw.rect(screen, (123, 213, 7), door)

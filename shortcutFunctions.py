@@ -15,6 +15,8 @@ vel_bird = [0, 0]
 vBird_vertical = 30
 vBrid_gravity = -1
 
+playerHealth = 2
+
 def drawPlats(plats, offset, pic):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects, pic is a pic of a plat'
     # global offset
@@ -99,18 +101,21 @@ def createBossBullets(bullets, SPEED, bossR, rapid):
         vy = sin(ang)*SPEED #vertical component
         if len(bullets) < 12:
             bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
-    print(len(bullets))
+    # print(len(bullets))
         # rapid = 0 #set rapid to 0
     
 
-def checkBossBullets(bullets):
+def checkBossBullets(bullets, p, health):
     'check and move boss bullets'
     for b in bullets[:]: #[:] is a COPY of the bullets list, goes through bullets list
         b[0] += b[2] #add x val to speed
         b[1] += b[3] #add y-val to speed
-
+        bRect = Rect(b[0]-4, b[1]-4, 8, 8)
         if b[0] > 1800 or b[0] < -800 or b[1] < -500 or b[1] > 1400: #off screen
             bullets.remove(b) #remove from screen
+        elif p.colliderect(bRect):
+            bullets.remove(b)
+            health -= 1
 
 def createBossBulletsPhase2(bullets, rapid, boss):
     # if rapid == 20:
@@ -381,10 +386,11 @@ def hitSpikes(x, y, hitbox ,spikes):
         playerRect = Rect(x, y, hitbox[W], hitbox[H])
         return playerRect.collidelist(spike)
 
-def healthBar(health, pics):
+def healthBar(health, pics, bull, p):
     for i in range(3):
         if i == health:
             pic = pics[i]
+        
             return pic
 
 def playMusic(music, m):
