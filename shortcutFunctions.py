@@ -292,12 +292,17 @@ def checkSpikes(p, hitbox, spikes, vPlayer, health):
             vPlayer[BOT] = grnd[Y]
             p[Y] = vPlayer[BOT] - hitbox[H]
             vPlayer[Y] = 0
+            if health > 0:
+                health < 2
+
+
 
     for air in spikes[1]:
         if vPlayer[Y] > 0 and p.collidelist(spikes[1]) != -1:
             vPlayer[TOP] = air[Y] + air[H]
             p[Y] = vPlayer[TOP]
             vPlayer[Y] = 0
+    return health
 
             
 

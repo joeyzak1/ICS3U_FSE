@@ -113,9 +113,9 @@ def menu(action, p):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
             # level_One('lev1', p)
-            # level_Two('lev2')
+            level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            boss('boss')
+            # boss('boss')
 
         
 
@@ -162,13 +162,14 @@ def level_Two(action, p):
         else:
             if lev2.health < 0: #checking if player died
                 p = Rect(250, 529, 4, 0) #resetting a few things
+                lev2.health = 2
                 reload(lev2) #restart level 2
 
             else:
                 lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
                 lev2.moveBad(lev2.player, lev2.birds)
-                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds)
-                lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect)
+                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds, lev2.timePassed)
+                lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect, timeFont)
 
         
 

@@ -63,9 +63,15 @@ doorRect = Rect(15650, 80, 40, 75)
 
 platCounter = 0
 
-def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door):
+timePassed = []
+myCounter = 0
+hitCounter = 0
+
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont):
     global vPlayer
     global health
+    global timePassed
+    global myCounter
 
     offset = vPlayer[SCREENX] - p[X]
     screen.blit(backPic, (offset, 0))
@@ -78,8 +84,9 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     door = door.move(offset, 0)
     screen.blit(doorPic, door)
 
-
-    screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
+    if health >= 0:
+        screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
+    shortcutFunctions.timeFont(timeFont, timePassed, 300)
 
     for b in birds:
         shortcutFunctions.birdSprites(b, birdSprites, offset)
@@ -89,8 +96,13 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2)
 
+    if myCounter % 60 == 0:
+        timePassed.append('t')
+    print(timePassed)
+
     
     # print(p[X])
+    myCounter += 1
     display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
     display.update()
     myClock.tick(60)
@@ -144,12 +156,17 @@ def moveBad(player, bird):
 
 
 
-
-def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
+hitList = []
+def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, timePassed):
     global health
     global vPlayer
     global platGrav
     global platCounter
+    global hitCounter
+    global hitList
+
+
+    
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
@@ -191,6 +208,14 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
     p[W] = hitBox[W]
     p[H] = hitBox[H]
 
+    print(health)
+
+    for spike in spikes:
+        if p.collidelist(spike) != -1 and len(hitList) % 3 == 0:
+            health -= 1
+            for h in hitList:
+                hitList.remove(h)
+
 
     
 
@@ -198,6 +223,12 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds):
         vPlayer[BOT] = GROUND
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
+
+    if hitCounter % 60 == 0:
+        hitList.append('h')
+    hitCounter += 1
+
+
 
     # if p[Y] + hitBox[H] >= vPlayer[BOT]:
     #     p[Y] = vPlayer[BOT] - hitBox[H]
