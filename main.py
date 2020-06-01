@@ -113,9 +113,9 @@ def menu(action, p):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my):
             # action = 'lev1'
             # level_One('lev1', p)
-            level_Two('lev2', lev2.pRect)
+            # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            # boss('boss')
+            boss('boss')
 
         
 
@@ -196,11 +196,18 @@ def boss(action):
                 action = 'end'
 
         # m = 4
+        if bs.playerHealth < 0:
+            pRect = Rect(300, 600, 50, 50)
+            bs.playerHealth = 2
+            reload(lv3)
+            reload(bs)
+            level_Three('lev3', pRect)
 
-        bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bossSprites, timeFont, bs.playerBullets)
-        bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
-        bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets)
-        bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, playerBullets)
+        else:
+            bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bossSprites, timeFont, bs.playerBullets)
+            bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
+            bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets)
+            bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, bs.playerHealth, health_img, bs.playerBullets)
         
 # playMusic(music, music_pos)
 

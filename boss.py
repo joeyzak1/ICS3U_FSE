@@ -54,8 +54,9 @@ direction = -1
 
 #health
 bossHealth = 25
+playerHealth = 2
 
-def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossHealth, playerBullets):
+def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossHealth, playerHealth, healthPic, playerBullets):
     'this function draws the scene'
     global vPlayer
     global myTime
@@ -76,6 +77,9 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
     for bull in playerBullets: #go through player bullets
         draw.rect(screen, (0, 255, 0), (bull[X], bull[Y], 30, 10))
     draw.rect(screen, (255, 0, 0), b, 3) #hitbox
+
+    if playerHealth >= 0:
+        screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
 
     if myTime % 60 == 0: #for counting how much time passed
         timePassed.append('t')
@@ -109,7 +113,7 @@ def moveGuy(p, player, sprites, b, bossSprites, timeFont, playerBullets):
     elif keys[K_LEFT] and p[X] > leftEnd and not Rect(p[X] -5, p[Y], p[W], p[H]).colliderect(b): #moving right 
         shortcutFunctions.moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd)
 
-    elif keys[K_RIGHT] and p[X] < rightEnd and not Rect(p[X] + 5, p[Y], p[W], p[H]).colliderect(b) == 0: #moving right
+    elif keys[K_RIGHT] and p[X] < rightEnd and not Rect(p[X] + 5, p[Y], p[W], p[H]).colliderect(b): #moving right
         shortcutFunctions.moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd)
 
     else: #so sprite is on idle and player doesnt move
