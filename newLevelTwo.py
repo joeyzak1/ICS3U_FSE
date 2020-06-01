@@ -43,8 +43,8 @@ vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 player = [250, 529, 4, 0] #player rect and list
 pRect = Rect(250, 529, 4, 0)
 
-plats = [Rect(600, 425, 200, 15), Rect(1550, 425, 200, 15), Rect(8000, 200, 200, 15), Rect(8650, 200, 200, 15), 
-        Rect(9050, 287-15, 200, 15), Rect(10050, 375, 200, 15), Rect(11650, 330, 200, 15)] #platforms
+plats = [Rect(600, 425, 200, 15), Rect(1550, 425, 200, 15), Rect(8000, 200, 200, 15), Rect(8550, 200, 200, 15), 
+        Rect(9000, 287-15, 200, 15), Rect(10050, 425, 200, 15), Rect(11650, 330, 200, 15)] #platforms
 
 #this list branches off into 2d lists - for spikes
 spikes = [[Rect(800, 524, 400, 50), Rect(3900, 425, 200, 50), Rect(10000, 524, 400, 50), Rect(13000, 140, 100, 19), Rect(14500, 140, 100, 19), Rect(15000, 140, 100, 19)], #this list is for spikes on the ground or vBOT
