@@ -87,8 +87,8 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
         # else:
         draw.circle(screen, (0, 255, 0), (int(bull[0]),int(bull[1])), 4) #draw the bullet
 
-    if hitPlayer(p, bullets, playerHealth):
-        playerHealth -= 1
+    # playerHealth = hitPlayer(p, bullets, playerHealth)
+        # playerHealth -= 1
 
 
             # break
@@ -270,14 +270,30 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
     #     shortcutFunctions.createBossBulletsPhase2(bullets, rapid, b)
     #     shortcutFunctions.checkBossBullets(bullets)
 
-    shortcutFunctions.checkBossBullets(bullets, p, playerHealth)
-    checkBullBossHits(playerBullets, b, bossHealth)
-    for bull in bullets:
-        bRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
-        if p.colliderect(bRect):
+    # shortcutFunctions.checkBossBullets(bullets, p, playerHealth)
+    for bull in bullets[:]: #[:] is a COPY of the bullets list, goes through bullets list
+        bull[0] += bull[2] #add x val to speed
+        bull[1] += bull[3] #add y-val to speed
+        bRect = Rect(bull[0]-4, bull[1]-4, 8, 8)
+        if bull[0] > 1800 or bull[0] < -800 or bull[1] < -500 or bull[1] > 1400: #off screen
+            bullets.remove(bull) #remove from screen
+
+    bullH = False
+    for bullet in bullets:
+        bullRect = Rect(bullet[X] - 4, bullet[Y] - 4, 8, 8)
+        if p.colliderect(bullRect) and bullH == False:
             playerHealth -= 1
-    if p[X] + p[W] > b[X] and p[X] < b[X] + b[W] and vBoss[Y] < 0 and p[Y] > boss[Y] + boss[H]:
-        playerHealth = -1
+            bullH = True
+            print('hello')
+ 
+
+    checkBullBossHits(playerBullets, b, bossHealth)
+    # for bull in bullets:
+    #     bRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
+    #     if p.colliderect(bRect):
+    #         playerHealth -= 1
+    # if p[X] + p[W] > b[X] and p[X] < b[X] + b[W] and vBoss[Y] < 0 and p[Y] > boss[Y] + boss[H]:
+    #     playerHealth = -1
     
     # for bull in bullets:
     #     bRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
@@ -336,12 +352,17 @@ def hitPlayer_Health(health):
         health -= 1
     return health
 
-def hitPlayer(p, bullets, health):
-    global playerHealth
-    for bull in bullets:
-        bullRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
-        if p.colliderect(bull):
+
+def hitPlayer(p, bullets, playerHealth): 
+    # global playerHealth
+    bullH = False
+    for bullet in bullets:
+        bullRect = Rect(bullet[X] - 4, bullet[Y] - 4, 8, 8)
+        if p.colliderect(bullRect) and bullH == False:
             playerHealth -= 1
+            bullH = True
+            print('hello')
+    return playerHealth
             # bullets.remove(bull)
         # else:
         #     playerHealth = playerHealth

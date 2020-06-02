@@ -124,9 +124,9 @@ def menu(action, p):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my): #check if new game was clicked, go to level one
             # action = 'lev1'
             # level_One('lev1', p)
-            level_Two('lev2', lev2.pRect)
+            # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            # boss('boss')
+            boss('boss')
             # outro_func('outro', outro.pRect)
 
         
