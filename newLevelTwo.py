@@ -134,7 +134,7 @@ def move(p, player, sprites, borders, spikes):
 
     keys = key.get_pressed()
 
-    if keys[K_SPACE] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
+    if keys[K_SPACE] and p[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
         vPlayer[Y] = jumpSpeed
 
     if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1:
@@ -170,7 +170,7 @@ def moveBad(player, bird):
     shortcutFunctions.moveBird(player, birds)
 
 
-def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, timePassed, timeHit):
+def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicList, birds, timePassed, timeHit):
     global health
     global vPlayer
     global platGrav
@@ -202,6 +202,34 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, time
             if p[Y] + hitBox[H] >= plat[Y]:
                 p[Y] = plat[Y] - hitBox[H]
                 vPlayer[Y] = 0
+
+    for h in healthBlocks: #go through health increase squares
+        if vPlayer[Y] < 0 and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(h) and health <= 2: #checking if below the box and touch
+            if health < 2:
+                health += 1
+            # healthIncrease += 1
+        #for health increments
+        # if healthIncrease == 1:
+        #     if health == 0:
+        #         health = 1
+
+        #     elif health == 1:
+        #         health = 2
+            # if health < 2:
+            #     health += 1
+
+            # else:
+            #     health = health
+
+            vPlayer[TOP] = h[Y] + h[H] #same stuff as blocks here
+            #fixes player going above block
+            if p[Y] > h[H] + h[Y]:
+                vPlayer[Y] = 0
+
+            else:
+                p[Y] = vPlayer[TOP]
+
+            vPlayer[Y] += gravity
     
 
     # print(plats[5], p[X], p[Y], vPlayer)
@@ -223,15 +251,15 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, time
     p[W] = hitBox[W]
     p[H] = hitBox[H]
 
-    print(health)
+    # print(health)
 
     for spike in spikes:
-        if len(timePassed) % 2 == 0:
-            if Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
-                or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
-                    or Rect(p[X], p[Y] + 5, hitBox[W], hitBox[H]).collidelist(spike) != -1\
-                        or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1:
-                health -= 1
+        # if len(timePassed) % 2 == 0:
+        if Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
+            or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
+                or Rect(p[X], p[Y] + 5, hitBox[W], hitBox[H]).collidelist(spike) != -1\
+                    or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1:
+            health = -1
 
     for bird in birds:
         bRect = Rect(bird[X], bird[Y], 226, 189)

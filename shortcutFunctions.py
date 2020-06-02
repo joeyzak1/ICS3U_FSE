@@ -279,6 +279,7 @@ def checkBirdCollision(birds, p, health):
         birdRect = Rect(bird[X], bird[Y], 100, 80) #create a rect for the bird
         if p.colliderect(birdRect): #checking if the player touched the bird
             health -= 1 #take 1 away from health
+            time.delay(150) #pause the program for 150ms to indicate pause
             if health < 0: #fix later
                 health = 0
 

@@ -2,6 +2,8 @@ from pygame import *
 from math import *
 from shortcutFunctions import *
 
+init()
+
 
 size = width, height = 1024, 768
 screen = display.set_mode(size)
@@ -56,18 +58,19 @@ health = 2 #beginning health
 pHitbox = Rect(0, 0, 0, 0)
 
 #time lists and variables
-seconds = 0
-timeLimit = []
-current_time = 240
+timePassed = []
+myCounter = 0
 
 myClock = time.Clock()
 
 
 
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health):
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont):
     'this function draws the scene'
     # global rapid #globalizing rapid and player hitbox
     # global pHitbox
+    global timePassed
+    global myCounter
 
     if check_levelTwo(door, p):
         screen.fill((0))
@@ -144,6 +147,11 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
         screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y])) #blit the player
         # draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2) #draw the hitbox
+
+        timeFont(tFont, timePassed, 125)
+        if myCounter % 60 == 0:
+            timePassed.append('t')
+        myCounter += 1
 
         display.update()
         myClock.tick(60)
@@ -288,7 +296,7 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq):
+def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq, timePassed):
     'this function mainly checks for collision'
     global isJump
     global health
@@ -400,7 +408,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
         # print (health)
 
-    timer (seconds, timeLimit) #timer
+    # timer (seconds, timeLimit) #timer
     birdCollision(p, player, birds) #bird collision
     check_attack(p, player, sprites, slugs, birds) #checking attacking
 
@@ -505,6 +513,7 @@ def birdCollision(p, player, birds):
 
             else: #if player was not attacking
                 health -= 1 #lower health by 1
+                time.delay(150) #this will pause the program for 150ms to indicate you got hit
 
 
 def hitBlocks(x, y, blocks):

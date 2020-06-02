@@ -84,6 +84,7 @@ timeFont = font.Font('fonts/Freshman.ttf', 40) #font for time in corner
 display.set_icon(ch1_sprites[4][0])
 
 health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)] #health images
+lives = 5
 
 def get_hitbox(pic, size):
     'hitbox - only used in level one - same as the one used in shortcut functiond'
@@ -122,8 +123,8 @@ def menu(action, p):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my): #check if new game was clicked, go to level one
             # action = 'lev1'
-            level_One('lev1', p)
-            # level_Two('lev2', lev2.pRect)
+            # level_One('lev1', p)
+            level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
             # boss('boss')
             # outro_func('outro', outro.pRect)
@@ -143,45 +144,52 @@ def level_One(action, p):
             level_Two('lev2', lev2.pRect) #checking if enetered door at end
 
         else:
-            if levelOne.health < 0: #checking if health goes below zero (DEAD)
+            if levelOne.health < 0 or len(levelOne.timePassed) == 125: #checking if health goes below zero (DEAD)
                 p = Rect(512, 675, 35, 50) #beginning rect for level one 
                 health = 2 #reset health
+                lives -= 1
                 reload(levelOne) #if all health is taken away, restart the level
 
             else: #normal game loop
                 levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
                 levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
                 # levelOne.move_slugBullets(bullets_slugs)
-                levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq)
-                levelOne.check_bullSlug(bullets_slugs, p)
+                levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed)
+                # levelOne.check_bullSlug(bullets_slugs, p)
                 levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                     levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
-                    levelOne.doorRect, health_img, levelOne.health)
+                    levelOne.doorRect, health_img, levelOne.health, timeFont)
 
 
         
 
 def level_Two(action, p):
     'level two'
+    global lives
     while action == 'lev2':
         for evt in event.get():
             if evt.type == QUIT:
                 action = 'end'
+
+        print(lives)
             
         # m = 2
         if checkDoor(lev2.pRect, lev2.doorRect): #checking if enetered door for level 3, goes to level 3
             level_Three('lev3', lv3.pRect)
 
         else:
-            if lev2.health < 0: #checking if player died
+            if lev2.health < 0 or len(lev2.timePassed) == 300: #checking if player died
                 p = Rect(250, 529, 4, 0) #resetting a few things
                 lev2.health = 2
+                lives -= 1
+                if lives == 0:
+                    gameOver('over')
                 reload(lev2) #restart level 2
 
             else: #normal game loop
                 lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
                 lev2.moveBad(lev2.player, lev2.birds)
-                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds, lev2.timePassed, lev2.timeHit)
+                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, lev2.healthBlocks, health_img, lev2.birds, lev2.timePassed, lev2.timeHit)
                 lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect, timeFont)
 
         
@@ -218,6 +226,7 @@ def boss(action):
             bs.playerHealth = 2
             reload(lv3)
             reload(bs)
+            lives -= 1
             level_Three('lev3', pRect)
 
         else: #normal game loop
@@ -244,6 +253,37 @@ def outro_func(action, p):
             ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
             second = True
             menu('menu', ch1_intro)
+
+timePassed = []
+myCounter = 0
+
+def gameOver(action):
+    global myCounter
+    global timePassed
+    global second
+
+    while action == 'over':
+        for evt in event.get():
+            if evt.type == QUIT:
+                action = 'end'
+        
+        font = timeFont.render('Game Over!', True, (255, 255, 255))
+        font = transform.scale(font, (500, 300))
+        screen.fill((0))
+        screen.blit(font, (400, 300))
+        if len(timePassed) == 10:
+            second = True
+            menu('menu', p)
+            # exit(gameOver)
+
+        if myCounter % 60 == 0:
+            timePassed.append('t')
+        myCounter += 1
+
+        display.update()
+        myClock.tick(60)
+
+
 
         
 
