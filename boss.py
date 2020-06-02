@@ -42,7 +42,7 @@ vBoss = [0, 0, bottom, direction]
 #bullets
 bullSpeed = 5
 bullets = []
-rapid = 50
+rapid = 20
 
 #player bullets
 playerBullets = []
@@ -104,12 +104,12 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
 
     for bull in playerBullets: #go through player bullets
         draw.rect(screen, (0, 255, 0), (bull[X], bull[Y], 30, 10))
-    draw.rect(screen, (255, 0, 0), b, 3) #hitbox
+    # draw.rect(screen, (255, 0, 0), b, 3) #hitbox
 
     if playerHealth >= 0:
         screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
-    # draw.rect(screen, (255, 0, 0), (b[X], b[Y] - 50, b[W], 20))
-    # draw.rect(screen, (25, 25, 25), (b[X], b[Y] - 50, , 20))
+    draw.rect(screen, (255, 0, 0), (b[X], b[Y] - 50, b[W], 20))
+    draw.rect(screen, (25, 25, 25), (b[X], b[Y] - 50, b[W] - ((b[W] // 25)*(25 - bossHealth)), 20))
 
     if myTime % 60 == 0: #for counting how much time passed
         timePassed.append('t')
@@ -252,14 +252,14 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
 
     b[Y] += vBoss[Y] #add boss vert velocity
 
-    print("ttt",timePassed)
+    # print("ttt",timePassed)
     if len(timePassed) % 5 == 0 and len(timePassed) > 0: #checking if its time for the boss to shoot multiple bullets
         shortcutFunctions.createBossBullets(bullets, bullSpeed, b, rapid)
         timePassed=[]
 
-    if keys[K_z] and len(timePassed) % 4 == 0
+    if keys[K_z] and rapid == 20:
         playerBullets.append([p[X], p[Y], bullSpeed, 0]) #add bullets
-        timePassed = []
+        rapid = 0
             
     
     for bull in playerBullets[:]:
@@ -272,7 +272,8 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
         bullRect = Rect(bull[0], bull[1], 30, 10)
         if b.colliderect(bullRect):
             bh -= 1
-            playerBullets =[]
+            playerBullets.remove(bull)
+            # playerBullets =[]
 
         
 
@@ -304,42 +305,19 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
         if bull[0] > 1800 or bull[0] < -800 or bull[1] < -500 or bull[1] > 1400: #off screen
             bullets.remove(bull) #remove from screen
 
-    print("before",len(bullets))
+    # print("before",len(bullets))
     bullH = False
     for bullet in bullets:
         bullRect = Rect(bullet[X] - 4, bullet[Y] - 4, 8, 8)
         if p.colliderect(bullRect) and bullH == False:
             ph -= 1
+            time.delay(100)
             bullets = []
             bullH = True
-            print('hello')
+            # print('hello')
 
-    # for bull in playerBullets:
-
-    print("after",bullH,len(bullets))
- 
-
-    # checkBullBossHits(playerBullets, b, bossHealth)
-    # for bull in bullets:
-    #     bRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
-    #     if p.colliderect(bRect):
-    #         playerHealth -= 1
-    # if p[X] + p[W] > b[X] and p[X] < b[X] + b[W] and vBoss[Y] < 0 and p[Y] > boss[Y] + boss[H]:
-    #     playerHealth = -1
-    
-    # for bull in bullets:
-    #     bRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
-    #     if p.colliderect(bRect):
-    #         if playerHealth < 3:
-    #             playerHealth = 2
-    #         elif playerHealth < 2:
-    #             playerHealth = 1
-    #         elif playerHealth < 1:
-    #             playerHealth = 0
-    #         else:
-    #             playerHealth = -1
-    #         # playerHealth -= 1
-    #         bullets.remove(bull)
+    if player[ROW] == 0 and int(player[COL]) == 4 and p.colliderect(b):
+        bh -= 0.2
 
 
     #checking if player and boss are on the ground
@@ -352,8 +330,10 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
         vBoss[BOT] = GROUND
         b[Y] = GROUND - b[H]
         vBoss[Y] = 0
+
+    print(bh)
    
-    return bullets,ph,bullH, playerBullets
+    return bullets,ph,bullH, playerBullets, int(bh)
 
 def checkAttack(player, p, boss, bossHealth):
     'checking if the player attacked the boss'

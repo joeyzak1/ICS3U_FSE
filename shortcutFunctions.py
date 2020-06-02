@@ -103,7 +103,7 @@ def createBossBullets(bullets, SPEED, bossR, rapid):
             bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
     # print(len(bullets))
         # rapid = 0 #set rapid to 0
-    print("Bullet Created")
+    # print("Bullet Created")
     
 
 def checkBossBullets(bullets, p, health):

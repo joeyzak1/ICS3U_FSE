@@ -236,9 +236,9 @@ def boss(action):
             bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bossSprites, timeFont, bs.playerBullets)
             bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
             if 1:
-                bs.bullets,bs.playerHealth,bs.bh, bs.playerBullets=bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets, pHealth)
+                bs.bullets,bs.playerHealth,bs.bh, bs.playerBullets, bs.bossHealth = bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets, pHealth)
             bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, health_img, bs.playerBullets, pHealth)
-            print("hi",bs.playerHealth,bs.bh,len(bs.bullets))
+            # print("hi",bs.playerHealth,bs.bh,len(bs.bullets))
 
 def outro_func(action, p):
     'outro screen'
