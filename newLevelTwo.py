@@ -76,6 +76,8 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     global health
     global timePassed
     global myCounter
+    global timeHit
+    global hitCounter
 
     offset = vPlayer[SCREENX] - p[X] #offset and background
     screen.blit(backPic, (offset, 0))
@@ -102,11 +104,20 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
 
     if myCounter % 60 == 0: #for time
         timePassed.append('t')
+    for spike in spikes:
+        if p.collidelist(spike) != -1:
+            timeHit.append('h')
+
+        else:
+            for t in timeHit:
+                timeHit.remove(t)
+
     # print(timePassed)
 
     
     # print(p[X])
     myCounter += 1
+    hitCounter += 1
     display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
     display.update()
     myClock.tick(60)
@@ -159,15 +170,15 @@ def moveBad(player, bird):
     shortcutFunctions.moveBird(player, birds)
 
 
-
-hitList = []
-def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, timePassed):
+def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, timePassed, timeHit):
     global health
     global vPlayer
     global platGrav
     global platCounter
     global hitCounter
-    global timeHit
+    # global timeHit
+
+    invincibility = 0
 
 
     
@@ -195,7 +206,7 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, time
 
     # print(plats[5], p[X], p[Y], vPlayer)
 
-    shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health)
+    shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health, timeHit)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
     shortcutFunctions.checkBirdCollision(birds, p, health)
 
@@ -215,17 +226,23 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, time
     print(health)
 
     for spike in spikes:
-        if len(timeHit) % 3 == 0:
+        if len(timePassed) % 2 == 0:
             if Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
                 or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
                     or Rect(p[X], p[Y] + 5, hitBox[W], hitBox[H]).collidelist(spike) != -1\
                         or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1:
                 health -= 1
-                if hitCounter % 60 == 0:
-                    timeHit.append('h')
-                hitCounter += 1
-    for h in timeHit:
-        timeHit.remove(h)
+
+    for bird in birds:
+        bRect = Rect(bird[X], bird[Y], 226, 189)
+        if p.colliderect(bRect):
+            health -= 1
+            birds.remove(bird)
+
+            # if invincibility > 0:
+            #     invincibility += 1
+    # for h in timeHit:
+    #     timeHit.remove(h)
 
 
     
@@ -235,9 +252,9 @@ def check(p, player, sprites, plats, spikes, borders, healthPicList, birds, time
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
 
-    if hitCounter % 60 == 0:
-        hitList.append('h')
-    hitCounter += 1
+    # if hitCounter % 60 == 0:
+    #     hitList.append('h')
+    # hitCounter += 1
 
 
 

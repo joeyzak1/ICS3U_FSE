@@ -283,7 +283,7 @@ def checkBirdCollision(birds, p, health):
                 health = 0
 
 
-def checkSpikes(p, hitbox, spikes, vPlayer, health):
+def checkSpikes(p, hitbox, spikes, vPlayer, health, hitList):
     'checking if spikes and player touch'
     # for spike in spikes:
     #     for sp in spike:
@@ -297,17 +297,9 @@ def checkSpikes(p, hitbox, spikes, vPlayer, health):
             vPlayer[BOT] = grnd[Y]
             p[Y] = vPlayer[BOT] - hitbox[H]
             vPlayer[Y] = 0
-            if health > 0:
-                health < 2
 
 
 
-    for air in spikes[1]:
-        if vPlayer[Y] > 0 and p.collidelist(spikes[1]) != -1:
-            vPlayer[TOP] = air[Y] + air[H]
-            p[Y] = vPlayer[TOP]
-            vPlayer[Y] = 0
-    return health
 
             
 
@@ -386,7 +378,7 @@ def hitSpikes(x, y, hitbox ,spikes):
         playerRect = Rect(x, y, hitbox[W], hitbox[H])
         return playerRect.collidelist(spike)
 
-def healthBar(health, pics, bull, p):
+def healthBar(health, pics):
     for i in range(3):
         if i == health:
             pic = pics[i]
@@ -403,5 +395,7 @@ def timeFont(font, timePassed, length):
     - timePassed is the list for counting the time
     - Length is the length of how long the level will give you'''
     text = font.render(str(int(length-len(timePassed))), True, (255, 255, 255)) #get the text by taking the length of the level minus length of list, convert to string
+    text2 = font.render(str(int(length-len(timePassed))), True, (0, 0, 0)) #get the text by taking the length of the level minus length of list, convert to string
+    screen.blit(text2, (942, 5))
     screen.blit(text, (940, 3)) #blit the text
         

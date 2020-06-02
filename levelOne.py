@@ -75,6 +75,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     else:
 
         offset = v[SCREENX]-p[X] #offset to move screen with eveything
+        print (v[SCREENX])
         screen.blit(backPic, (offset, 0)) #background
 
         for plat in plats: #this for loop blits all platforms in the correct position

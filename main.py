@@ -122,10 +122,10 @@ def menu(action, p):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my): #check if new game was clicked, go to level one
             # action = 'lev1'
-            # level_One('lev1', p)
+            level_One('lev1', p)
             # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            boss('boss')
+            # boss('boss')
             # outro_func('outro', outro.pRect)
 
         
@@ -181,7 +181,7 @@ def level_Two(action, p):
             else: #normal game loop
                 lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
                 lev2.moveBad(lev2.player, lev2.birds)
-                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds, lev2.timePassed)
+                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, health_img, lev2.birds, lev2.timePassed, lev2.timeHit)
                 lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect, timeFont)
 
         

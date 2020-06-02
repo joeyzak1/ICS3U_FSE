@@ -106,7 +106,7 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
     draw.rect(screen, (255, 0, 0), b, 3) #hitbox
 
     if playerHealth >= 0:
-        screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic, bullets, p), (0, 0))
+        screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
     # draw.rect(screen, (255, 0, 0), (b[X], b[Y] - 50, b[W], 20))
     # draw.rect(screen, (25, 25, 25), (b[X], b[Y] - 50, , 20))
 
@@ -276,6 +276,8 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
         bRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
         if p.colliderect(bRect):
             playerHealth -= 1
+    if p[X] + p[W] > b[X] and p[X] < b[X] + b[W] and vBoss[Y] < 0 and p[Y] > boss[Y] + boss[H]:
+        playerHealth = -1
     
     # for bull in bullets:
     #     bRect = Rect(bull[X] - 4, bull[Y] - 4, 8, 8)
@@ -350,3 +352,8 @@ def hitPlayer(p, bullets, health):
 
 def mainHealth(health):
     return health
+
+def underBoss(b, p):
+    global playerHealth
+    if p[X] + p[W] > b[X] and p[X] < b[X] + b[W] and vBoss[Y] < 0 and p[Y] > boss[Y] + boss[H]:
+        health = -1
