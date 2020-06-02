@@ -54,7 +54,7 @@ timeShown = []
 direction = -1
 
 #health
-bossHealth = 25
+bossHealth = 50
 playerHealth = 2
 bh=False
 visible = True
@@ -98,7 +98,7 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
 
     if visible:
         draw.rect(screen, (255, 0, 0), (b[X], b[Y] - 50, b[W], 20)) #the health bar DAMAGED (behind the shrinking health bar that is grey)
-        draw.rect(screen, (25, 25, 25), (b[X], b[Y] - 50, b[W] - ((b[W] // 25)*(25 - bossHealth)), 20)) #this health bar shrinks, reveals the red health bar. This tactic was shown on one of Tech with Tim videos
+        draw.rect(screen, (25, 25, 25), (b[X], b[Y] - 50, b[W] - ((b[W] // 50)*(50 - bossHealth)), 20)) #this health bar shrinks, reveals the red health bar. This tactic was shown on one of Tech with Tim videos
         shortcutFunctions.playerSprites(boss, b, bossSprites, vBoss, b[X])
     elif not visible:
         # draw.rect(screen, (255, 0, 0), door)
@@ -435,6 +435,6 @@ def underBoss(b, p):
 
 def checkDoor(p, door, visible):
     if not visible:
-        if p[X] + 5 >= door[X] or p[X] - 5 <= door[X] + door[W]:
+        if Rect(p[X] + 5, p[Y], p[W], p[H]).colliderect(door) or Rect(p[X] - 5, p[Y], p[W], p[H]).colliderect(door):
             return True
     return False

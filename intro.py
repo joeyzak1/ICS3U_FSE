@@ -43,6 +43,7 @@ def draw_introScene(player, picList, mB, mW):
     col = int(player[COL]) #getting the col number for pic
 
     pic = picList[4][col]
+    t=0
 
     if player[X] == 683: #checking if the players s coord is 683
         screen.blit(background_imgs[0], (b1[X], b1[Y])) #blitting the backgrounds
@@ -76,15 +77,18 @@ def draw_introScene(player, picList, mB, mW):
 
         if mb[0] == 1 and introRects[1].collidepoint(mx, my): #checking if help was clicked
             helpDialog = True #sets help to true (will display help in another function)
+            t = len(timePassed)
 
-        help(timePassed, timeCounter) #help screen (only activates whehn helpdialog is treu)
+        help(timePassed, t) #help screen (only activates whehn helpdialog is treu)
         # mixer.music.load('audio/MainMenuMusic.mp3')
         # mixer.music.play(-1)
 
     else: #if player is not at 683
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
 
-
+    if timeCounter % 60 == 0:
+        timePassed.append('t')
+    timeCounter += 1
     display.update()
     myClock.tick(60)
     display.set_caption("Super Swordy Boy - Intro Screen     FPS = " + str(int(myClock.get_fps())))
@@ -109,21 +113,14 @@ def move_intro(player, picList, mB, mW):
     if player[COL]>=len(picList[ROW]): #making sure no errors occur with sprites
         player[COL] = 1   
 
-def help(timePassed, counter):
+def help(timePassed, t):
     'Help screen'
     global helpDialog #get the boolean variable
     if helpDialog: #checking if help dialog is selected
         screen.blit(helpImg, (0, 0)) #blits the picture
-
-        if counter % 60 == 0: 
-            timePassed.append('t')
-
-        if len(timePassed) > 400: #this is for how long to leave on the screen (timepassed list was being weird)
+        if len(timePassed) - t == 10: #this is for how long to leave on the screen (timepassed list was being weird)
             helpDialog = False #sops the list
-            for t in timePassed:
-                timePassed.remove(t) #remove everything from time passed list in case want to click again
 
-        counter += 1 #increase counter
 
 background_imgs = [image.load("Backgrounds/back_" + str(i) + ".png").convert() for i in range(2)] #background images
 helpImg = image.load('Intro Pictures/Help.png') #help image
