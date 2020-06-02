@@ -62,10 +62,10 @@ timePassed = []
 myCounter = 0
 
 myClock = time.Clock()
+livesPic = image.load('Other/live.png')
 
 
-
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont):
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives):
     'this function draws the scene'
     # global rapid #globalizing rapid and player hitbox
     # global pHitbox
@@ -147,6 +147,9 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 
         screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y])) #blit the player
         # draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2) #draw the hitbox
+
+        for i in range(lives):
+            screen.blit(livesPic, (10 + 50*i, 80))
 
         timeFont(tFont, timePassed, 125)
         if myCounter % 60 == 0:

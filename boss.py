@@ -54,7 +54,7 @@ direction = -1
 
 #health
 bossHealth = 25
-playerHealth = 2
+# playerHealth = 2
 
 def healthCheck(health):
     health -= 1
@@ -227,6 +227,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
     'checks for collision'
     keys = key.get_pressed()
 
+    ph = playerHealth
     global vPlayer
     global bullSpeed
     global rapid
@@ -282,7 +283,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
     for bullet in bullets:
         bullRect = Rect(bullet[X] - 4, bullet[Y] - 4, 8, 8)
         if p.colliderect(bullRect) and bullH == False:
-            playerHealth -= 1
+            ph -= 1
             bullH = True
             print('hello')
  
@@ -320,6 +321,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
         vBoss[BOT] = GROUND
         b[Y] = GROUND - b[H]
         vBoss[Y] = 0
+    return ph
 
 def checkAttack(player, p, boss, bossHealth):
     'checking if the player attacked the boss'

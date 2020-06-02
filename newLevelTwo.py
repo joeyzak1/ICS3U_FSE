@@ -70,7 +70,10 @@ timeHit = []
 myCounter = 0
 hitCounter = 0
 
-def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont):
+livesPic = image.load('Other/live.png')
+
+
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont, lives):
     'draws the scene'
     global vPlayer
     global health
@@ -111,6 +114,9 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
         else:
             for t in timeHit:
                 timeHit.remove(t)
+
+    for i in range(lives):
+        screen.blit(livesPic, (10 + 50*i, 80))
 
     # print(timePassed)
 
