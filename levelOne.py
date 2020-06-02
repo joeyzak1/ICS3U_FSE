@@ -148,7 +148,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y])) #blit the player
         # draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2) #draw the hitbox
 
-        for i in range(lives):
+        for i in range(lives+1):
             screen.blit(livesPic, (10 + 50*i, 80))
 
         timeFont(tFont, timePassed, 125)

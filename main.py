@@ -108,10 +108,15 @@ def menu(action, p, lives):
         # mixer.music.load(intro.music[intro.m])
         # mixer.music.play(-1)
 
-
         mx, my = mouse.get_pos(); mb = mouse.get_pressed()
         if second:
             reload(outro)
+            reload(levelOne)
+            reload(lev2)
+            reload(lv3)
+            reload(bs)
+            p = Rect(512, 675, 35, 50)
+            lives = 5
             second = False
 
         '''Every single function will follow the same format'''
@@ -123,10 +128,10 @@ def menu(action, p, lives):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my): #check if new game was clicked, go to level one
             # action = 'lev1'
-            level_One('lev1', p, lives)
+            # level_One('lev1', p, lives)
             # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            # boss('boss')
+            boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         
@@ -148,6 +153,8 @@ def level_One(action, p, lives):
                 p = Rect(512, 675, 35, 50) #beginning rect for level one 
                 health = 2 #reset health
                 lives -= 1
+                if lives == -1:
+                    gameOver('over')
                 reload(levelOne) #if all health is taken away, restart the level
 
             else: #normal game loop
@@ -171,18 +178,16 @@ def level_Two(action, p, lives):
             if evt.type == QUIT:
                 action = 'end'
 
-        print(lives)
             
-        # m = 2
         if checkDoor(lev2.pRect, lev2.doorRect): #checking if enetered door for level 3, goes to level 3
-            level_Three('lev3', lv3.pRect)
+            level_Three('lev3', lv3.pRect, lives)
 
         else:
             if lev2.health < 0 or len(lev2.timePassed) == 300: #checking if player died
                 p = Rect(250, 529, 4, 0) #resetting a few things
                 lev2.health = 2
                 lives -= 1
-                if lives == 0:
+                if lives == -1:
                     gameOver('over')
                 reload(lev2) #restart level 2
 
@@ -195,7 +200,7 @@ def level_Two(action, p, lives):
         
 
 
-def level_Three(action, p):
+def level_Three(action, p, lives):
     'level three'
     while action == 'lev3':
         for evt in event.get():
@@ -205,16 +210,15 @@ def level_Three(action, p):
         # m = 3
 
         if lv3.checkBoss(lv3.pRect, lv3.doorRect): #goes to boss if door was clicked
-            boss('boss')
+            boss('boss', lives)
 
         else: #game loop
             lv3.move(lv3.pRect, lv3.player, ch1_sprites)
-            lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect)
+            lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect, lives)
 
-def boss(action):
+def boss(action, lives):
     'boss'
     global bh
-    global lives
     while action == 'boss':
         for evt in event.get():
             if evt.type == QUIT:
@@ -222,7 +226,7 @@ def boss(action):
 
         # m = 4
         if bs.checkDoor(bs.pRect, bs.door, bs.visible):
-            outro_func('outro', outro.pRect)
+            outro_func('outro', outro.pRect, lives)
 
         if bs.playerHealth < 0 or len(bs.timePassed) >= 500: #checking if defeated by by boss
             for b in bs.timePassed:
@@ -232,7 +236,9 @@ def boss(action):
             reload(lv3)
             reload(bs)
             lives -= 1
-            level_Three('lev3', pRect)
+            if lives == -1:
+                    gameOver('over', lives)
+            level_Three('lev3', pRect, lives)
 
         else: #normal game loop
             pHealth = bs.mainHealth(bs.playerHealth)
@@ -240,10 +246,10 @@ def boss(action):
             bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
             if 1:
                 bs.bullets,bs.playerHealth,bs.bh, bs.playerBullets, bs.bossHealth, bs.visible = bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets, pHealth, bs.visible)
-            bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, health_img, bs.playerBullets, pHealth, bs.visible)
+            bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, health_img, bs.playerBullets, pHealth, bs.visible, lives)
             # print("hi",bs.playerHealth,bs.bh,len(bs.bullets))
 
-def outro_func(action, p):
+def outro_func(action, p, lives):
     'outro screen'
     global second
     while action == 'outro':
@@ -258,10 +264,12 @@ def outro_func(action, p):
             reload(intro); reload(levelOne); reload(lev2); reload(lv3); reload(bs); reload(outro)
             ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
             second = True
-            menu('menu', ch1_intro)
+            menu('menu', ch1_intro, lives)
 
 timePassed = []
 myCounter = 0
+
+gameOverImg = image.load('Other/GameOverScreen.png').convert()
 
 def gameOver(action):
     global myCounter
@@ -273,13 +281,10 @@ def gameOver(action):
             if evt.type == QUIT:
                 action = 'end'
         
-        font = timeFont.render('Game Over!', True, (255, 255, 255))
-        font = transform.scale(font, (500, 300))
-        screen.fill((0))
-        screen.blit(font, (400, 300))
+        screen.blit(gameOverImg, (0, 0))
         if len(timePassed) == 10:
             second = True
-            menu('menu', p)
+            menu('menu', p, lives)
             # exit(gameOver)
 
         if myCounter % 60 == 0:
@@ -288,15 +293,6 @@ def gameOver(action):
 
         display.update()
         myClock.tick(60)
-
-
-
-        
-
-        
-        
-# playMusic(music, music_pos)
-
 
 menu('menu', p, lives)
 quit()

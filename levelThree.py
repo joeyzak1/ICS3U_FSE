@@ -19,6 +19,7 @@ BOT = 2
 SCREENX = 3
 
 backPic = image.load('Backgrounds/LevelThree_BackPic.png').convert()
+livesPic = image.load('Other/live.png')
 
 GROUND = 633
 bottom = GROUND
@@ -33,7 +34,7 @@ pRect = Rect(300, 600, 50, 50)
 doorRect = Rect(3100, 300, 300, GROUND-300)
 
 
-def drawScene(p, player, sprites, doorRect):
+def drawScene(p, player, sprites, doorRect, lives):
     global v
 
     offset = v[SCREENX] - p[X]
@@ -43,6 +44,9 @@ def drawScene(p, player, sprites, doorRect):
 
     shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
+
+    for i in range(lives+1):
+        screen.blit(livesPic, (10 + 50*i, 80))
 
     display.set_caption("Super Swordy Boy - Level Three     FPS = " + str(int(myClock.get_fps())))
     myClock.tick(60)

@@ -62,12 +62,14 @@ visible = True
 #door
 door = Rect(400, 300, 300, 422)
 doorImg = image.load('Other/outroDoor.png')
+#other
+livesPic = image.load('Other/live.png')
 
 def healthCheck(health):
     health -= 1
     return health
 
-def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossHealth, healthPic, playerBullets, playerHealth, visible):
+def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossHealth, healthPic, playerBullets, playerHealth, visible, lives):
     'this function draws the scene'
     global vPlayer
     global myTime
@@ -110,6 +112,8 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
     myTime += 1 #my time
 
     shortcutFunctions.timeFont(timeFont, timeShown, 500) #blits the time left in corner of screen
+    for i in range(lives+1):
+        screen.blit(livesPic, (10 + 50*i, 80))
     # print(b)
     # print(p.colliderect(b))
     display.set_caption("Super Swordy Boy - FINAL BOSS     FPS = " + str(int(myClock.get_fps()))) #the title
@@ -430,6 +434,7 @@ def underBoss(b, p):
         health = -1
 
 def checkDoor(p, door, visible):
-    if not visible and p.colliderect(door):
-        return True
+    if not visible:
+        if p[X] + 5 >= door[X] or p[X] - 5 <= door[X] + door[W]:
+            return True
     return False

@@ -115,7 +115,7 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
             for t in timeHit:
                 timeHit.remove(t)
 
-    for i in range(lives):
+    for i in range(lives+1):
         screen.blit(livesPic, (10 + 50*i, 80))
 
     # print(timePassed)
