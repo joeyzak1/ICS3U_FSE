@@ -97,7 +97,7 @@ def get_hitbox(pic, size):
 
 
 
-def menu(action, p):
+def menu(action, p, lives):
     'main menu'
     global second
     while action == 'menu':
@@ -123,16 +123,16 @@ def menu(action, p):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my): #check if new game was clicked, go to level one
             # action = 'lev1'
-            # level_One('lev1', p)
+            level_One('lev1', p, lives)
             # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            boss('boss')
+            # boss('boss')
             # outro_func('outro', outro.pRect)
 
         
 
 
-def level_One(action, p):
+def level_One(action, p, lives):
     'level one'
     while action == 'lev1':
         for evt in event.get():
@@ -141,7 +141,7 @@ def level_One(action, p):
 
         m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
-            level_Two('lev2', lev2.pRect) #checking if enetered door at end
+            level_Two('lev2', lev2.pRect, lives) #checking if enetered door at end
 
         else:
             if levelOne.health < 0 or len(levelOne.timePassed) == 125: #checking if health goes below zero (DEAD)
@@ -158,14 +158,14 @@ def level_One(action, p):
                 # levelOne.check_bullSlug(bullets_slugs, p)
                 levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                     levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
-                    levelOne.doorRect, health_img, levelOne.health, timeFont)
+                    levelOne.doorRect, health_img, levelOne.health, timeFont, lives)
 
 
         
 
-def level_Two(action, p):
+def level_Two(action, p, lives):
     'level two'
-    global lives
+    # global lives
     while action == 'lev2':
         for evt in event.get():
             if evt.type == QUIT:
@@ -190,7 +190,7 @@ def level_Two(action, p):
                 lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
                 lev2.moveBad(lev2.player, lev2.birds)
                 lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, lev2.healthBlocks, health_img, lev2.birds, lev2.timePassed, lev2.timeHit)
-                lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect, timeFont)
+                lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect, timeFont, lives)
 
         
 
@@ -221,6 +221,9 @@ def boss(action):
                 action = 'end'
 
         # m = 4
+        if bs.checkDoor(bs.pRect, bs.door, bs.visible):
+            outro_func('outro', outro.pRect)
+
         if bs.playerHealth < 0 or len(bs.timePassed) >= 500: #checking if defeated by by boss
             for b in bs.timePassed:
                 bs.timePassed.remove(b) #reset time
@@ -236,8 +239,8 @@ def boss(action):
             bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bossSprites, timeFont, bs.playerBullets)
             bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
             if 1:
-                bs.bullets,bs.playerHealth,bs.bh, bs.playerBullets, bs.bossHealth = bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets, pHealth)
-            bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, health_img, bs.playerBullets, pHealth)
+                bs.bullets,bs.playerHealth,bs.bh, bs.playerBullets, bs.bossHealth, bs.visible = bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets, pHealth, bs.visible)
+            bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, health_img, bs.playerBullets, pHealth, bs.visible)
             # print("hi",bs.playerHealth,bs.bh,len(bs.bullets))
 
 def outro_func(action, p):
@@ -295,5 +298,5 @@ def gameOver(action):
 # playMusic(music, music_pos)
 
 
-menu('menu', p)
+menu('menu', p, lives)
 quit()
