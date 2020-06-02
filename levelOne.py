@@ -20,7 +20,7 @@ v = [0, 0, bottom, 512, 0] #velocity of player
 
 v_bull = [-5, 0] #vel of bullets
 
-v_bird = [0, 0]; vBird_vertical = 15; vBrid_gravity = -1 #velocity of birds
+v_bird = [0, 0]; vBird_vertical = 10; vBrid_gravity = -1 #velocity of birds
 
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
         Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)] #platform rect list
@@ -36,7 +36,7 @@ healthSq = [squared_blocks[1]] #health square blocks
 
 slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)] #slugs rect list
 
-birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15), Rect(1200, 50, 50, 15)] #rect list for birds
+birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15), Rect(1800, 50, 50, 15), Rect(6500, 50, 50, 15), Rect(7500, 50, 50, 15)] #rect list for birds
 bird_p = [[birds[i][X], birds[i][Y], 0] for i in range(len(birds))]
 bird_hitboxes = []
 
@@ -66,8 +66,8 @@ myClock = time.Clock()
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health):
     'this function draws the scene'
-    global rapid #globalizing rapid and player hitbox
-    global pHitbox
+    # global rapid #globalizing rapid and player hitbox
+    # global pHitbox
 
     if check_levelTwo(door, p):
         screen.fill((0))
@@ -91,19 +91,19 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
             sq = sq.move(offset, 0)
             # draw.rect(screen, (0, 0, 255), sq)
 
-        for slug in slugs: #this blits the slugs
-            slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
+        # for slug in slugs: #this blits the slugs
+        #     slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
 
-            if rapid < 100 and player[X] + 500 <= slug[X]: #checking for bullet speed
-                rapid += 1
+        #     if rapid < 100 and player[X] + 500 <= slug[X]: #checking for bullet speed
+        #         rapid += 1
 
-            if slug[0] <= 1400 and rapid == 100 and player[X] < slug[X]: #checking if bullet speed is slow enough to shoot
-                b_slugs.append([slug[X], (slug[Y] + (slug[Y]+slug[H]))//2, v_bull[0], 0]) #create a bullet
-                rapid = 0 #set rapid to zero
+        #     if slug[0] <= 1400 and rapid == 100 and player[X] < slug[X]: #checking if bullet speed is slow enough to shoot
+        #         b_slugs.append([slug[X], (slug[Y] + (slug[Y]+slug[H]))//2, v_bull[0], 0]) #create a bullet
+        #         rapid = 0 #set rapid to zero
 
-        for b in b_slugs: #bullets
-            bs_rect = Rect(b[0], b[1], 20, 10)
-            draw.rect(screen, (255, 255, 0), bs_rect)
+        # for b in b_slugs: #bullets
+        #     bs_rect = Rect(b[0], b[1], 20, 10)
+        #     draw.rect(screen, (255, 255, 0), bs_rect)
 
 
         for b in b_s: #birds
@@ -219,7 +219,7 @@ def move(p, player, sprites, blocks, birds):
 
 
     else: #so the player doesn't move on its own
-        extra=False #no extra 5 units
+        # extra=False #no extra 5 units
         player[COL] = 0 #idle position
         player[COL] -= 0.2 #so the frame doesnt move (added later)
         v[X] = 0 #player isnt moving
@@ -244,7 +244,7 @@ def move_bird(p, birds, bird_p, sprites):
     # for bird in birds:
     for b in bird_p: #go through the bird list
          
-        if p[X] + 400 >= b[X]: #check if the player is close to the bird horizontally
+        if p[X] + 500 >= b[X]: #check if the player is close to the bird horizontally
 
             v_bird[Y] = vBird_vertical #sets the bird velocity to vertical speed
             v_bird[X] = -8  #sets the bird vel to horizontal one
@@ -278,7 +278,7 @@ def move_slugBullets(bull):
 
 def move_bad(p, bull, birds, bird_p, sprite_bird):
     'this function moves all the enemies'
-    move_slugBullets(bull)
+    # move_slugBullets(bull)
     move_bird(p, birds, bird_p, sprite_bird)
 
 
@@ -437,9 +437,9 @@ def check_attack(p, player, sprites, slugs, birds):
     pHitbox = createHitbox(pic, p[X], p[Y])
 
     if player[ROW] == 0: #checking if sprites are in attacking position
-        for slug in slugs: #go through slugs
-            if pHitbox.colliderect(slug): #checking if touched the slug
-                slugs.remove(slug) #remove the slugs
+        # for slug in slugs: #go through slugs
+        #     if pHitbox.colliderect(slug): #checking if touched the slug
+        #         slugs.remove(slug) #remove the slugs
 
         for bird in birds: #go through the birds
             birdRect = Rect(bird[X], bird[Y], 100, 80) #create rect object for bird

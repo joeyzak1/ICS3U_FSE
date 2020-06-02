@@ -12,7 +12,7 @@ jumpSpeed = -20; gravity = 1
 X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
 
 vel_bird = [0, 0]
-vBird_vertical = 30
+vBird_vertical = 10
 vBrid_gravity = -1
 
 playerHealth = 2
@@ -248,9 +248,9 @@ def moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd):
 def moveBird(player, birds):
     'moving the bird when close to the player'
     for bird in birds: #going through the birds list
-        if player[X] + 400 >= bird[X]: #checking if the player + 400 px is >= birds x val
+        if player[X] + 500 >= bird[X]: #checking if the player + 400 px is >= birds x val
             vel_bird[Y] = vBird_vertical #sets the birds y velocty
-            vel_bird[X] = -15 #set the bird x velocity
+            vel_bird[X] = -8 #set the bird x velocity
 
             if bird[X] <= player[X] + 200 and bird[Y] >= player[Y]: # checking if bird [y] val is close to player y val
                 vel_bird[Y] = 0 #stop moving VERTICALLY
