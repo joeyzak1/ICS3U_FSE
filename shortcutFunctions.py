@@ -337,15 +337,15 @@ def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
     'checking if borders are touched'
     for b in borders[0]:
 
-        if (p[X] + 5) + hitbox[W] == b[X]:
-            vPlayer[X] = 0
-            p[X] = b[X] - 5 - hitbox[W]
-            p[Y] = vPlayer[BOT] - hitbox[H]
+        # if (p[X] + 5) + hitbox[W] == b[X]:
+        #     vPlayer[X] = 0
+        #     p[X] = b[X] - 5 - hitbox[W]
+        #     p[Y] = vPlayer[BOT] - hitbox[H]
 
-        elif p[X] - 5 == b[X] + b[W]:
-            vPlayer[X] = 0 
-            p[X] = b[X] + b[W] + 5
-            p[Y] = vPlayer[BOT] - hitbox[H]
+        # elif p[X] - 5 == b[X] + b[W]:
+        #     vPlayer[X] = 0 
+        #     p[X] = b[X] + b[W] + 5
+        #     p[Y] = vPlayer[BOT] - hitbox[H]
 
         if p[X] + hitbox[W] > b[X] and p[X] < b[X] + b[W] and p[Y] + hitbox[H] >= b[Y] and p[Y] + hitbox[H] + vPlayer[Y] > b[Y]:
             vPlayer[BOT] = b[Y]
@@ -354,13 +354,13 @@ def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
 
     for b in borders[1]:
 
-        if (p[X] + 5) + hitbox[W] == b[X]:
-            vPlayer[X] = 0
-            p[X] = b[X] - 5
+        # if (p[X] + 5) + hitbox[W] == b[X]:
+        #     vPlayer[X] = 0
+        #     p[X] = b[X] - 5
 
-        elif p[X] - 5 == b[X] + b[W]:
-            vPlayer[X] = 0 
-            p[X] = b[X] + b[W] + 5
+        # elif p[X] - 5 == b[X] + b[W]:
+        #     vPlayer[X] = 0 
+        #     p[X] = b[X] + b[W] + 5
 
         if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(b):
             vPlayer[TOP] = b[Y] + b[H]

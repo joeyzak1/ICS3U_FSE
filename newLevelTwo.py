@@ -143,10 +143,11 @@ def move(p, player, sprites, borders, spikes):
     if keys[K_SPACE] and p[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
         vPlayer[Y] = jumpSpeed
 
-    if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1:
+    # for border in borders:
+    if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1:
         shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd)
 
-    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1:
+    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, borders) == -1:
         shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd)
 
 
