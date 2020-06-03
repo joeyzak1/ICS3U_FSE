@@ -17,6 +17,7 @@ import newLevelTwo as lev2
 import levelThree as lv3
 import boss as bs
 import outro
+import sys #for quitting pygame window without going to previous
 
 bh=False
 os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
@@ -103,7 +104,9 @@ def menu(action, p, lives):
     while action == 'menu':
         for evt in event.get():
             if evt.type == QUIT:
-                action = 'end'
+                sys.exit()
+                quit()
+                # action = 'end'
 
         # mixer.music.load(intro.music[intro.m])
         # mixer.music.play(-1)
@@ -128,10 +131,10 @@ def menu(action, p, lives):
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             # action = 'lev1'
-            # level_One('lev1', p, lives)
+            level_One('lev1', p, lives)
             # level_Two('lev2', lev2.pRect)
             # level_Three('lev3')
-            boss('boss', lives)
+            # boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         
@@ -142,7 +145,10 @@ def level_One(action, p, lives):
     while action == 'lev1':
         for evt in event.get():
             if evt.type == QUIT:
-                action = 'end'
+                sys.exit()
+                quit()
+                # quit()
+                # action = 'end'
 
         m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
@@ -176,7 +182,8 @@ def level_Two(action, p, lives):
     while action == 'lev2':
         for evt in event.get():
             if evt.type == QUIT:
-                action = 'end'
+                sys.exit()
+                quit()
 
             
         if checkDoor(lev2.pRect, lev2.doorRect): #checking if enetered door for level 3, goes to level 3
@@ -205,7 +212,8 @@ def level_Three(action, p, lives):
     while action == 'lev3':
         for evt in event.get():
             if evt.type == QUIT:
-                action = 'end'
+                sys.exit()
+                quit()
 
         # m = 3
 
@@ -222,7 +230,8 @@ def boss(action, lives):
     while action == 'boss':
         for evt in event.get():
             if evt.type == QUIT:
-                action = 'end'
+                sys.exit()
+                quit()
 
         # m = 4
         if bs.checkDoor(bs.pRect, bs.door, bs.visible):
@@ -255,7 +264,8 @@ def outro_func(action, p, lives):
     while action == 'outro':
         for evt in event.get():
             if evt.type == QUIT:
-                action = 'end'
+                sys.exit()
+                quit()
 
         if len(outro.timePassed) < 1700:
             outro.drawScene(outro.player, outro.pRect, ch1_sprites, outro.timePassed, outro.myCounter) #only one function for certain amount of time
@@ -279,7 +289,8 @@ def gameOver(action):
     while action == 'over':
         for evt in event.get():
             if evt.type == QUIT:
-                action = 'end'
+                sys.exit()
+                quit()
         
         screen.blit(gameOverImg, (0, 0))
         if len(timePassed) == 10:
