@@ -29,6 +29,9 @@ myClock = time.Clock()
 timePassed = []
 timeCounter = 0
 
+mixer.music.load('audio/IntroBack.wav')
+mixer.music.play(-1)
+
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
     global helpDialog

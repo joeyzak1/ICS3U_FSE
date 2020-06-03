@@ -72,6 +72,11 @@ hitCounter = 0
 
 livesPic = image.load('Other/live.png')
 
+mixer.init()
+if pRect[X] == 250 and pRect[Y] == 529:
+    mixer.music.load('audio/lev2Back.wav')
+    mixer.music.play(-1)
+
 
 def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont, lives):
     'draws the scene'
@@ -120,7 +125,8 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
 
     # print(timePassed)
 
-    
+
+
     # print(p[X])
     myCounter += 1
     hitCounter += 1

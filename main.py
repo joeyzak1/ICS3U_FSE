@@ -24,8 +24,6 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
 init()
 width, height = 1024, 768; screen = display.set_mode((width,height))
-music = ['audio/RunningSoundEffectIntro.ogg', 'audio/MainMenuMusic.ogg']
-music_pos = 0
 
 RED = (255,0,0); GREY = (127,127,127); BLACK = (0,0,0); WHITE = (255,255,255); BLUE = (0,0,255); GREEN = (0,255,0); YELLOW = (255,255,0) #cols
 
@@ -59,6 +57,13 @@ ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for
 ch1_levelOne = [512, 675, 4, 0]
 p = Rect(512, 675, 35, 50) #beginning rect for level one
 bullets_slugs = []
+currentScene = ''
+
+#intro music
+# mixer.init()
+# mixer.music.load('audio/IntroBack.wav')
+# mixer.music.play(-1)
+
 
 def addBossSprites(name, start, end):
     'this function adds sprites to a list which is then added to another list of sprites'
@@ -95,6 +100,19 @@ def get_hitbox(pic, size):
     hitbox = Rect(size[X], size[Y], pic_w, pic_h)
     return hitbox
 
+# scenes = ['intro', 'lev1', 'lev2', 'lev3', 'boss', 'outro', 'music']
+# tracks = ['audio/IntroBack.wav']
+# for i in range(len(scenes)):
+#     if scenes[i] == currentScene:
+#         mixer.music.load(tracks[i])
+#         mixer.music.play(-1)
+introScene = True
+levOneScene = False
+levTwoScene = False
+levThreeScene = False
+bossScene = False
+outroScene = False
+gameOverScene = False
 
 
 
@@ -126,12 +144,18 @@ def menu(action, p, lives):
 
         intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
         intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking)
+        # if len(intro.timePassed) > 2:
+        #     currentScene = 'intro'
+            # mixer.music.load('audio/IntroBack.wav')
+            # mixer.music.play(-1)
+        #     mixer.music.play(-1)
 
 
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             # action = 'lev1'
             # level_One('lev1', p, lives)
+            mixer.music.stop()
             level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3')
             # boss('boss', lives)
@@ -187,6 +211,7 @@ def level_Two(action, p, lives):
 
             
         if checkDoor(lev2.pRect, lev2.doorRect): #checking if enetered door for level 3, goes to level 3
+            mixer.music.stop()
             level_Three('lev3', lv3.pRect, lives)
 
         else:
@@ -305,5 +330,17 @@ def gameOver(action):
         display.update()
         myClock.tick(60)
 
+# def musicChooser(currentScene):
+# scenes = ['intro', 'lev1', 'lev2', 'lev3', 'boss', 'outro', 'music']
+# tracks = ['audio/IntroBack.wav']
+# for i in range(len(scenes)):
+#     if scenes[i] == currentScene:
+#         mixer.music.load(tracks[i])
+#         mixer.music.play(-1)
+    # else:
+    #     mixer.music.stop()
+
 menu('menu', p, lives)
+musicChooser(currentScene)
+
 quit()
