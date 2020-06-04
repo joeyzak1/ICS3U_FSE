@@ -19,8 +19,6 @@ bottom = GROUND
 jumpSpeed = -20
 gravity = 1
 
-platGrav = False #not needed anymore
-
 #nav variables
 X = 0
 Y = 1
@@ -62,16 +60,15 @@ healthBlocks = [Rect(10125, 200, 50, 50)] #health blocks
 
 doorRect = Rect(15650, 80, 40, 75) #door
 
-platCounter = 0 
-
 #for time
 timePassed = []
 timeHit = []
 myCounter = 0
 hitCounter = 0
 
-livesPic = image.load('Other/live.png')
+livesPic = image.load('Other/live.png') #lives picture (the face)
 
+#sounds
 jumpSound = mixer.Sound('audio/effects/Jump.wav')
 healthAddition = mixer.Sound('audio/effects/Powerup.wav')
 playerDamage = mixer.Sound('audio/effects/Explosion.wav')
@@ -100,15 +97,12 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
 
     for b in birds: #go through the birds
         shortcutFunctions.birdSprites(b, birdSprites, offset) 
-
     
-    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #sprites
-    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
-    # draw.rect(screen, (255, 0, 0), [vPlayer[SCREENX], p[Y], hitBox[W], hitBox[H]], 2) #hitbox drawing
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #hit counter
 
     if myCounter % 60 == 0: #for time
         timePassed.append('t')
-    for spike in spikes:
+    for spike in spikes: #to try with spikes (possibly remove later)
         if p.collidelist(spike) != -1:
             timeHit.append('h')
 
@@ -119,40 +113,40 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     for i in range(lives+1):
         screen.blit(livesPic, (10 + 50*i, 80))
 
+    #same things as level one
     myCounter += 1
     hitCounter += 1
     display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
     display.update()
     myClock.tick(60)
-    return timePassed, myCounter, timeHit
+    return timePassed, myCounter, timeHit #to reduce globals
 
 def move(p, player, sprites, borders, spikes, vPlayer):
+    'this function moves the guy'
+    keys = key.get_pressed()
+
+    #left and right end of the screen
     leftEnd = 50
     rightEnd = 15850
 
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #hitbox
 
-    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
-    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
+    if keys[K_SPACE] and p[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1: #checking if it is ok to jump
+        jumpSound.play() #play the jump sound
+        vPlayer[Y] = jumpSpeed #go to jump speed
 
-    keys = key.get_pressed()
-
-    if keys[K_SPACE] and p[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
-        jumpSound.play()
-        vPlayer[Y] = jumpSpeed
-
-    if keys[K_x]:
-        sword.play()
-        player[ROW] = 0
+    if keys[K_x]: #checking if its ok to attack
+        sword.play() #play sword sound
+        player[ROW] = 0 #set sprite frame category to 0
 
     # for border in borders:
-    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1:
-        # movement.play()
-        shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd)
+    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1 and p[X] > leftEnd: #checking if it is ok to go left
+        shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd) #move left
 
-    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, borders) == -1:
-        # movement.play()
-        shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd)
+    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, borders) == -1: #checking if it is ok to go right
+        shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd) #move right
 
+    #rest of the function is the same as level one
 
     else:
         player[COL] = 0
@@ -169,82 +163,77 @@ def move(p, player, sprites, borders, spikes, vPlayer):
 
     p[X] += vPlayer[X]
     player[X] = p[X]
-    # if platGrav == False:
-    # if platCounter != 1:
     vPlayer[Y] += gravity
-    if platCounter == 1:
-        vPlayer[Y] = 0
 
-    return vPlayer
+    return vPlayer #to reduce globals
 
 
 def moveBad(player, bird):
-    shortcutFunctions.moveBird(player, birds)
+    'moves the bird (had an old plan to move multiple)'
+    shortcutFunctions.moveBird(player, birds) #moves the bird
 
 
 def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicList, birds, timePassed, timeHit, vPlayer, health, hitCounter):
+    'checks for collision, etc.'
 
-    invincibility = 0
+    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #hitbox of player
 
-    shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
-    hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
-
-    for plat in plats:
-        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
+    for plat in plats: #go through the platforms
+        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]: #normal like other levels
             vPlayer[BOT] = plat[Y]
             p[Y] = vPlayer[BOT] - p[H]
             vPlayer[Y] = 0
-            if p[Y] + hitBox[H] >= plat[Y]:
-                p[Y] = plat[Y] - hitBox[H]
+            if p[Y] + hitBox[H] >= plat[Y]: #this is so the player doesnt fall through the platform (weird issue)
+                p[Y] = plat[Y] - hitBox[H] #do the same as above
                 vPlayer[Y] = 0
 
     for h in healthBlocks: #go through health increase squares
         if vPlayer[Y] < 0 and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(h) and health <= 2: #checking if below the box and touch
-            if health < 2:
-                healthAddition.play()
-                health = 2
+            if health < 2: #will only do if health isnt full
+                healthAddition.play() #play health addition noise
+                health = 2 #health is now full
 
-            vPlayer[TOP] = h[Y] + h[H] #same stuff as blocks here
-            #fixes player going above block
-            if p[Y] > h[H] + h[Y]:
+            vPlayer[TOP] = h[Y] + h[H] #same stuff as blocks here (see level one for comments here)
+            #fixes player going above health sq
+            if p[Y] > h[H] + h[Y]: #checking if the player is below
                 vPlayer[Y] = 0
 
-            else:
-                p[Y] = vPlayer[TOP]
+            else: #anything else 
+                p[Y] = vPlayer[TOP] #v top would be player y pos
 
-            vPlayer[Y] += gravity
+            vPlayer[Y] += gravity #add gravity so the player goes off
 
-    shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health, timeHit)
-    shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
+    # shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health, timeHit) not needed anymore
+    shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders) #checks if player is on borders
 
-    p[Y] += vPlayer[Y]
+    p[Y] += vPlayer[Y] #incerase player y by vel
     # player[Y] += vPlayer[Y]
 
 
-    p[W] = hitBox[W]
+    p[W] = hitBox[W] #sets p width and height to hitbox w and h
     p[H] = hitBox[H]
 
     # print(health)
 
-    for spike in spikes:
+    for spike in spikes: #this loop checks if the player touches the spikes at all
         # if len(timePassed) % 2 == 0:
         if Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
             or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
                 or Rect(p[X], p[Y] + 5, hitBox[W], hitBox[H]).collidelist(spike) != -1\
                     or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1:
-            playerDamage.play()
-            health = -1
+            playerDamage.play() #damage sound
+            health = -1 #dies
 
-    for bird in birds:
-        bRect = Rect(bird[X], bird[Y], 226, 189)
-        if p.colliderect(bRect):
-            playerDamage.play()
-            health -= 1
-            birds.remove(bird)
+    for bird in birds: #go through birds
+        bRect = Rect(bird[X], bird[Y], 226, 189) #create a rect for the bird (same size as sprite)
+        if p.colliderect(bRect): #checking if the player touches the bird
+            playerDamage.play() #play damage sound
+            health -= 1 #decrease health by 1
+            birds.remove(bird) #remove bird from screen
 
-    if p[Y] + hitBox[H] >= GROUND:
-        vPlayer[BOT] = GROUND
+    if p[Y] + hitBox[H] >= GROUND: #same as other levels here, so the player doesnt go below the ground
+        vPlayer[BOT] = GROUND 
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
 
-    return health, hitCounter
+    return health, hitCounter #to reduce global variables
