@@ -26,6 +26,7 @@ movement = mixer.Sound('audio/effects/movement.wav')
 movement.set_volume(.05)
 enterDoor = mixer.Sound('audio/effects/door.wav')
 sword = mixer.Sound('audio/effects/sword.wav')
+timeTicking = mixer.Sound('audio/effects/timeTickingLong.wav')
 
 def drawPlats(plats, offset):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects, pic is a pic of a plat'
@@ -412,6 +413,9 @@ def timeFont(font, timePassed, length):
     - timePassed is the list for counting the time
     - Length is the length of how long the level will give you'''
     text = font.render(str(int(length-len(timePassed))), True, (255, 255, 255)) #get the text by taking the length of the level minus length of list, convert to string
+    if length - len(timePassed) < 6:
+        text = font.render(str(int(length-len(timePassed))), True, (255, 0, 0)) #get the text by taking the length of the level minus length of list, convert to string
+        timeTicking.play()
     text2 = font.render(str(int(length-len(timePassed))), True, (0, 0, 0)) #get the text by taking the length of the level minus length of list, convert to string
     screen.blit(text2, (942, 5))
     screen.blit(text, (940, 3)) #blit the text
