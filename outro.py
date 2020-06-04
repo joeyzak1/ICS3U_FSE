@@ -72,7 +72,7 @@ def drawScene(player, p, picList, timePassed, myCounter):
     # if len(timePassed) >= 200:
     #     fade(1024, 768)
 
-    myCounter += 1 #for time
+    myCounter += 1 #    for time
 
     movement.play()
     display.update()

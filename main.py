@@ -122,7 +122,7 @@ def menu(action, p, lives):
         '''Every single function will follow the same format'''
 
         intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
-        intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking)
+        intro.helpDialog, intro.timePassed, intro.timeCounter = intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking, intro.helpDialog, intro.timePassed, intro.timeCounter)
         # if len(intro.timePassed) > 2:
         #     currentScene = 'intro'
             # mixer.music.load('audio/IntroBack.wav')
@@ -137,11 +137,10 @@ def menu(action, p, lives):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             mixer.music.load('audio/lev1Back.wav') #play level one music
             mixer.music.play(-1)
-            # level_One('lev1', p, lives)
-            # mixer.music.stop()
+            level_One('lev1', p, lives)
             # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
-            boss('boss', lives)
+            # boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         

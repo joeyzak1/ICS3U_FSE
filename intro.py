@@ -33,11 +33,8 @@ selectSound = mixer.Sound('audio/effects/Blip_Select.wav')
 movement = mixer.Sound('audio/effects/movement.wav')
 movement.set_volume(.05)
 
-def draw_introScene(player, picList, mB, mW):
+def draw_introScene(player, picList, mB, mW, helpDialog, timePassed, timeCounter):
     'This function draws the scene'
-    global helpDialog
-    global timePassed
-    global timeCounter
 
     mx, my = mouse.get_pos()
     mb = mouse.get_pressed()
@@ -84,7 +81,7 @@ def draw_introScene(player, picList, mB, mW):
             helpDialog = True #sets help to true (will display help in another function)
             t = len(timePassed)
 
-        help(timePassed, t) #help screen (only activates whehn helpdialog is treu)
+        helpDialog = help(timePassed, t, helpDialog) #help screen (only activates whehn helpdialog is treu)
         # mixer.music.load('audio/MainMenuMusic.mp3')
         # mixer.music.play(-1)
 
@@ -98,6 +95,8 @@ def draw_introScene(player, picList, mB, mW):
     display.update()
     myClock.tick(60)
     display.set_caption("Super Swordy Boy - Intro Screen     FPS = " + str(int(myClock.get_fps())))
+
+    return helpDialog, timePassed, timeCounter
 
 
 
@@ -121,13 +120,14 @@ def move_intro(player, picList, mB, mW):
     if player[COL]>=len(picList[ROW]): #making sure no errors occur with sprites
         player[COL] = 1   
 
-def help(timePassed, t):
+def help(timePassed, t, helpDialog):
     'Help screen'
-    global helpDialog #get the boolean variable
+    # global helpDialog #get the boolean variable
     if helpDialog: #checking if help dialog is selected
         screen.blit(helpImg, (0, 0)) #blits the picture
         if len(timePassed) - t == 10: #this is for how long to leave on the screen (timepassed list was being weird)
             helpDialog = False #sops the list
+    return helpDialog
 
 
 background_imgs = [image.load("Backgrounds/back_" + str(i) + ".png").convert() for i in range(2)] #background images
