@@ -70,6 +70,10 @@ movement.set_volume(.05)
 enterDoor = mixer.Sound('audio/effects/door.wav')
 sword = mixer.Sound('audio/effects/sword.wav')
 
+#some text
+freshman = font.Font('fonts/Freshman.ttf', 70)
+enterText = freshman.render('Press Enter on the Door', True, (2, 26, 112))
+
 
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives, timePassed, myCounter):
@@ -85,8 +89,8 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
     else:
 
         offset = v[SCREENX]-p[X] #offset to move screen with eveything
-        print (v[SCREENX])
         screen.blit(backPic, (offset, 0)) #background
+        screen.blit(enterText, (6900 + offset, 400))
 
         # for plat in plats: #this for loop blits all platforms in the correct position
         #     plat = plat.move(offset, 0)

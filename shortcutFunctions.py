@@ -18,6 +18,7 @@ vBrid_gravity = -1
 playerHealth = 2
 
 platPic = image.load('Other/plat.png').convert()
+healthBlock = image.load('Other/healthBox.png').convert()
 
 jumpSound = mixer.Sound('audio/effects/Jump.wav')
 healthAddition = mixer.Sound('audio/effects/Powerup.wav')
@@ -57,7 +58,8 @@ def drawHealthBlocks(healthB, offset):
     'this function draws the health blocks'
     for h in healthB:
         h = h.move(offset, 0)
-        draw.rect(screen, (0, 0, 255), h)
+        screen.blit(healthBlock, h)
+        # draw.rect(screen, (0, 0, 255), h)
 
 def drawSlugs(slugs):
     'this function draws slugs - work on these LATER'

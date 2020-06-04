@@ -33,6 +33,9 @@ selectSound = mixer.Sound('audio/effects/Blip_Select.wav')
 movement = mixer.Sound('audio/effects/movement.wav')
 movement.set_volume(.05)
 
+
+
+
 def draw_introScene(player, picList, mB, mW, helpDialog, timePassed, timeCounter):
     'This function draws the scene'
 

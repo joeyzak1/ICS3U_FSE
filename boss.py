@@ -81,6 +81,12 @@ playerBulletsSound = mixer.Sound('audio/effects/Laser1.wav')
 bossBulletsCollide = mixer.Sound('audio/effects/Explosion2.wav')
 bossDead = mixer.Sound('audio/effects/Randomize4.wav')
 
+#some text
+freshman = font.Font('fonts/Freshman.ttf', 40)
+gunText = freshman.render('You Have a Gun! Press "Z" on you Keyboard', True, (255, 255, 255))
+gunText2 = freshman.render('You Have a Gun! Press "Z" on you Keyboard', True, (0, 0, 0))
+
+
 def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossHealth, healthPic, playerBullets, playerHealth, visible, lives, vPlayer, myTime, timePassed, timeShown):
     'this function draws the scene'
 
@@ -102,6 +108,10 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
     if playerHealth >= 0:
         screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
 
+    if 0 <= len(timePassed) < 7:
+        screen.blit(gunText2, (51, 205))
+        screen.blit(gunText, (46, 200))
+
     if visible: #visible is true when ever the boss has not ran out of health
         draw.rect(screen, (255, 0, 0), (b[X], b[Y] - 50, b[W], 20)) #the health bar DAMAGED (behind the shrinking health bar that is grey)
         draw.rect(screen, (25, 25, 25), (b[X], b[Y] - 50, b[W] - ((b[W] // 75)*(75 - bossHealth)), 20)) #this health bar shrinks, reveals the red health bar. This tactic was shown on one of Tech with Tim videos
@@ -110,6 +120,7 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
     elif not visible: #if the boss has ran out of health
         # draw.rect(screen, (255, 0, 0), door)
         screen.blit(doorImg, door) #draw the door
+
 
 
     if myTime % 60 == 0: #for counting how much time passed
@@ -266,14 +277,14 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
                 bullH = True #set to true
 
 
-        if player[ROW] == 0 and int(player[COL]) == 4 and p.colliderect(b): #checking if the players attack collides with the boss
-            bh -= 0.2 #need a fix here
-            if vBoss[3] < 0 and keys[K_RIGHT]:
-                vPlayer[X] = -1
-            elif vBoss[3] > 0 and keys[K_LEFT]:
-                vPlayer[X] = 1
+        # if player[ROW] == 0 and int(player[COL]) == 4 and p.colliderect(b): #checking if the players attack collides with the boss
+        #     bh -= 0.2 #need a fix here
+        #     if vBoss[3] < 0 and keys[K_RIGHT]:
+        #         vPlayer[X] = -1
+        #     elif vBoss[3] > 0 and keys[K_LEFT]:
+        #         vPlayer[X] = 1
         
-        if player[ROW] != 0 and p.colliderect(b) or player[ROW] == 0 and b[Y] + b[H] + 40 == GROUND and vBoss[Y] < 0 and p[Y] == b[Y] + b[H]: #checking if player is not attacking and player touches the boss
+        if p.colliderect(b) or player[ROW] == 0 and b[Y] + b[H] + 40 == GROUND and vBoss[Y] < 0 and p[Y] == b[Y] + b[H]: #checking if player is not attacking and player touches the boss
             ph = -1 #player dies
 
 
@@ -286,9 +297,10 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
             bossDead.play() #play dead sound
             visible = False #not visible anymore
         
-            
-    if not visible and p.colliderect(b): #making sure the player won't die after boss is dead
-        ph = ph #health will remain the same
+    if not visible:
+        bullets = []
+        if p.colliderect(b): #making sure the player won't die after boss is dead
+            ph = ph #health will remain the same
 
     #checking if player and boss are on the ground
     if p[Y] + hitBox[H] >= GROUND:
