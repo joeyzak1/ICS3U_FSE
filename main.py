@@ -137,11 +137,11 @@ def menu(action, p, lives):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             mixer.music.load('audio/lev1Back.wav') #play level one music
             mixer.music.play(-1)
-            # level_One('lev1', p, lives)
+            level_One('lev1', p, lives)
             # mixer.music.stop()
             # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
-            boss('boss', lives)
+            # boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         
@@ -176,11 +176,12 @@ def level_One(action, p, lives):
 
             else: #normal game loop
                 levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
-                levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
-                levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed)
-                levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
+                levelOne.move_bird(p, levelOne.birds, levelOne.bird_p, bird_sprites)
+                # levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
+                levelOne.isJump = levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed, levelOne.isJump)
+                levelOne.timePassed, levelOne.myCounter = levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                     levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
-                    levelOne.doorRect, health_img, levelOne.health, timeFont, lives)
+                    levelOne.doorRect, health_img, levelOne.health, timeFont, lives, levelOne.timePassed, levelOne.myCounter)
 
 
         

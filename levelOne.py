@@ -8,8 +8,6 @@ init()
 size = width, height = 1024, 768
 myClock = time.Clock()
 screen = display.set_mode(size)
-
-extra=False #for bullets
 minusHealth = False
 
 backPic = image.load("Backgrounds/background_levelOne.png").convert() #background
@@ -74,12 +72,12 @@ sword = mixer.Sound('audio/effects/sword.wav')
 
 
 
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives):
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives, timePassed, myCounter):
     'this function draws the scene'
     # global rapid #globalizing rapid and player hitbox
     # global pHitbox
-    global timePassed
-    global myCounter
+    # global timePassed
+    # global myCounter
 
     if check_levelTwo(door, p):
         screen.fill((0))
@@ -169,6 +167,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         display.update()
         myClock.tick(60)
         display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps()))) #change the name of the window, with fps
+        return timePassed, myCounter #to reduce locals and globals
 
 
 
@@ -183,25 +182,24 @@ def healthBar(health, pics):
 
 def move(p, player, sprites, blocks, birds):
     'this function moves the player'
-    global extra #variable for bullets to move in the correct direction
     keys = key.get_pressed() 
     mx, my = mouse.get_pos()
 
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #checking if it is ok to jump
         v[Y] = jumpSpeed #sets the verticla velocity of the player to the jump speed
-        jumpSound.play()
+        jumpSound.play() #play jump sound
 
     if keys[K_x]: #checking if the attacking key is clicked
         player[ROW] = 0 #sets the sprite category to attack
-        sword.play()
+        sword.play() #play sword sound
 
 
     elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks): #checking if left arrow is clicked and it is ok to move left
         player[ROW] = 3 #sets the sprite category to left moving
 
         if p[X] + 5 < 7550: #checking if player isnt at the end
-            movement.play()
+            movement.play() #play footsteps
 
             if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
                 v[X] = -10 #doubles the speed of the player
@@ -215,7 +213,7 @@ def move(p, player, sprites, blocks, birds):
 
         elif p[X] > 7550: #checking if the player is past the right end point
             if v[X] == 0: #checking if the players horizontal velocity is zero
-                movement.play()
+                movement.play() #play footsteps
                 if keys[K_LSHIFT] or keys[K_RSHIFT]: #checkin if shift
                     v[X] = -10 #sets the velocity to 10 in left direction
 
@@ -224,14 +222,13 @@ def move(p, player, sprites, blocks, birds):
 
 
     elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks): #checking if right arrow is clicked and it is okay to move
-        extra=True #sets this variable to true - to move bullets extra 5 pixels left
         player[ROW] = 4 #sets the sprite category to right moving 
 
         if p[X] + 5 < 7550: #checking if the player is not at the end point
-            movement.play()
+            movement.play() #play footsteps
 
             if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking for shift key
-                v[X] = 10 #double velocity in right direction
+                v[X] = 10 #double vel in right direction
             else: #no shift
                 v[X] = 5 #normal velocity in positive direction
 
@@ -241,7 +238,7 @@ def move(p, player, sprites, blocks, birds):
         elif p[X] > 7550: #checking if past the right end
             player[COL] = 0 #idle position
             if v[X] > 0: #making sure the velocity will ALWAYS be 0
-                v[X] = 0
+                v[X] = 0 #won't move
 
 
     else: #so the player doesn't move on its own
@@ -257,8 +254,6 @@ def move(p, player, sprites, blocks, birds):
     if player[COL] >= len(sprites[ROW]): #checking if the frame number is greater than the amount of sprites in the category
         player[COL] = 1 #sets to the 2nd frame
 
-
-
     p[X] += v[X] #adding the velocity to the players x position
     v[Y] += gravity #add gravity to the player's vertical velocity
 
@@ -267,7 +262,6 @@ def move(p, player, sprites, blocks, birds):
 
 def move_bird(p, birds, bird_p, sprites):
     'this function moves the bird close to the player'
-    # for bird in birds:
     for b in bird_p: #go through the bird list
          
         if p[X] + 500 >= b[X]: #check if the player is close to the bird horizontally
@@ -282,30 +276,12 @@ def move_bird(p, birds, bird_p, sprites):
             b[ROW] += 0.2 #sprite frame
             
             b[Y] += v_bird[Y] #increase bird pos by vel
-            b[X] += v_bird[X]
+            b[X] += v_bird[X] #increasing bird x pos by vel
 
 
-
-def move_slugBullets(bull):
-    global extra
-    for b in bull:
-##        b[2] = v_bull[0]
-        b[0] += b[2]
-        b[1] += b[3]
-        if extra:
-            # print("extra 5 pixels left")
-            b[0]-=5
-        if b[0] < 0:
-            bull.remove(b)
-
-
-
-
-
-def move_bad(p, bull, birds, bird_p, sprite_bird):
-    'this function moves all the enemies'
-    # move_slugBullets(bull)
-    move_bird(p, birds, bird_p, sprite_bird)
+# def move_bad(p, bull, birds, bird_p, sprite_bird):
+#     'this function moves all the enemies'
+#     move_bird(p, birds, bird_p, sprite_bird)
 
 
 
@@ -314,12 +290,13 @@ def move_bad(p, bull, birds, bird_p, sprite_bird):
 
 
 
-def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq, timePassed):
+def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq, timePassed, isJump):
     'this function mainly checks for collision'
-    global isJump
+    # global isJump
+    # global health
+    # global seconds
+    # global timeLimit
     global health
-    global seconds
-    global timeLimit
 
 
     #redoing the sprites here to use hitbox
@@ -438,6 +415,13 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
         v[BOT] = GROUND #set the bottom to the ground
         p[Y] = GROUND-p[H] #the players y pos to the ground perfectly
         v[Y] = 0 #vertical velocity is 0
+
+    # global isJump
+    # global health
+    # global seconds
+    # global timeLimit
+    return isJump
+
 
 
 
