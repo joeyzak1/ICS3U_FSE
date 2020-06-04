@@ -17,6 +17,14 @@ vBrid_gravity = -1
 
 playerHealth = 2
 
+jumpSound = mixer.Sound('audio/effects/Jump.wav')
+healthAddition = mixer.Sound('audio/effects/Powerup.wav')
+playerDamage = mixer.Sound('audio/effects/Explosion.wav')
+movement = mixer.Sound('audio/effects/movement.wav')
+movement.set_volume(.05)
+enterDoor = mixer.Sound('audio/effects/door.wav')
+sword = mixer.Sound('audio/effects/sword.wav')
+
 def drawPlats(plats, offset, pic):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects, pic is a pic of a plat'
     # global offset
@@ -180,6 +188,7 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     keys = key.get_pressed()
 
     if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
+        movement.play()
         player[ROW] = 3 #set sprite row to left moving
         vPlayer[X] = -5 #set velocity of player to -5 (left moving)
         if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if chift was held
@@ -189,6 +198,7 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
 
     elif p[X] > rightEnd: #checking if right end is touched
         if vPlayer[X] == 0: #checking if players velocity is 0
+            movement.play()
             if keys[K_LSHIFT] or keys[K_RSHIFT]: #if shift clicked
                 vPlayer[X] = -10 #v = -10 (left faster)
             else: #anything else
@@ -200,6 +210,7 @@ def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
     keys = key.get_pressed()
 
     if leftEnd < p[X] + 5 < rightEnd: #checking if good with borders
+        movement.play()
         player[ROW] = 4 #sprite row to right moving 
         vPlayer[X] = 5 #player x velocity set to 5 (moving right)
         if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if shift is clicked
@@ -218,6 +229,7 @@ def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
 
 
     if leftEnd < p[X] + 5 < rightEnd:
+        movement.play()
         player[ROW] = 3
         vPlayer[X] = -5
         if keys[K_LSHIFT] or keys[K_RSHIFT]:
@@ -225,6 +237,7 @@ def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
 
     elif p[X] > rightEnd:
         if vPlayer[X] == 0:
+            movement.play()
             if keys[K_LSHIFT] or keys[K_RSHIFT]:
                 vPlayer[X] = -10
             else:
@@ -235,6 +248,7 @@ def moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd):
     keys = key.get_pressed()
 
     if leftEnd < p[X] + 5 < rightEnd:
+        movement.play()
         player[ROW] = 4
         vPlayer[X] = 5
         if keys[K_LSHIFT] or keys[K_RSHIFT]:
@@ -273,16 +287,15 @@ def birdSprites(bird, sprites, offset):
     screen.blit(pic, pictureRect) #blit bird pic
     return pictureRect
 
-def checkBirdCollision(birds, p, health):
+def checkBirdCollision(birds, p, health, player): #NOT BEING USED
     'check for bird collision with PLAYER'
     # if p.collidelist(birds):
     for bird in birds: #go through the bird list
         birdRect = Rect(bird[X], bird[Y], 100, 80) #create a rect for the bird
         if p.colliderect(birdRect): #checking if the player touched the bird
             health -= 1 #take 1 away from health
+            playerDamage.play()
             time.delay(150) #pause the program for 150ms to indicate pause
-            if health < 0: #fix later
-                health = 0
 
 
 def checkSpikes(p, hitbox, spikes, vPlayer, health, hitList):

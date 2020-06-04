@@ -29,8 +29,7 @@ myClock = time.Clock()
 timePassed = []
 timeCounter = 0
 
-# mixer.music.load('audio/IntroBack.wav')
-# mixer.music.play(-1)
+selectSound = mixer.Sound('audio/effects/Blip_Select.wav')
 
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
@@ -77,6 +76,7 @@ def draw_introScene(player, picList, mB, mW):
 
             else: #nothing
                 highlight_rects[i] = (255, 255, 255) #white
+            
 
         if mb[0] == 1 and introRects[1].collidepoint(mx, my): #checking if help was clicked
             helpDialog = True #sets help to true (will display help in another function)

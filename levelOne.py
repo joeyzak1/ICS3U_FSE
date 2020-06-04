@@ -63,6 +63,15 @@ myCounter = 0
 myClock = time.Clock()
 livesPic = image.load('Other/live.png')
 
+jumpSound = mixer.Sound('audio/effects/Jump.wav')
+healthAddition = mixer.Sound('audio/effects/Powerup.wav')
+playerDamage = mixer.Sound('audio/effects/Explosion.wav')
+movement = mixer.Sound('audio/effects/movement.wav')
+movement.set_volume(.05)
+enterDoor = mixer.Sound('audio/effects/door.wav')
+sword = mixer.Sound('audio/effects/sword.wav')
+
+
 
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives):
     'this function draws the scene'
@@ -179,15 +188,18 @@ def move(p, player, sprites, blocks, birds):
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #checking if it is ok to jump
         v[Y] = jumpSpeed #sets the verticla velocity of the player to the jump speed
+        jumpSound.play()
 
     if keys[K_x]: #checking if the attacking key is clicked
         player[ROW] = 0 #sets the sprite category to attack
+        sword.play()
 
 
     elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks): #checking if left arrow is clicked and it is ok to move left
         player[ROW] = 3 #sets the sprite category to left moving
 
         if p[X] + 5 < 7550: #checking if player isnt at the end
+            movement.play()
 
             if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
                 v[X] = -10 #doubles the speed of the player
@@ -201,6 +213,7 @@ def move(p, player, sprites, blocks, birds):
 
         elif p[X] > 7550: #checking if the player is past the right end point
             if v[X] == 0: #checking if the players horizontal velocity is zero
+                movement.play()
                 if keys[K_LSHIFT] or keys[K_RSHIFT]: #checkin if shift
                     v[X] = -10 #sets the velocity to 10 in left direction
 
@@ -213,6 +226,7 @@ def move(p, player, sprites, blocks, birds):
         player[ROW] = 4 #sets the sprite category to right moving 
 
         if p[X] + 5 < 7550: #checking if the player is not at the end point
+            movement.play()
 
             if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking for shift key
                 v[X] = 10 #double velocity in right direction
@@ -384,14 +398,16 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
     for h in healthSq: #go through health increase squares
         if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq) and health < 2: #checking if below the box and touch
-            healthIncrease += 1
-        #for health increments
-        if healthIncrease == 1:
-            if health == 0:
-                health = 1
+            healthAddition.play()
+            health = 2
+        #     healthIncrease += 1
+        # #for health increments
+        # if healthIncrease == 1:
+        #     if health == 0:
+        #         health = 1
 
-            elif health == 1:
-                health = 2
+        #     elif health == 1:
+        #         health = 2
             # if health < 2:
             #     health += 1
 
@@ -455,6 +471,7 @@ def check_attack(p, player, sprites, slugs, birds):
             birdRect = Rect(bird[X], bird[Y], 100, 80) #create rect object for bird
             if pHitbox.colliderect(birdRect): #check if touched bird
                 # health += 1
+                # playerAttack.play()
                 birds.remove(bird) #removes the bird
 
 def checkHealthSq (healthSq):
@@ -496,6 +513,7 @@ def check_levelTwo(door, p):
     keys = key.get_pressed()
 
     if keys[K_RETURN] and p.colliderect(door): #checking if entered the door
+        enterDoor.play()
         return True  #returns boolean variable
 
     else:
@@ -514,6 +532,7 @@ def birdCollision(p, player, birds):
                 health = health #health remains the same
 
             else: #if player was not attacking
+                playerDamage.play()
                 health -= 1 #lower health by 1
                 time.delay(150) #this will pause the program for 150ms to indicate you got hit
 

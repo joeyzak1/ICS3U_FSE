@@ -59,11 +59,6 @@ p = Rect(512, 675, 35, 50) #beginning rect for level one
 bullets_slugs = []
 currentScene = ''
 
-#intro music
-# mixer.init()
-# mixer.music.load('audio/IntroBack.wav')
-# mixer.music.play(-1)
-
 
 def addBossSprites(name, start, end):
     'this function adds sprites to a list which is then added to another list of sprites'
@@ -91,6 +86,8 @@ display.set_icon(ch1_sprites[4][0])
 
 health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)] #health images
 lives = 5
+
+
 
 def get_hitbox(pic, size):
     'hitbox - only used in level one - same as the one used in shortcut functiond'
@@ -151,10 +148,10 @@ def menu(action, p, lives):
             mixer.music.load('audio/lev1Back.wav')
             mixer.music.play(-1)
             # action = 'lev1'
-            level_One('lev1', p, lives)
+            # level_One('lev1', p, lives)
             # mixer.music.stop()
 
-            # level_Two('lev2', lev2.pRect, lives)
+            level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3')
             # boss('boss', lives)
             # outro_func('outro', outro.pRect)

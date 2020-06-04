@@ -72,6 +72,15 @@ hitCounter = 0
 
 livesPic = image.load('Other/live.png')
 
+jumpSound = mixer.Sound('audio/effects/Jump.wav')
+healthAddition = mixer.Sound('audio/effects/Powerup.wav')
+playerDamage = mixer.Sound('audio/effects/Explosion.wav')
+movement = mixer.Sound('audio/effects/movement.wav')
+movement.set_volume(.05)
+enterDoor = mixer.Sound('audio/effects/door.wav')
+sword = mixer.Sound('audio/effects/sword.wav')
+
+
 # mixer.init()
 # # if pRect[X] == 250 and pRect[Y] == 529:
 # mixer.music.load('audio/lev2Back.wav')
@@ -148,13 +157,20 @@ def move(p, player, sprites, borders, spikes):
     keys = key.get_pressed()
 
     if keys[K_SPACE] and p[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1:
+        jumpSound.play()
         vPlayer[Y] = jumpSpeed
 
+    if keys[K_x]:
+        sword.play()
+        player[ROW] = 0
+
     # for border in borders:
-    if keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1:
+    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1:
+        # movement.play()
         shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd)
 
     elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, borders) == -1:
+        # movement.play()
         shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd)
 
 
@@ -220,7 +236,8 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
     for h in healthBlocks: #go through health increase squares
         if vPlayer[Y] < 0 and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(h) and health <= 2: #checking if below the box and touch
             if health < 2:
-                health += 1
+                healthAddition.play()
+                health = 2
             # healthIncrease += 1
         #for health increments
         # if healthIncrease == 1:
@@ -250,7 +267,7 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
 
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health, timeHit)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
-    shortcutFunctions.checkBirdCollision(birds, p, health)
+    # shortcutFunctions.checkBirdCollision(birds, p, health)
 
     # for plat in plats:
     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
@@ -278,6 +295,7 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
     for bird in birds:
         bRect = Rect(bird[X], bird[Y], 226, 189)
         if p.colliderect(bRect):
+            playerDamage.play()
             health -= 1
             birds.remove(bird)
 
