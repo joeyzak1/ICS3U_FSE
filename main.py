@@ -106,14 +106,6 @@ def get_hitbox(pic, size):
 #     if scenes[i] == currentScene:
 #         mixer.music.load(tracks[i])
 #         mixer.music.play(-1)
-introScene = True
-levOneScene = False
-levTwoScene = False
-levThreeScene = False
-bossScene = False
-outroScene = False
-gameOverScene = False
-
 
 
 def menu(action, p, lives):
@@ -149,14 +141,20 @@ def menu(action, p, lives):
             # mixer.music.load('audio/IntroBack.wav')
             # mixer.music.play(-1)
         #     mixer.music.play(-1)
+        if intro.timeCounter == 95:
+            mixer.music.load('audio/IntroBack.wav')
+            mixer.music.play(-1)
 
 
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
+            mixer.music.load('audio/lev1Back.wav')
+            mixer.music.play(-1)
             # action = 'lev1'
-            # level_One('lev1', p, lives)
-            mixer.music.stop()
-            level_Two('lev2', lev2.pRect, lives)
+            level_One('lev1', p, lives)
+            # mixer.music.stop()
+
+            # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3')
             # boss('boss', lives)
             # outro_func('outro', outro.pRect)
@@ -176,6 +174,8 @@ def level_One(action, p, lives):
 
         m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
+            mixer.music.load('audio/lev2Back.wav')
+            mixer.music.play(-1)
             level_Two('lev2', lev2.pRect, lives) #checking if enetered door at end
 
         else:
@@ -184,7 +184,9 @@ def level_One(action, p, lives):
                 health = 2 #reset health
                 lives -= 1
                 if lives == -1:
-                    gameOver('over')
+                    mixer.music.load('audio/gameOverAudio.wav')
+                    mixer.music.play(-1)
+                    gameOver('over', lives)
                 reload(levelOne) #if all health is taken away, restart the level
 
             else: #normal game loop
@@ -211,7 +213,8 @@ def level_Two(action, p, lives):
 
             
         if checkDoor(lev2.pRect, lev2.doorRect): #checking if enetered door for level 3, goes to level 3
-            mixer.music.stop()
+            mixer.music.load('audio/lev3Back.wav')
+            mixer.music.play(-1)
             level_Three('lev3', lv3.pRect, lives)
 
         else:
@@ -220,7 +223,9 @@ def level_Two(action, p, lives):
                 lev2.health = 2
                 lives -= 1
                 if lives == -1:
-                    gameOver('over')
+                    mixer.music.load('audio/gameOverAudio.wav')
+                    mixer.music.play(-1)
+                    gameOver('over', lives)
                 reload(lev2) #restart level 2
 
             else: #normal game loop
@@ -243,6 +248,8 @@ def level_Three(action, p, lives):
         # m = 3
 
         if lv3.checkBoss(lv3.pRect, lv3.doorRect): #goes to boss if door was clicked
+            mixer.music.load('audio/bossBack.wav')
+            mixer.music.play(-1)
             boss('boss', lives)
 
         else: #game loop
@@ -271,7 +278,9 @@ def boss(action, lives):
             reload(bs)
             lives -= 1
             if lives == -1:
-                    gameOver('over', lives)
+                mixer.music.load('audio/gameOverAudio.wav')
+                mixer.music.play(-1)
+                gameOver('over', lives)
             level_Three('lev3', pRect, lives)
 
         else: #normal game loop
@@ -306,7 +315,7 @@ myCounter = 0
 
 gameOverImg = image.load('Other/GameOverScreen.png').convert()
 
-def gameOver(action):
+def gameOver(action, lives):
     global myCounter
     global timePassed
     global second
@@ -320,6 +329,8 @@ def gameOver(action):
         screen.blit(gameOverImg, (0, 0))
         if len(timePassed) == 10:
             second = True
+            mixer.music.load('audio/IntroBack.wav')
+            mixer.music.play(-1)
             menu('menu', p, lives)
             # exit(gameOver)
 
@@ -341,6 +352,4 @@ def gameOver(action):
     #     mixer.music.stop()
 
 menu('menu', p, lives)
-musicChooser(currentScene)
-
 quit()

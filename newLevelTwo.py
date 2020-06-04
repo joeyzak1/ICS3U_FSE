@@ -72,10 +72,10 @@ hitCounter = 0
 
 livesPic = image.load('Other/live.png')
 
-mixer.init()
-if pRect[X] == 250 and pRect[Y] == 529:
-    mixer.music.load('audio/lev2Back.wav')
-    mixer.music.play(-1)
+# mixer.init()
+# # if pRect[X] == 250 and pRect[Y] == 529:
+# mixer.music.load('audio/lev2Back.wav')
+# mixer.music.play(-1)
 
 
 def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont, lives):
@@ -86,6 +86,7 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     global myCounter
     global timeHit
     global hitCounter
+    # global songIncrease
 
     offset = vPlayer[SCREENX] - p[X] #offset and background
     screen.blit(backPic, (offset, 0))

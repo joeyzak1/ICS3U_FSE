@@ -29,8 +29,8 @@ myClock = time.Clock()
 timePassed = []
 timeCounter = 0
 
-mixer.music.load('audio/IntroBack.wav')
-mixer.music.play(-1)
+# mixer.music.load('audio/IntroBack.wav')
+# mixer.music.play(-1)
 
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
@@ -87,6 +87,7 @@ def draw_introScene(player, picList, mB, mW):
         # mixer.music.play(-1)
 
     else: #if player is not at 683
+        print(timeCounter)
         screen.blit(pic, (player[X], player[Y])) #blitting the correct position
 
     if timeCounter % 60 == 0:
