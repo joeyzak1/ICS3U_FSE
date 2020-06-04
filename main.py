@@ -148,10 +148,10 @@ def menu(action, p, lives):
             mixer.music.load('audio/lev1Back.wav')
             mixer.music.play(-1)
             # action = 'lev1'
-            # level_One('lev1', p, lives)
+            level_One('lev1', p, lives)
             # mixer.music.stop()
             # level_Two('lev2', lev2.pRect, lives)
-            level_Three('lev3', lv3.pRect, lives)
+            # level_Three('lev3', lv3.pRect, lives)
             # boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
