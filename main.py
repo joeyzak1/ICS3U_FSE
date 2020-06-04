@@ -141,7 +141,7 @@ def menu(action, p, lives):
             # mixer.music.load('audio/IntroBack.wav')
             # mixer.music.play(-1)
         #     mixer.music.play(-1)
-        if intro.timeCounter == 95:
+        if intro.timeCounter == 95 and not second:
             mixer.music.load('audio/IntroBack.wav')
             mixer.music.play(-1)
 
@@ -328,6 +328,7 @@ def gameOver(action, lives):
         
         screen.blit(gameOverImg, (0, 0))
         if len(timePassed) == 10:
+            reload(intro)
             second = True
             mixer.music.load('audio/IntroBack.wav')
             mixer.music.play(-1)
