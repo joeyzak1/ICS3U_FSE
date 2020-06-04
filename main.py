@@ -85,7 +85,7 @@ timeFont = font.Font('fonts/Freshman.ttf', 40) #font for time in corner
 display.set_icon(ch1_sprites[4][0])
 
 health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)] #health images
-lives = 5
+lives = 5 #amount of lives
 
 
 
@@ -109,15 +109,15 @@ def menu(action, p, lives):
 
 
         mx, my = mouse.get_pos(); mb = mouse.get_pressed()
-        if second:
-            reload(outro)
+        if second: #checking if its not the first time going through the game starting at the intro
+            reload(outro) #reload all modules
             reload(levelOne)
             reload(lev2)
             reload(lv3)
             reload(bs)
-            p = Rect(512, 675, 35, 50)
-            lives = 5
-            second = False
+            p = Rect(512, 675, 35, 50) #player rect for level 1
+            lives = 5 #reset lives
+            second = False #set to false
 
         '''Every single function will follow the same format'''
 
@@ -128,21 +128,20 @@ def menu(action, p, lives):
             # mixer.music.load('audio/IntroBack.wav')
             # mixer.music.play(-1)
         #     mixer.music.play(-1)
-        if intro.timeCounter == 95 and not second:
+        if intro.timeCounter == 95 and not second: #checking if the intro screen isnt black anymore and can play music
             mixer.music.load('audio/IntroBack.wav')
             mixer.music.play(-1)
 
 
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
-            mixer.music.load('audio/lev1Back.wav')
+            mixer.music.load('audio/lev1Back.wav') #play level one music
             mixer.music.play(-1)
-            # action = 'lev1'
-            level_One('lev1', p, lives)
+            # level_One('lev1', p, lives)
             # mixer.music.stop()
             # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
-            # boss('boss', lives)
+            boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         
@@ -168,19 +167,17 @@ def level_One(action, p, lives):
             if levelOne.health < 0 or len(levelOne.timePassed) == 125: #checking if health goes below zero (DEAD)
                 p = Rect(512, 675, 35, 50) #beginning rect for level one 
                 health = 2 #reset health
-                lives -= 1
-                if lives == -1:
-                    mixer.music.load('audio/gameOverAudio.wav')
-                    mixer.music.play(-1)
-                    gameOver('over', lives)
+                lives -= 1 #lower lives by 1
+                if lives == -1: #checking if lives go below 0
+                    mixer.music.load('audio/gameOverAudio.wav') #load gane over music
+                    mixer.music.play(-1) #play it
+                    gameOver('over', lives) #play game over scene
                 reload(levelOne) #if all health is taken away, restart the level
 
             else: #normal game loop
                 levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
                 levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
-                # levelOne.move_slugBullets(bullets_slugs)
                 levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed)
-                # levelOne.check_bullSlug(bullets_slugs, p)
                 levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                     levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
                     levelOne.doorRect, health_img, levelOne.health, timeFont, lives)
@@ -204,7 +201,7 @@ def level_Two(action, p, lives):
             level_Three('lev3', lv3.pRect, lives)
 
         else:
-            if lev2.health < 0 or len(lev2.timePassed) == 300: #checking if player died
+            if lev2.health < 0 or len(lev2.timePassed) == 300: #checking if player died, see comments for lev 1 (same process)
                 p = Rect(250, 529, 4, 0) #resetting a few things
                 lev2.health = 2
                 lives -= 1
@@ -234,14 +231,14 @@ def level_Three(action, p, lives):
         # m = 3
 
         if lv3.checkBoss(lv3.pRect, lv3.doorRect): #goes to boss if door was clicked
-            mixer.music.load('audio/bossBack.wav')
+            mixer.music.load('audio/bossBack.wav') #plays boss music
             mixer.music.play(-1)
-            boss('boss', lives)
+            boss('boss', lives) #boss
 
         else: #game loop
-            lv3.move(lv3.pRect, lv3.player, ch1_sprites)
-            lv3.check(lv3.pRect, lv3.player, ch1_sprites)
-            lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect, lives)
+            lv3.v = lv3.move(lv3.pRect, lv3.player, ch1_sprites, lv3.v)
+            lv3.check(lv3.pRect, lv3.player, ch1_sprites, lv3.v)
+            lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect, lives, health_img, lv3.v)
 
 def boss(action, lives):
     'boss'
@@ -253,33 +250,34 @@ def boss(action, lives):
                 quit()
 
         # m = 4
-        if bs.checkDoor(bs.pRect, bs.door, bs.visible):
-            mixer.music.load('audio/outroBack.wav')
+        if bs.checkDoor(bs.pRect, bs.door, bs.visible): #checking if the player went into the door after defeating the boss
+            mixer.music.load('audio/outroBack.wav') #outro music
             mixer.music.play(-1)
-            outro_func('outro', outro.pRect, lives)
+            outro_func('outro', outro.pRect, lives) #outro
 
-        if bs.playerHealth < 0 or len(bs.timePassed) >= 500: #checking if defeated by by boss
-            for b in bs.timePassed:
+        if bs.playerHealth < 0 or len(bs.timePassed) >= 500: #checking if defeated by by boss, same process as others
+            for b in bs.timePassed: #remove everything from time passed
                 bs.timePassed.remove(b) #reset time
             pRect = Rect(300, 600, 50, 50)
             bs.playerHealth = 2
-            reload(lv3)
+            reload(lv3) #reload modules
             reload(bs)
             lives -= 1
             if lives == -1:
                 mixer.music.load('audio/gameOverAudio.wav')
                 mixer.music.play(-1)
                 gameOver('over', lives)
-            level_Three('lev3', pRect, lives)
+            level_Three('lev3', pRect, lives) #go back to lev 3
 
         else: #normal game loop
             pHealth = bs.mainHealth(bs.playerHealth)
-            bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bossSprites, timeFont, bs.playerBullets)
-            bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth)
-            if 1:
-                bs.bullets,bs.playerHealth,bs.bh, bs.playerBullets, bs.bossHealth, bs.visible = bs.checkCollision(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets, pHealth, bs.visible)
-            bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, health_img, bs.playerBullets, pHealth, bs.visible, lives)
-            # print("hi",bs.playerHealth,bs.bh,len(bs.bullets))
+            bs.vPlayer = bs.moveGuy(bs.pRect, bs.player, ch1_sprites, bs.bossRect, bossSprites, timeFont, bs.playerBullets, bs.vPlayer)
+            bs.vBoss = bs.moveBoss(bs.boss, bs.bossRect, bs.timePassed, bs.pRect, bossSprites, bs.bossHealth, bs.vBoss)
+            if 1: #so the health and bullets will work properly
+                bs.bullets,bs.playerHealth,bs.bh, bs.playerBullets, bs.bossHealth, bs.visible, bs.bullSpeed, bs.rapid = bs.checkCollision(
+                    bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bs.bossHealth, bs.playerBullets, pHealth, bs.visible, bs.vPlayer, bs.vBoss, bs.bullSpeed, bs.rapid, bs.timePassed)
+            bs.myTime, bs.timePassed, bs.timeShown = bs.drawScene(bs.pRect, bs.player, ch1_sprites, bs.boss, bs.bossRect, bs.bullets, bossSprites, timeFont, bs.bossHealth, 
+            health_img, bs.playerBullets, pHealth, bs.visible, lives, bs.vPlayer, bs.myTime, bs.timePassed, bs.timeShown)
 
 def outro_func(action, p, lives):
     'outro screen'
@@ -299,12 +297,12 @@ def outro_func(action, p, lives):
             second = True
             menu('menu', ch1_intro, lives)
 
-timePassed = []
-myCounter = 0
+timePassed = [] #time passed
+myCounter = 0 #counter
 
-gameOverImg = image.load('Other/GameOverScreen.png').convert()
+gameOverImg = image.load('Other/GameOverScreen.png').convert() #game over image
 
-def gameOver(action, lives):
+def gameOver(action, lives): #game over screen
     global myCounter
     global timePassed
     global second
@@ -315,31 +313,21 @@ def gameOver(action, lives):
                 sys.exit()
                 quit()
         
-        screen.blit(gameOverImg, (0, 0))
-        if len(timePassed) == 10:
-            reload(intro)
-            second = True
-            mixer.music.load('audio/IntroBack.wav')
-            mixer.music.play(-1)
-            menu('menu', p, lives)
-            # exit(gameOver)
+        screen.blit(gameOverImg, (0, 0)) #blit the game over image until 10 seconds have passed
+        if len(timePassed) == 10: #checking if 10 seconds have passed
+            reload(intro) #reload intro module
+            second = True #set second = true so all modules can be reloaded in the intro
+            mixer.music.load('audio/IntroBack.wav') #load music
+            mixer.music.play(-1) #play intro music
+            menu('menu', p, lives) #run the intro screen
 
-        if myCounter % 60 == 0:
-            timePassed.append('t')
-        myCounter += 1
+        if myCounter % 60 == 0: #checking if the counter can be divisible by 60
+            timePassed.append('t') #append to time list, as 1 second passes each time something is appened
+        myCounter += 1 #add one to the counter
 
-        display.update()
-        myClock.tick(60)
+        display.update() #update the screen
+        myClock.tick(60) #60 fps
 
-# def musicChooser(currentScene):
-# scenes = ['intro', 'lev1', 'lev2', 'lev3', 'boss', 'outro', 'music']
-# tracks = ['audio/IntroBack.wav']
-# for i in range(len(scenes)):
-#     if scenes[i] == currentScene:
-#         mixer.music.load(tracks[i])
-#         mixer.music.play(-1)
-    # else:
-    #     mixer.music.stop()
 
 menu('menu', p, lives)
 quit()
