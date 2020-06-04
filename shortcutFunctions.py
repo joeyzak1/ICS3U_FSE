@@ -17,6 +17,8 @@ vBrid_gravity = -1
 
 playerHealth = 2
 
+platPic = image.load('Other/plat.png').convert()
+
 jumpSound = mixer.Sound('audio/effects/Jump.wav')
 healthAddition = mixer.Sound('audio/effects/Powerup.wav')
 playerDamage = mixer.Sound('audio/effects/Explosion.wav')
@@ -25,12 +27,12 @@ movement.set_volume(.05)
 enterDoor = mixer.Sound('audio/effects/door.wav')
 sword = mixer.Sound('audio/effects/sword.wav')
 
-def drawPlats(plats, offset, pic):
+def drawPlats(plats, offset):
     'this function draws platforms with offset. the platforms must be in a LIST, and must be Rect objects, pic is a pic of a plat'
     # global offset
     for plat in plats: #taking every element from list of plats
         plat = plat.move(offset, 0)
-        screen.blit(pic, (plat[X], plat[Y])) #blitting each plat pic in plat pos
+        screen.blit(platPic, (plat[X], plat[Y])) #blitting each plat pic in plat pos
 
 def drawSpikes(spikes, offset):
     'this functions draws spikes'

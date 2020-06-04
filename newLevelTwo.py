@@ -100,7 +100,7 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     offset = vPlayer[SCREENX] - p[X] #offset and background
     screen.blit(backPic, (offset, 0))
 
-    shortcutFunctions.drawPlats(plats, offset, platPic) #objects to draw
+    shortcutFunctions.drawPlats(plats, offset) #objects to draw
     shortcutFunctions.drawSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
     shortcutFunctions.drawHealthBlocks(healthBlocks, offset)

@@ -6,7 +6,9 @@ init()
 
 
 size = width, height = 1024, 768
+myClock = time.Clock()
 screen = display.set_mode(size)
+
 extra=False #for bullets
 minusHealth = False
 
@@ -60,7 +62,6 @@ pHitbox = Rect(0, 0, 0, 0)
 timePassed = []
 myCounter = 0
 
-myClock = time.Clock()
 livesPic = image.load('Other/live.png')
 
 jumpSound = mixer.Sound('audio/effects/Jump.wav')
@@ -89,10 +90,11 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         print (v[SCREENX])
         screen.blit(backPic, (offset, 0)) #background
 
-        for plat in plats: #this for loop blits all platforms in the correct position
-            plat = plat.move(offset, 0)
+        # for plat in plats: #this for loop blits all platforms in the correct position
+        #     plat = plat.move(offset, 0)
             # draw.rect(screen, (0), plat)
-        # drawPlats(plats)
+        drawPlats(plats, offset)
+
 
         for block in blocks: #this loop blits all blocks
             block = block.move(offset, 0)
