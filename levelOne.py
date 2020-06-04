@@ -12,7 +12,7 @@ screen = display.set_mode(size)
 extra=False #for bullets
 minusHealth = False
 
-backPic = image.load("Level One/background_levelOne.png").convert() #background
+backPic = image.load("Backgrounds/background_levelOne.png").convert() #background
 
 GROUND = 677; bottom = GROUND #ground and jump variables for jumping, platforms, etc.
 jumpSpeed = -20; gravity = 1
