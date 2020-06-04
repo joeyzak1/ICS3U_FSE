@@ -190,7 +190,8 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left'
     keys = key.get_pressed()
 
-    if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
+    # if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
+    if p[X] > leftEnd:
         movement.play()
         player[ROW] = 3 #set sprite row to left moving
         vPlayer[X] = -5 #set velocity of player to -5 (left moving)
@@ -211,15 +212,14 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
 def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the right'
     keys = key.get_pressed()
-
-    if leftEnd < p[X] + 5 < rightEnd: #checking if good with borders
-        movement.play()
-        player[ROW] = 4 #sprite row to right moving 
-        vPlayer[X] = 5 #player x velocity set to 5 (moving right)
-        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if shift is clicked
-            vPlayer[X] = 10 #v = 10 (faster)
-        if vPlayer[SCREENX] < 700: #checking if good with screen pos
-            vPlayer[SCREENX] += 5 #increase by 5
+ #checking if good with borders
+    movement.play()
+    player[ROW] = 4 #sprite row to right moving 
+    vPlayer[X] = 5 #player x velocity set to 5 (moving right)
+    if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if shift is clicked
+        vPlayer[X] = 10 #v = 10 (faster)
+    if vPlayer[SCREENX] < 700: #checking if good with screen pos
+        vPlayer[SCREENX] += 5 #increase by 5
 
     elif p[X] > rightEnd: #checking if good with right end of level
         player[COL] = 0 #cannot move, therefore must be in idle position

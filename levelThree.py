@@ -68,8 +68,8 @@ def move(p, player, sprites, v):
     'moves the player'
     keys = key.get_pressed()
 
-    leftEnd = 300 #left end of the screen
-    rightEnd = 3900 #right end of the screen
+    leftEnd = 290 #left end of the screen
+    rightEnd = 3500 #right end of the screen
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #checking if the player can jump
         jumpSound.play() #play the jump sound

@@ -126,7 +126,7 @@ def move(p, player, sprites, borders, spikes, vPlayer):
     keys = key.get_pressed()
 
     #left and right end of the screen
-    leftEnd = 50
+    leftEnd = 230
     rightEnd = 15850
 
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #hitbox
@@ -226,10 +226,12 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
 
     for bird in birds: #go through birds
         bRect = Rect(bird[X], bird[Y], 226, 189) #create a rect for the bird (same size as sprite)
-        if p.colliderect(bRect): #checking if the player touches the bird
+        if p.colliderect(bRect) and player[ROW] != 0: #checking if the player touches the bird
             playerDamage.play() #play damage sound
             health -= 1 #decrease health by 1
             birds.remove(bird) #remove bird from screen
+        elif p.colliderect(bRect) and player[ROW] == 0:
+            birds.remove(bird)
 
     if p[Y] + hitBox[H] >= GROUND: #same as other levels here, so the player doesnt go below the ground
         vPlayer[BOT] = GROUND 

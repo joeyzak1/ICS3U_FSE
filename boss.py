@@ -268,9 +268,14 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
 
         if player[ROW] == 0 and int(player[COL]) == 4 and p.colliderect(b): #checking if the players attack collides with the boss
             bh -= 0.2 #need a fix here
+            if vBoss[3] < 0 and keys[K_RIGHT]:
+                vPlayer[X] = -1
+            elif vBoss[3] > 0 and keys[K_LEFT]:
+                vPlayer[X] = 1
         
         if player[ROW] != 0 and p.colliderect(b) or player[ROW] == 0 and b[Y] + b[H] + 40 == GROUND and vBoss[Y] < 0 and p[Y] == b[Y] + b[H]: #checking if player is not attacking and player touches the boss
             ph = -1 #player dies
+
 
         if b[Y] + b[H] >= GROUND: #same ground mechanics as player, see other files for comments
             vBoss[BOT] = GROUND
@@ -280,6 +285,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
         if bh < 0: #checking if the boss health is less than 0
             bossDead.play() #play dead sound
             visible = False #not visible anymore
+        
             
     if not visible and p.colliderect(b): #making sure the player won't die after boss is dead
         ph = ph #health will remain the same

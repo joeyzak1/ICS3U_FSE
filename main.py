@@ -137,11 +137,11 @@ def menu(action, p, lives):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             mixer.music.load('audio/lev1Back.wav') #play level one music
             mixer.music.play(-1)
-            level_One('lev1', p, lives)
+            # level_One('lev1', p, lives)
             # mixer.music.stop()
             # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
-            # boss('boss', lives)
+            boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         
@@ -269,6 +269,8 @@ def boss(action, lives):
                 mixer.music.load('audio/gameOverAudio.wav')
                 mixer.music.play(-1)
                 gameOver('over', lives)
+            mixer.music.load('audio/lev3Back.wav')
+            mixer.music.play(-1)
             level_Three('lev3', pRect, lives) #go back to lev 3
 
         else: #normal game loop
