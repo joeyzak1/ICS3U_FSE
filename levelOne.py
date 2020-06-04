@@ -279,23 +279,8 @@ def move_bird(p, birds, bird_p, sprites):
             b[X] += v_bird[X] #increasing bird x pos by vel
 
 
-# def move_bad(p, bull, birds, bird_p, sprite_bird):
-#     'this function moves all the enemies'
-#     move_bird(p, birds, bird_p, sprite_bird)
-
-
-
-
-
-
-
-
 def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq, timePassed, isJump):
     'this function mainly checks for collision'
-    # global isJump
-    # global health
-    # global seconds
-    # global timeLimit
     global health
 
 
@@ -379,19 +364,6 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
         if isJump and Rect(p[X], p[Y]-5, p[W], p[H]).colliderect(sq) and health < 2: #checking if below the box and touch
             healthAddition.play()
             health = 2
-        #     healthIncrease += 1
-        # #for health increments
-        # if healthIncrease == 1:
-        #     if health == 0:
-        #         health = 1
-
-        #     elif health == 1:
-        #         health = 2
-            # if health < 2:
-            #     health += 1
-
-            # else:
-            #     health = health
 
             v[TOP] = sq[Y] + sq[H] #same stuff as blocks here
             #fixes player going above block
@@ -402,10 +374,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
                 p[Y] = v[TOP]
 
             v[Y] += gravity
-
-        # print (health)
-
-    # timer (seconds, timeLimit) #timer
+            
     birdCollision(p, player, birds) #bird collision
     check_attack(p, player, sprites, slugs, birds) #checking attacking
 
@@ -415,23 +384,7 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
         v[BOT] = GROUND #set the bottom to the ground
         p[Y] = GROUND-p[H] #the players y pos to the ground perfectly
         v[Y] = 0 #vertical velocity is 0
-
-    # global isJump
-    # global health
-    # global seconds
-    # global timeLimit
     return isJump
-
-
-
-
-def check_bullSlug(bull, p):
-    for b in bull:
-        bullS_Rect = Rect(b[0], b[1], 20, 10)
-        if bullS_Rect.colliderect(p):
-            bull.remove(b)
-            break
-
 
 
 def check_attack(p, player, sprites, slugs, birds):
@@ -449,49 +402,10 @@ def check_attack(p, player, sprites, slugs, birds):
     pHitbox = createHitbox(pic, p[X], p[Y])
 
     if player[ROW] == 0: #checking if sprites are in attacking position
-        # for slug in slugs: #go through slugs
-        #     if pHitbox.colliderect(slug): #checking if touched the slug
-        #         slugs.remove(slug) #remove the slugs
-
         for bird in birds: #go through the birds
             birdRect = Rect(bird[X], bird[Y], 100, 80) #create rect object for bird
             if pHitbox.colliderect(birdRect): #check if touched bird
-                # health += 1
-                # playerAttack.play()
                 birds.remove(bird) #removes the bird
-
-def checkHealthSq (healthSq):
-    global health
-    global minusHealth
-    healthCheck = 0
-
-
-    # row = player[ROW]
-    # col = int(player[COL])
-
-    # if row == 0 and col == 5:
-    #     col = 0
-
-    # pic = sprites[row][col]
-    # pHitbox = createHitbox(pic, p[X], p[Y])
-
-    for h in healthSq:
-        if pHitbox[Y] - 5 == h[Y] + h[H]:
-        # if pHitbox.colliderect(h):
-            healthCheck += 1
-
-            if healthCheck == 1 and health < 2:
-                health += 1
-        # health = health
-        # if pHitbox.colliderect(h) and health < 2 and minusHealth == False:
-        #     health += 1 
-        #     minusHealth = True
-        # if minusHealth:
-        #     health -= 1
-
-
-    # print (health)
-
 
 
 def check_levelTwo(door, p):
@@ -527,13 +441,3 @@ def hitBlocks(x, y, blocks):
     'check if hit blocks in a list'
     playerRect = Rect(x, y, 35, 50) #creates rect object for the player
     return playerRect.collidelist(blocks) #return if the player collided or not (used in move func)
-
-
-def timer(counter, myList):
-    'timer function - NEED TO FIX'
-    global current_time
-    if counter % 60 == 0: #check if 1 sec passed
-        myList.append ('time') #add to list to take length
-
-    counter += 1 #add one to counter
-    # print (240 - len(myList))
