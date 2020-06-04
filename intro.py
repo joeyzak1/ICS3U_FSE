@@ -30,6 +30,8 @@ timePassed = []
 timeCounter = 0
 
 selectSound = mixer.Sound('audio/effects/Blip_Select.wav')
+movement = mixer.Sound('audio/effects/movement.wav')
+movement.set_volume(.05)
 
 def draw_introScene(player, picList, mB, mW):
     'This function draws the scene'
@@ -105,9 +107,11 @@ def move_intro(player, picList, mB, mW):
     player[ROW] = 0 #sprite row is 0
 
     if player[X] < 683: #checking if less than 683, increase pos if less
+        movement.play()
         player[X] += 7
 
     else: #if 683
+        movement.play()
         player[X] = 683 #sets player at that pos
         mB -= 300 #for move background (remove these)
         mW -= 3072
