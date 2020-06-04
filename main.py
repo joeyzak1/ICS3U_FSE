@@ -137,9 +137,9 @@ def menu(action, p, lives):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             mixer.music.load('audio/lev1Back.wav') #play level one music
             mixer.music.play(-1)
-            level_One('lev1', p, lives)
+            # level_One('lev1', p, lives)
             # mixer.music.stop()
-            # level_Two('lev2', lev2.pRect, lives)
+            level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
             # boss('boss', lives)
             # outro_func('outro', outro.pRect)
@@ -213,10 +213,11 @@ def level_Two(action, p, lives):
                 reload(lev2) #restart level 2
 
             else: #normal game loop
-                lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes)
+                lev2.vPlayer = lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes, lev2.vPlayer)
                 lev2.moveBad(lev2.player, lev2.birds)
-                lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, lev2.healthBlocks, health_img, lev2.birds, lev2.timePassed, lev2.timeHit)
-                lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, lev2.healthBlocks, health_img, lev2.doorRect, timeFont, lives)
+                lev2.health, lev2.hitCounter = lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, lev2.healthBlocks, health_img, lev2.birds, lev2.timePassed, lev2.timeHit, lev2.vPlayer, lev2.health, lev2.hitCounter)
+                lev2.timePassed, lev2.myCounter, lev2.timeHit = lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, 
+                lev2.healthBlocks, health_img, lev2.doorRect, timeFont, lives, lev2.vPlayer, lev2.health, lev2.timePassed, lev2.myCounter, lev2.timeHit, lev2.hitCounter)
 
         
 

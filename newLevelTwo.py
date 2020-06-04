@@ -80,22 +80,8 @@ movement.set_volume(.05)
 enterDoor = mixer.Sound('audio/effects/door.wav')
 sword = mixer.Sound('audio/effects/sword.wav')
 
-
-# mixer.init()
-# # if pRect[X] == 250 and pRect[Y] == 529:
-# mixer.music.load('audio/lev2Back.wav')
-# mixer.music.play(-1)
-
-
-def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont, lives):
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont, lives, vPlayer, health, timePassed, myCounter, timeHit, hitCounter):
     'draws the scene'
-    global vPlayer
-    global health
-    global timePassed
-    global myCounter
-    global timeHit
-    global hitCounter
-    # global songIncrease
 
     offset = vPlayer[SCREENX] - p[X] #offset and background
     screen.blit(backPic, (offset, 0))
@@ -133,23 +119,17 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     for i in range(lives+1):
         screen.blit(livesPic, (10 + 50*i, 80))
 
-    # print(timePassed)
-
-
-
-    # print(p[X])
     myCounter += 1
     hitCounter += 1
     display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
     display.update()
     myClock.tick(60)
+    return timePassed, myCounter, timeHit
 
-def move(p, player, sprites, borders, spikes):
-    global vPlayer
-    global leftEnd
-    global rightEnd
-    global health
-    global platGrav
+def move(p, player, sprites, borders, spikes, vPlayer):
+    leftEnd = 50
+    rightEnd = 15850
+
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
@@ -195,35 +175,20 @@ def move(p, player, sprites, borders, spikes):
     if platCounter == 1:
         vPlayer[Y] = 0
 
+    return vPlayer
+
 
 def moveBad(player, bird):
     shortcutFunctions.moveBird(player, birds)
 
 
-def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicList, birds, timePassed, timeHit):
-    global health
-    global vPlayer
-    global platGrav
-    global platCounter
-    global hitCounter
-    # global timeHit
+def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicList, birds, timePassed, timeHit, vPlayer, health, hitCounter):
 
     invincibility = 0
-
-
-    
 
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX])
 
-    # shortcutFunctions.checkPlats(plats, p, player,hitBox, vPlayer)
-    # platCounter = 0
-    # for plat in plats:
-    #     if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]: #check if player is ON TOP of platform
-    #         vPlayer[BOT] = plat[Y] #set v bottom to platform y coord
-    #         p[Y] = vPlayer[BOT] - p[H] #set player pos [Y] to plat
-    #         vPlayer[Y] = 0 #set player y velocity to 0
-    #         platCounter += 1
     for plat in plats:
         if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + vPlayer[Y] > plat[Y]:
             vPlayer[BOT] = plat[Y]
@@ -238,19 +203,6 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
             if health < 2:
                 healthAddition.play()
                 health = 2
-            # healthIncrease += 1
-        #for health increments
-        # if healthIncrease == 1:
-        #     if health == 0:
-        #         health = 1
-
-        #     elif health == 1:
-        #         health = 2
-            # if health < 2:
-            #     health += 1
-
-            # else:
-            #     health = health
 
             vPlayer[TOP] = h[Y] + h[H] #same stuff as blocks here
             #fixes player going above block
@@ -261,19 +213,9 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
                 p[Y] = vPlayer[TOP]
 
             vPlayer[Y] += gravity
-    
-
-    # print(plats[5], p[X], p[Y], vPlayer)
 
     shortcutFunctions.checkSpikes(p, hitBox, spikes, vPlayer, health, timeHit)
     shortcutFunctions.checkBorders(p, hitBox, vPlayer, borders)
-    # shortcutFunctions.checkBirdCollision(birds, p, health)
-
-    # for plat in plats:
-    #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
-    #         vPlayer[BOT] = plat[Y]
-    #         p[Y] = vPlayer[BOT] - hitBox[H]
-    #         vPlayer[Y] = 0
 
     p[Y] += vPlayer[Y]
     # player[Y] += vPlayer[Y]
@@ -300,25 +242,9 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
             health -= 1
             birds.remove(bird)
 
-            # if invincibility > 0:
-            #     invincibility += 1
-    # for h in timeHit:
-    #     timeHit.remove(h)
-
-
-    
-
     if p[Y] + hitBox[H] >= GROUND:
         vPlayer[BOT] = GROUND
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
 
-    # if hitCounter % 60 == 0:
-    #     hitList.append('h')
-    # hitCounter += 1
-
-
-
-    # if p[Y] + hitBox[H] >= vPlayer[BOT]:
-    #     p[Y] = vPlayer[BOT] - hitBox[H]
-    #     vPlayer[Y] = 0
+    return health, hitCounter
