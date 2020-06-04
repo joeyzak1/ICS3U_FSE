@@ -3,6 +3,8 @@
 from pygame import *
 import shortcutFunctions
 
+init()
+
 screen = display.set_mode((1024, 768))
 myClock = time.Clock()
 
@@ -64,6 +66,19 @@ door = Rect(400, 300, 300, 422)
 doorImg = image.load('Other/outroDoor.png')
 #other
 livesPic = image.load('Other/live.png')
+
+jumpSound = mixer.Sound('audio/effects/Jump.wav')
+playerDamage = mixer.Sound('audio/effects/Explosion.wav')
+movement = mixer.Sound('audio/effects/movement.wav')
+movement.set_volume(.05)
+sword = mixer.Sound('audio/effects/sword.wav')
+bossJump = mixer.Sound('audio/effects/bossJump.wav')
+bossLand = mixer.Sound('audio/effects/bossLanding.wav')
+bossBullets = mixer.Sound('audio/effects/bossShooting.wav')
+playerBulletsSound = mixer.Sound('audio/effects/Laser1.wav')
+bossBulletsCollide = mixer.Sound('audio/effects/Explosion2.wav')
+bossDead = mixer.Sound('audio/effects/Randomize4.wav')
+
 
 def healthCheck(health):
     health -= 1
@@ -131,9 +146,11 @@ def moveGuy(p, player, sprites, b, bossSprites, timeFont, playerBullets):
     rightEnd = 978
 
     if keys[K_SPACE] and p[Y] + p[H] == vPlayer[BOT] and vPlayer[Y] == 0: #jump (see other files for comments)
+        jumpSound.play()
         vPlayer[Y] = jumpSpeed
 
     if keys[K_x]: #attacking
+        sword.play()
         player[ROW] = 0
 
     elif keys[K_LEFT] and p[X] - 5 > leftEnd and not Rect(p[X] -5, p[Y], p[W], p[H]).colliderect(b): #moving right 
@@ -171,6 +188,9 @@ def moveBoss(boss, b, timePassed, p, bossSprites, bossHealth):
         boss[COL] = 0
         boss[COL] -= 0.05
 
+    if boss[Y] + 5 == vBoss[BOT] and vBoss[Y] != 0:
+        bossLand.play()
+
     boss[COL] += 0.05 #sprite fram increasing
 
     if boss[COL] >= len(bossSprites[ROW]): #for making sure no errors in sprites
@@ -178,6 +198,7 @@ def moveBoss(boss, b, timePassed, p, bossSprites, bossHealth):
 
     b[X] += vBoss[3] #add x pos to direction at all times
     if b[X] > 620 or b[X] < 300: #checking if boss should change direction and jump
+        bossJump.play()
         vBoss[3] = -vBoss[3] #change direction
         vBoss[Y] = -30 #jump
 
@@ -221,6 +242,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
     #     timePassed=[]
 
     if keys[K_z] and rapid == 20: #checking if enough space between bullets is made and if bullet key was pressed
+        playerBulletsSound.play()
         playerBullets.append([p[X], p[Y], bullSpeed, 0]) #add bullets to list
         rapid = 0 #set to 0 to create space
             
@@ -233,6 +255,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
     for bull in playerBullets: #go through the player bullets list again (not a copy)
         bullRect = Rect(bull[0], bull[1], 30, 10) #create a rect object for the bullet
         if b.colliderect(bullRect): #checking if the boss collideed with the bullets
+            bossBulletsCollide.play()
             bh -= 1 #minus 1 to the boss health
             playerBullets.remove(bull) #remove the bullet from the player bullets list
             # playerBullets =[]
@@ -243,6 +266,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
 
         # if len(timePassed) % 5 == 0 and len(timePassed) > 0:
         if len(timePassed) % 3 == 0 and len(timePassed) > 0: #checking if its time for the boss to shoot multiple bullets, was % 5 before 
+            bossBullets.play()
             shortcutFunctions.createBossBullets(bullets, bullSpeed, b, rapid)
             timePassed=[]
 
@@ -319,6 +343,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
             vBoss[Y] = 0
 
         if bh < 0: #checking if the boss health is less than 0
+            bossDead.play()
             visible = False #not visible anymore
             
     if not visible and p.colliderect(b): 

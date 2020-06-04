@@ -150,9 +150,8 @@ def menu(action, p, lives):
             # action = 'lev1'
             # level_One('lev1', p, lives)
             # mixer.music.stop()
-
-            level_Two('lev2', lev2.pRect, lives)
-            # level_Three('lev3')
+            # level_Two('lev2', lev2.pRect, lives)
+            level_Three('lev3', lv3.pRect, lives)
             # boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
@@ -251,6 +250,7 @@ def level_Three(action, p, lives):
 
         else: #game loop
             lv3.move(lv3.pRect, lv3.player, ch1_sprites)
+            lv3.check(lv3.pRect, lv3.player, ch1_sprites)
             lv3.drawScene(lv3.pRect, lv3.player, ch1_sprites, lv3.doorRect, lives)
 
 def boss(action, lives):

@@ -290,6 +290,7 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
             or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1 \
                 or Rect(p[X], p[Y] + 5, hitBox[W], hitBox[H]).collidelist(spike) != -1\
                     or Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(spike) != -1:
+            playerDamage.play()
             health = -1
 
     for bird in birds:

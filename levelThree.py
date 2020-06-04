@@ -33,6 +33,14 @@ pRect = Rect(300, 600, 50, 50)
 
 doorRect = Rect(3100, 300, 300, GROUND-300)
 
+jumpSound = mixer.Sound('audio/effects/Jump.wav')
+healthAddition = mixer.Sound('audio/effects/Powerup.wav')
+playerDamage = mixer.Sound('audio/effects/Explosion.wav')
+movement = mixer.Sound('audio/effects/movement.wav')
+movement.set_volume(.05)
+bossDoor = mixer.Sound('audio/Effects/bossDoor.wav')
+sword = mixer.Sound('audio/effects/sword.wav')
+
 
 def drawScene(p, player, sprites, doorRect, lives):
     global v
@@ -42,7 +50,7 @@ def drawScene(p, player, sprites, doorRect, lives):
 
     doorRect = doorRect.move(offset, 0)
 
-    shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
+    # shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, v, v[SCREENX])
 
     for i in range(lives+1):
@@ -60,9 +68,14 @@ def move(p, player, sprites):
     rightEnd = 3900
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #fix this area
+        jumpSound.play()
         v[Y] = jumpSpeed
 
-    if keys[K_LEFT] and player[X] > leftEnd:
+    if keys[K_x]:
+        sword.play()
+        player[ROW] = 0
+
+    elif keys[K_LEFT] and player[X] > leftEnd:
         shortcutFunctions.moveGuyLeft(p, player, v, leftEnd, rightEnd)
 
     elif keys[K_RIGHT] and player[X] < rightEnd:
@@ -93,7 +106,6 @@ def check(p, player, sprites):
 
     p[H] = hitBox[H]
     p[W] = hitBox[W]
-
     
 
     if p[Y] + hitBox[H] >= GROUND:
@@ -104,6 +116,7 @@ def check(p, player, sprites):
 def checkBoss(door, p):
     keys = key.get_pressed()
     if keys[K_RETURN] and p.colliderect(door):
+        bossDoor.play()
         return True
     return False
 
