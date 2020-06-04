@@ -97,13 +97,6 @@ def get_hitbox(pic, size):
     hitbox = Rect(size[X], size[Y], pic_w, pic_h)
     return hitbox
 
-# scenes = ['intro', 'lev1', 'lev2', 'lev3', 'boss', 'outro', 'music']
-# tracks = ['audio/IntroBack.wav']
-# for i in range(len(scenes)):
-#     if scenes[i] == currentScene:
-#         mixer.music.load(tracks[i])
-#         mixer.music.play(-1)
-
 
 def menu(action, p, lives):
     'main menu'
@@ -113,10 +106,7 @@ def menu(action, p, lives):
             if evt.type == QUIT:
                 sys.exit()
                 quit()
-                # action = 'end'
 
-        # mixer.music.load(intro.music[intro.m])
-        # mixer.music.play(-1)
 
         mx, my = mouse.get_pos(); mb = mouse.get_pressed()
         if second:
@@ -148,11 +138,11 @@ def menu(action, p, lives):
             mixer.music.load('audio/lev1Back.wav')
             mixer.music.play(-1)
             # action = 'lev1'
-            level_One('lev1', p, lives)
+            # level_One('lev1', p, lives)
             # mixer.music.stop()
             # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
-            # boss('boss', lives)
+            boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         
@@ -264,6 +254,8 @@ def boss(action, lives):
 
         # m = 4
         if bs.checkDoor(bs.pRect, bs.door, bs.visible):
+            mixer.music.load('audio/outroBack.wav')
+            mixer.music.play(-1)
             outro_func('outro', outro.pRect, lives)
 
         if bs.playerHealth < 0 or len(bs.timePassed) >= 500: #checking if defeated by by boss

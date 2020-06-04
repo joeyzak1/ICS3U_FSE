@@ -48,6 +48,7 @@ rapid = 20
 
 #player bullets
 playerBullets = []
+plyaerBulletImg = image.load('Other/playerBullet.png')
 
 #time
 myTime = 0
@@ -67,6 +68,7 @@ doorImg = image.load('Other/outroDoor.png')
 #other
 livesPic = image.load('Other/live.png')
 
+#sound effects
 jumpSound = mixer.Sound('audio/effects/Jump.wav')
 playerDamage = mixer.Sound('audio/effects/Explosion.wav')
 movement = mixer.Sound('audio/effects/movement.wav')
@@ -103,7 +105,8 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
         draw.circle(screen, (0, 255, 0), (int(bull[0]),int(bull[1])), 4) #draw the bullet
 
     for bull in playerBullets: #go through player bullets
-        draw.rect(screen, (123, 255, 123), (bull[X], bull[Y], 30, 10)) #draws the player bullets as a rect
+        # draw.rect(screen, (123, 255, 123), (bull[X], bull[Y], 30, 10)) #draws the player bullets as a rect
+        screen.blit(plyaerBulletImg, (bull[X], bull[Y]))
 
     if playerHealth >= 0:
         screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
@@ -282,6 +285,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
         for bullet in bullets: #go through boss bullets
             bullRect = Rect(bullet[X] - 4, bullet[Y] - 4, 8, 8) #create rect object for bullet
             if p.colliderect(bullRect) and bullH == False: #checking if player collided with bullet
+                playerDamage.play()
                 ph -= 1 #lower player health by 1
                 time.delay(100) #freeze frame to indicate health gone down
                 bullets = [] #clear the bullets list for health to work properly

@@ -31,6 +31,10 @@ timePassed = []
 
 thank = image.load('Backgrounds/ThankYou.png')
 
+mixer.init()
+movement = mixer.Sound('audio/effects/movement.wav')
+movement.set_volume(.05)
+
 def drawScene(player, p, picList, timePassed, myCounter):
     col = int(player[COL]) #getting the col number for pic
     pic = picList[4][col]
@@ -70,6 +74,6 @@ def drawScene(player, p, picList, timePassed, myCounter):
 
     myCounter += 1 #for time
 
-
+    movement.play()
     display.update()
     myClock.tick(60)
