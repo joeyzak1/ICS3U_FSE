@@ -29,7 +29,7 @@ myClock = time.Clock()
 timePassed = []
 timeCounter = 0
 
-selectSound = mixer.Sound('audio/effects/Blip_Select.wav')
+# selectSound = mixer.Sound('audio/effects/Blip_Select.wav')
 movement = mixer.Sound('audio/effects/movement.wav')
 movement.set_volume(.05)
 

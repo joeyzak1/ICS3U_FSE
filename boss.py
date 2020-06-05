@@ -1,5 +1,8 @@
-#boss.py
-
+'''
+Joey Zaka and Abbas Zaidi
+boss.py
+This program is the boss scene, the player fights until the boss health is 0, leads to Outro
+'''
 from pygame import *
 import shortcutFunctions
 
@@ -48,7 +51,7 @@ rapid = 20
 
 #player bullets
 playerBullets = []
-plyaerBulletImg = image.load('Other/playerBullet.png')
+playerBulletImg = image.load('Other/playerBullet.png')
 
 #time
 myTime = 0
@@ -85,7 +88,7 @@ bossDead = mixer.Sound('audio/effects/Randomize4.wav')
 freshman = font.Font('fonts/Freshman.ttf', 40)
 gunText = freshman.render('You Have a Gun! Press "Z" on you Keyboard', True, (255, 255, 255))
 gunText2 = freshman.render('You Have a Gun! Press "Z" on you Keyboard', True, (0, 0, 0))
-
+playerBulletFlipped = transform.rotate(playerBulletImg, 180)
 
 def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossHealth, healthPic, playerBullets, playerHealth, visible, lives, vPlayer, myTime, timePassed, timeShown):
     'this function draws the scene'
@@ -95,22 +98,23 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
     #sprites
     shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
-    # print(hitbox[Y] + hitbox[H])
 
     for bull in bullets: #go through the bullets list
         draw.circle(screen, (0, 255, 0), (int(bull[0]),int(bull[1])), 4) #draw the bullet
 
     for bull in playerBullets: #go through player bullets
-        # draw.rect(screen, (123, 255, 123), (bull[X], bull[Y], 30, 10)) #draws the player bullets as a rect
-        screen.blit(plyaerBulletImg, (bull[X], bull[Y]))
+        if player[ROW] == 3:
+            screen.blit(playerBulletFlipped, (bull[X], bull[Y]))
+        else:
+            screen.blit(playerBulletImg, (bull[X], bull[Y]))
 
     if playerHealth >= 0:
         screen.blit(healthPic[playerHealth], (0, 0))
         # screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
 
-    if 0 <= len(timePassed) < 7:
-        screen.blit(gunText2, (51, 205))
-        screen.blit(gunText, (46, 200))
+    if 0 <= len(timePassed) < 7: #checking if can blit text about z key
+        screen.blit(gunText2, (51, 205)) #shadow of the text
+        screen.blit(gunText, (46, 200)) #blit the text in white
 
     if visible: #visible is true when ever the boss has not ran out of health
         draw.rect(screen, (255, 0, 0), (b[X], b[Y] - 50, b[W], 20)) #the health bar DAMAGED (behind the shrinking health bar that is grey)
@@ -118,7 +122,6 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
         shortcutFunctions.playerSprites(boss, b, bossSprites, vBoss, b[X]) #draws the biss sprites
 
     elif not visible: #if the boss has ran out of health
-        # draw.rect(screen, (255, 0, 0), door)
         b = Rect(0, 0, 1, 1)
         screen.blit(doorImg, door) #draw the door
 
@@ -142,7 +145,6 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
 
 def moveGuy(p, player, sprites, b, bossSprites, timeFont, playerBullets, vPlayer):
     'moves the player'
-
     keys = key.get_pressed()
 
     #left and right end of display
@@ -208,6 +210,8 @@ def moveBoss(boss, b, timePassed, p, bossSprites, bossHealth, vBoss):
 
     b[X] += vBoss[X] #add x pos to vel
     vBoss[Y] += gravity #gravity
+    if not visible:
+        b = Rect(0, 0, 1, 1)
     # screen.fill((0))
     return vBoss
 

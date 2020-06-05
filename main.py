@@ -16,6 +16,8 @@ ATTENTION TO DETAIL
 - Tips given throughout the game 
 - In the intro, there is a scene PURPOSEFULLY where the player is running without a background
 - When you lose health, the game pauses for 100 ms
+- The level/intro/game over screen will show on the window bar
+- Display Icon
 '''
 
 from pygame import *
@@ -46,7 +48,6 @@ running = True; myClock = time.Clock() #pg stuff
 moveBackground = 0; moveWalking = 0
 second = False #to know if the game is being played for the second time
 
-
 #ADDING SPRITES -----------------------------------------------------------------------------------
 def add_ch1_sprites(name, start, end):
     my_ch1Sprites = [image.load("Sprites/Character1/%s%03d.png" %(name, i)) for i in range(start, end+1)] #adding all the sprites required using list comprehension
@@ -64,9 +65,6 @@ for i in bird_images: #going through the pictures
     i = transform.scale(i, (100, 80)) #resize to 100 by 80
     bird_sprites.append(i) #add to sprite list
     
-
-# X = 0; Y = 1; ROW = 2; COL = 3 #for navigation in lists
-
 ch1_intro = [0, 646, 4, 0] #ch1 location and sprite list for 
 ch1_levelOne = [512, 675, 4, 0]
 p = Rect(512, 675, 35, 50) #beginning rect for level one
@@ -92,24 +90,10 @@ for i in range(len(bossSprites)): #go through boss sprites and change size of ea
 
 timeFont = font.Font('fonts/Freshman.ttf', 40) #font for time in corner
 
-
-#true or false variables for starting and ending certain functions
-# introRun = True
-# levelOne_Run = False
 display.set_icon(ch1_sprites[4][0])
 
 health_img = [image.load("Health/Health="+str(i)+".png") for i in range(1, 4)] #health images
 lives = 5 #amount of lives
-
-
-
-def get_hitbox(pic, size):
-    'hitbox - only used in level one - same as the one used in shortcut functiond'
-    pic_w = pic.get_width()
-    pic_h = pic.get_height()
-
-    hitbox = Rect(size[X], size[Y], pic_w, pic_h)
-    return hitbox
 
 
 def menu(action, p, lives):
@@ -163,10 +147,7 @@ def level_One(action, p, lives):
             if evt.type == QUIT:
                 sys.exit()
                 quit()
-                # quit()
-                # action = 'end'
 
-        m = 1
         if levelOne.check_levelTwo(levelOne.doorRect, p):
             mixer.music.load('audio/lev2Back.wav')
             mixer.music.play(-1)
@@ -223,9 +204,9 @@ def level_Two(action, p, lives):
             else: #normal game loop
                 lev2.vPlayer = lev2.move(lev2.pRect, lev2.player, ch1_sprites, lev2.borders, lev2.spikes, lev2.vPlayer)
                 lev2.moveBad(lev2.player, lev2.birds)
-                lev2.health, lev2.hitCounter = lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, lev2.healthBlocks, health_img, lev2.birds, lev2.timePassed, lev2.timeHit, lev2.vPlayer, lev2.health, lev2.hitCounter)
-                lev2.timePassed, lev2.myCounter, lev2.timeHit = lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, 
-                lev2.healthBlocks, health_img, lev2.doorRect, timeFont, lives, lev2.vPlayer, lev2.health, lev2.timePassed, lev2.myCounter, lev2.timeHit, lev2.hitCounter)
+                lev2.health = lev2.check(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.spikes, lev2.borders, lev2.healthBlocks, health_img, lev2.birds, lev2.timePassed, lev2.vPlayer, lev2.health)
+                lev2.timePassed, lev2.myCounter = lev2.drawScene(lev2.pRect, lev2.player, ch1_sprites, lev2.plats, lev2.platPic, lev2.spikes, lev2.borders, lev2.birds, bird_sprites, 
+                lev2.healthBlocks, health_img, lev2.doorRect, timeFont, lives, lev2.vPlayer, lev2.health, lev2.timePassed, lev2.myCounter)
 
         
 
@@ -238,7 +219,6 @@ def level_Three(action, p, lives):
                 sys.exit()
                 quit()
 
-        # m = 3
 
         if lv3.checkBoss(lv3.pRect, lv3.doorRect): #goes to boss if door was clicked
             mixer.music.load('audio/bossBack.wav') #plays boss music
@@ -259,7 +239,6 @@ def boss(action, lives):
                 sys.exit()
                 quit()
 
-        # m = 4
         if bs.checkDoor(bs.pRect, bs.door, bs.visible): #checking if the player went into the door after defeating the boss
             mixer.music.load('audio/outroBack.wav') #outro music
             mixer.music.play(-1)
@@ -339,6 +318,7 @@ def gameOver(action, lives): #game over screen
             timePassed.append('t') #append to time list, as 1 second passes each time something is appened
         myCounter += 1 #add one to the counter
 
+        display.set_caption("Super Swordy Boy - GAME OVER     FPS = " + str(int(myClock.get_fps()))) #the title 
         display.update() #update the screen
         myClock.tick(60) #60 fps
 

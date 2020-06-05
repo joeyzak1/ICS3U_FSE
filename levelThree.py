@@ -1,6 +1,7 @@
-#levelThree.py
 '''
-this part of the program is just the part where you walk to the boss portion, no other obstacles
+Joey Zaka and Abbas Zaidi
+levelThree.py
+this part of the program is just the part where you walk to the boss door, no other obstacles
 '''
 
 from pygame import *

@@ -1,4 +1,8 @@
-#outro.py
+'''
+Joey Zaka and Abbas Zaidi
+outro.py
+This screen is only accessible after beating the boss. No input required, leads back to intro screen
+'''
 from pygame import *
 
 screen = display.set_mode((1024, 768))
@@ -60,20 +64,11 @@ def drawScene(player, p, picList, timePassed, myCounter):
         #100 and 1500 because the time passed list is adding at a weird rate
         screen.blit(thank, (0, 0))
 
-
-    # print(timePassed)
-        
-
-    
-
     if myCounter % 60 == 0: #for time, appending to list
         timePassed.append('t')
 
-    # if len(timePassed) >= 200:
-    #     fade(1024, 768)
-
-    myCounter += 1 #    for time
-
-    movement.play()
+    myCounter += 1 #for time
+    display.set_caption("Super Swordy Boy - THE END     FPS = " + str(int(myClock.get_fps()))) #the title 
+    movement.play() #always pklaying movement sound
     display.update()
     myClock.tick(60)

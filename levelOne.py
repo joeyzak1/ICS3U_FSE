@@ -115,7 +115,6 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
 def move(p, player, sprites, blocks, birds, borders, v):
     'this function moves the player'
     keys = key.get_pressed() 
-    mx, my = mouse.get_pos()
 
 
     if keys[K_SPACE] and p[Y] + p[H] == v[BOT] and v[Y] == 0: #checking if it is ok to jump
@@ -128,7 +127,7 @@ def move(p, player, sprites, blocks, birds, borders, v):
 
 
     elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks) and hitBlocks(p[X] - 5, p[Y], borders) == -1: #checking if left arrow is clicked and it is ok to move left
-        moveGuyLeft(p, player, v, 400, 7550)
+        moveGuyLeft(p, player, v, 400, 7550) #move guy functions
 
 
     elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks) and hitBlocks(p[X] + 5, p[Y], borders) == -1: #checking if right arrow is clicked and it is okay to move

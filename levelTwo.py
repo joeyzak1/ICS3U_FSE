@@ -80,7 +80,7 @@ movement.set_volume(.05)
 enterDoor = mixer.Sound('audio/effects/door.wav')
 sword = mixer.Sound('audio/effects/sword.wav')
 
-def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont, lives, vPlayer, health, timePassed, myCounter, timeHit, hitCounter):
+def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSprites, healthBlocks, healthPicList, door, timeFont, lives, vPlayer, health, timePassed, myCounter):
     'draws the scene'
 
     offset = vPlayer[SCREENX] - p[X] #offset and background
@@ -106,24 +106,24 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
 
     if myCounter % 60 == 0: #for time
         timePassed.append('t')
-    for spike in spikes: #to try with spikes (possibly remove later)
-        if p.collidelist(spike) != -1:
-            timeHit.append('h')
+    # for spike in spikes: #to try with spikes (possibly remove later)
+    #     if p.collidelist(spike) != -1:
+    #         timeHit.append('h')
 
-        else:
-            for t in timeHit:
-                timeHit.remove(t)
+    #     else:
+    #         for t in timeHit:
+    #             timeHit.remove(t)
 
     for i in range(lives+1): #blit pics for lives
         screen.blit(livesPic, (10 + 50*i, 80))
 
     #same things as level one
     myCounter += 1
-    hitCounter += 1
+    # hitCounter += 1
     display.set_caption("Super Swordy Boy - Level Two     FPS = " + str(int(myClock.get_fps())))
     display.update()
     myClock.tick(60)
-    return timePassed, myCounter, timeHit #to reduce globals
+    return timePassed, myCounter #to reduce globals
 
 def move(p, player, sprites, borders, spikes, vPlayer):
     'this function moves the guy'
@@ -180,7 +180,7 @@ def moveBad(player, bird):
     shortcutFunctions.moveBird(player, birds) #moves the bird
 
 
-def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicList, birds, timePassed, timeHit, vPlayer, health, hitCounter):
+def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicList, birds, timePassed, vPlayer, health):
     'checks for collision, etc.'
 
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #hitbox of player
@@ -245,4 +245,4 @@ def check(p, player, sprites, plats, spikes, borders, healthBlocks, healthPicLis
         p[Y] = GROUND - hitBox[H]
         vPlayer[Y] = 0
 
-    return health, hitCounter #to reduce global variables
+    return health #to reduce global variables

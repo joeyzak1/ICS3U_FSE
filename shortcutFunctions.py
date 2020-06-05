@@ -1,5 +1,8 @@
-#shortcutFunctions.py
-# this program has useful functions that can shorten code
+'''
+Joey Zaka and Abbas Zaidi
+shortcutFunctions.py
+This program has useful functions that are used within other modules
+'''
 from pygame import *
 from math import*
 
