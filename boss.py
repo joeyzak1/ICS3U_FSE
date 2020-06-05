@@ -105,7 +105,8 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
         screen.blit(plyaerBulletImg, (bull[X], bull[Y]))
 
     if playerHealth >= 0:
-        screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
+        screen.blit(healthPic[playerHealth], (0, 0))
+        # screen.blit(shortcutFunctions.healthBar(playerHealth, healthPic), (0, 0))
 
     if 0 <= len(timePassed) < 7:
         screen.blit(gunText2, (51, 205))
@@ -159,7 +160,7 @@ def moveGuy(p, player, sprites, b, bossSprites, timeFont, playerBullets, vPlayer
     elif keys[K_LEFT] and p[X] - 5 > leftEnd and not Rect(p[X] -5, p[Y], p[W], p[H]).colliderect(b): #moving right 
         shortcutFunctions.moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd) #move the guy left
 
-    elif keys[K_RIGHT] and p[X] + 5 < rightEnd and not Rect(p[X] + 5, p[Y], p[W], p[H]).colliderect(b): #moving right
+    elif keys[K_RIGHT] and p[X] + 5 + p[W] < rightEnd and not Rect(p[X] + 5, p[Y], p[W], p[H]).colliderect(b): #moving right
         shortcutFunctions.moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd) #move the guy right
 
     else: #so sprite is on idle and player doesnt move
@@ -231,7 +232,10 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
 
     if keys[K_z] and rapid == 20: #checking if enough space between bullets is made and if bullet key was pressed
         playerBulletsSound.play() #play player bullet sound
-        playerBullets.append([p[X], p[Y], bullSpeed, 0]) #add bullets to list
+        if player[ROW] == 3: #checking if player is facing left
+            playerBullets.append([p[X], p[Y], -bullSpeed, 0]) #add bullets to list, left direction speed
+        else: #anything else
+            playerBullets.append([p[X], p[Y], bullSpeed, 0]) #add bullets to list, right direction speed
         rapid = 0 #set to 0 to create space
             
     for bull in playerBullets[:]: #go through copy of player bullets list

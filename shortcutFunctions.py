@@ -1,30 +1,33 @@
 #shortcutFunctions.py
 # this program has useful functions that can shorten code
 from pygame import *
-from math import *
+from math import*
 
 init()
 
 screen = display.set_mode((1024, 768))
 
-jumpSpeed = -20; gravity = 1
+jumpSpeed = -20; gravity = 1 #for jumping
 
-X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4
+X = 0; Y = 1; W = 2; H = 3; BOT = 2; SCREENX = 3; ROW = 2; COL = 3; TOP = 4 #navigation variables
 
+#bird vel's
 vel_bird = [0, 0]
 vBird_vertical = 10
 vBrid_gravity = -1
 
-playerHealth = 2
+playerHealth = 2 #player health (not used)
 
+#other pics
 platPic = image.load('Other/plat.png').convert()
 healthBlock = image.load('Other/healthBox.png').convert()
 
+#sound effects
 jumpSound = mixer.Sound('audio/effects/Jump.wav')
 healthAddition = mixer.Sound('audio/effects/Powerup.wav')
 playerDamage = mixer.Sound('audio/effects/Explosion.wav')
 movement = mixer.Sound('audio/effects/movement.wav')
-movement.set_volume(.05)
+movement.set_volume(.05) #lower the volume
 enterDoor = mixer.Sound('audio/effects/door.wav')
 sword = mixer.Sound('audio/effects/sword.wav')
 timeTicking = mixer.Sound('audio/effects/timeTickingLong.wav')
@@ -44,28 +47,25 @@ def moveSpikes(spikes, offset):
 
 def moveBlocks(blocks, offset):
     'this function draws blocks - blocks must be in a LIST and have offset'
-    for block in blocks: #this loop blits all blocks
-        block = block.move(offset, 0)
-        # draw.rect(screen, (255, 0, 0), block) #draws the block
+    for block in blocks: #go through all the blocks
+        block = block.move(offset, 0) #move the blocks
 
 def moveSqBlocks(sq_blocks, offset):
     'this function draws squared blocks - param needs to be a list'
-    for sq in sq_blocks: #this for loop blits all squared blocks
-        sq = sq.move(offset, 0)
-        # draw.rect(screen, (0, 0, 255), sq)
+    for sq in sq_blocks: #go through squared blocks
+        sq = sq.move(offset, 0) #moves it according to offset
 
 def drawHealthBlocks(healthB, offset):
     'this function draws the health blocks'
-    for h in healthB:
-        h = h.move(offset, 0)
-        screen.blit(healthBlock, h)
-        # draw.rect(screen, (0, 0, 255), h)
+    for h in healthB: #go through health blocks
+        h = h.move(offset, 0) #move the block
+        screen.blit(healthBlock, h) #blit health pic
 
 def drawBorders (borders, offset):
     'this function draws borders'
     for lists in borders: #go through all lists in borders
-        for border in lists:
-            border = border.move(offset, 0)
+        for border in lists: #go through each rect in the lists
+            border = border.move(offset, 0) #move the borders according to offset
  
 def createHitbox (pic, x, y):
     'this function creates a hitbox'
@@ -95,96 +95,9 @@ def createBossBullets(bullets, SPEED, bossR, rapid):
         if len(bullets) < 12:
             bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
     
-# def checkBossBullets(bullets, p, health):
-#     'check and move boss bullets'
-#     for b in bullets[:]: #[:] is a COPY of the bullets list, goes through bullets list
-#         b[0] += b[2] #add x val to speed
-#         b[1] += b[3] #add y-val to speed
-#         bRect = Rect(b[0]-4, b[1]-4, 8, 8)
-#         if b[0] > 1800 or b[0] < -800 or b[1] < -500 or b[1] > 1400: #off screen
-#             bullets.remove(b) #remove from screen
-#         elif p.colliderect(bRect):
-#             bullets.remove(b)
-#             health -= 1
-
-# def createBossBulletsPhase2(bullets, rapid, boss):
-#     # if rapid == 20:
-#         bullets.append([boss[X], boss[Y], -5, 0])
-
-    # if rapid < 20:
-    #     rapid += 1
-
-
-# #move boss between attacks ------------------------------------
-# def moveBossBetween(boss, b, v, time):
-#     # if len(time) > 15:
-#         # v[X] = -3
-#         # if b[X] > 400:
-#         #     v[X] = 0
-#     v[X] = 0
-#     # for i in range(2):
-#     if b[X] > 300:
-#         v[X] = -3
-                
-
-#             # elif  < b[X] < 625:
-#             #     v[X] = 3
-
-#move boss close to player
-# def moveBossPhaseTwo(boss, b, v, player):
-#     gravityBoss = 3
-#     bossUp = -15
-#     if b[Y] < 0:
-#         b[Y] += bossUp
-
-    # v[Y] += gravityBoss
-
-
-
-
-
-
-
-
-# def checkPlats(plats, p, player, hitBox, v):
-#     'checking for platform collision'
-#     # for plat in plats:
-#     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
-#     #         vPlayer[BOT] = plat[Y]
-#     #         p[Y] = vPlayer[BOT] - hitBox[H]
-#     #         player[Y] = vPlayer[BOT] - hitBox[H]
-#     #         vPlayer[Y] = 0
-#     for plat in plats:
-#         if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]: #check if player is ON TOP of platform
-#             v[BOT] = plat[Y] #set v bottom to platform y coord
-#             p[Y] = v[BOT] - p[H] #set player pos [Y] to plat
-#             v[Y] = 0 #set player y velocity to 0
-
-
-
-
-
 def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left'
     keys = key.get_pressed()
-
-    # if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
-    # if p[X] > leftEnd:
-    #     movement.play()
-    #     player[ROW] = 3 #set sprite row to left moving
-    #     vPlayer[X] = -5 #set velocity of player to -5 (left moving)
-    #     if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if chift was held
-    #         vPlayer[X] = -10 #increase velocity
-    #     if vPlayer[SCREENX] > 250: #checking if screen pos is correct
-    #         vPlayer[SCREENX] -= 5 
-
-    # elif p[X] > rightEnd: #checking if right end is touched
-    #     if vPlayer[X] == 0: #checking if players velocity is 0
-    #         movement.play()
-    #         if keys[K_LSHIFT] or keys[K_RSHIFT]: #if shift clicked
-    #             vPlayer[X] = -10 #v = -10 (left faster)
-    #         else: #anything else
-    #             vPlayer[X] = -5 #v = -5 (slower)
     if p[X] + 5 < rightEnd: #checking if the player is not at the end point
         movement.play() #play movement sound
         player[ROW] = 3 #moving left sprite
@@ -201,24 +114,44 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
         else: #if no shift
             vPlayer[X] = -5 #normal speed
 
-
-
 def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the right'
     keys = key.get_pressed()
- #checking if good with borders
-    # movement.play()
-    # player[ROW] = 4 #sprite row to right moving 
-    # vPlayer[X] = 5 #player x velocity set to 5 (moving right)
-    # if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if shift is clicked
-    #     vPlayer[X] = 10 #v = 10 (faster)
-    # if vPlayer[SCREENX] < 700: #checking if good with screen pos
-    #     vPlayer[SCREENX] += 5 #increase by 5
+    if p[X] + 5 < rightEnd: #checking if the player is touching the right end
+        player[ROW] = 4 #sprite category to 4 (running right)
+        movement.play() #movement sound
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
+            vPlayer[X] = 10 #doubles the speed of the player
+        else: #if no shift
+            vPlayer[X] = 5 #normal speed
+        if vPlayer[SCREENX] < 700: #so the player stays on the screen while running
+            vPlayer[SCREENX] += 5 #move the screen itself
+    elif p[X] > rightEnd: #checking if the player is beyond the end
+        player[ROW] = 4 #putting the sprite in idle
+        player[COL] = 0
+        if vPlayer[X] > 0: #checking if the player is trying to move right
+            vPlayer[X] = 0 #won't allow it
 
-    # elif p[X] > rightEnd: #checking if good with right end of level
-    #     player[COL] = 0 #cannot move, therefore must be in idle position
-    #     if vPlayer[X] > 0: #checking if trying to move
-    #         vPlayer[X] = 0 #then he cant move
+def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
+    'this function moves the guy to the left only for boss'
+    keys = key.get_pressed()
+    if p[X] + 5 < rightEnd: #checking if the player is not at the end point
+        movement.play() #play movement sound
+        player[ROW] = 3 #moving left sprite
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
+            vPlayer[X] = -10 #doubles the speed of the player
+        else: #if no shift
+            vPlayer[X] = -5 #normal speed
+    elif p[X] > rightEnd: #checking if past the right end
+        movement.play() #movement sound
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
+            vPlayer[X] = -10 #doubles the speed of the player
+        else: #if no shift
+            vPlayer[X] = -5 #normal speed
+
+def moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd):
+    'this function moves the guy to the right, see moveGuyRight() for comments'
+    keys = key.get_pressed()
     if p[X] + 5 < rightEnd:
         player[ROW] = 4
         movement.play()
@@ -226,63 +159,21 @@ def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
             vPlayer[X] = 10 #doubles the speed of the player
         else: #if no shift
             vPlayer[X] = 5 #normal speed
-        if vPlayer[SCREENX] < 700: #so the player stays on the screen while running
-            vPlayer[SCREENX] += 5 #move the screen itself
     elif p[X] > rightEnd:
         player[ROW] = 4
         player[COL] = 0
         if vPlayer[X] > 0:
             vPlayer[X] = 0
 
-def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
-    'this function moves the guy to the left only for boss'
-    keys = key.get_pressed()
-
-
-    if leftEnd < p[X] + 5 < rightEnd:
-        movement.play()
-        player[ROW] = 3
-        vPlayer[X] = -5
-        if keys[K_LSHIFT] or keys[K_RSHIFT]:
-            vPlayer[X] = -10
-
-    elif p[X] > rightEnd:
-        if vPlayer[X] == 0:
-            movement.play()
-            if keys[K_LSHIFT] or keys[K_RSHIFT]:
-                vPlayer[X] = -10
-            else:
-                vPlayer[X] = -5
-
-def moveGuyRightBoss(p, player, vPlayer, leftEnd, rightEnd):
-    'this function moves the guy to the right'
-    keys = key.get_pressed()
-
-    if leftEnd < p[X] + 5 < rightEnd:
-        movement.play()
-        player[ROW] = 4
-        vPlayer[X] = 5
-        if keys[K_LSHIFT] or keys[K_RSHIFT]:
-            vPlayer[X] = 10
-
-    elif p[X] > rightEnd:
-        player[COL] = 0
-        if vPlayer[X] > 0:
-            vPlayer[X] = 0
-
-#bird ----------------------------------------------------------------------------
 def moveBird(player, birds):
     'moving the bird when close to the player'
     for bird in birds: #going through the birds list
         if player[X] + 500 >= bird[X]: #checking if the player + 400 px is >= birds x val
             vel_bird[Y] = vBird_vertical #sets the birds y velocty
             vel_bird[X] = -8 #set the bird x velocity
-
             if bird[X] <= player[X] + 200 and bird[Y] >= player[Y]: # checking if bird [y] val is close to player y val
                 vel_bird[Y] = 0 #stop moving VERTICALLY
-
             bird[ROW] += 0.2 #frame for sprite
-
             bird[Y] += vel_bird[Y] #move the bird
             bird[X] += vel_bird[X]
 
@@ -298,119 +189,28 @@ def birdSprites(bird, sprites, offset):
     screen.blit(pic, pictureRect) #blit bird pic
     return pictureRect
 
-def checkBirdCollision(birds, p, health, player): #NOT BEING USED
-    'check for bird collision with PLAYER'
-    # if p.collidelist(birds):
-    for bird in birds: #go through the bird list
-        birdRect = Rect(bird[X], bird[Y], 100, 80) #create a rect for the bird
-        if p.colliderect(birdRect): #checking if the player touched the bird
-            health -= 1 #take 1 away from health
-            playerDamage.play()
-            time.delay(150) #pause the program for 150ms to indicate pause
-
-
-# def checkSpikes(p, hitbox, spikes, vPlayer, health, hitList):
-#     'checking if spikes and player touch'
-#     # for spike in spikes:
-#     #     for sp in spike:
-#     #         if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(sp):
-#     #             health -= 1
-#     #             if health < 0:
-#     #                 health = 0
-            
-#     for grnd in spikes[0]: #go through spikes on ground, may not need
-#         if p[X] + hitbox[W] > grnd[X] and p[X] < grnd[X] + grnd[W] and p[Y] + hitbox[H] >= grnd[Y] and p[Y] + hitbox[H] + vPlayer[Y] > grnd[Y]:
-#             vPlayer[BOT] = grnd[Y]
-#             p[Y] = vPlayer[BOT] - hitbox[H]
-#             vPlayer[Y] = 0
-
-
-
-
-            
-
-    # for air in spikes[1]:
-    #     # if p[X] + 5  + hitbox[W] == air[X]:
-    #     #     vPlayer[X] = 0
-    #     #     p[X] = air[X] - 5
-
-    #     # elif p[X] - 5 == air[X] + air[W]:
-    #     #     vPlayer[X] = 0 
-    #     #     p[X] = air[X] + air[W] + 5
-    #     #     p[Y] = vPlayer[BOT] - hitbox[H]
-
-    #     if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(air):
-    #         vPlayer[TOP] = air[Y] + air[H]
-    #         p[Y] = vPlayer[TOP]
-    #         if p[Y] > air[H] + air[Y]:
-    #             vPlayer[Y] = 0
-
-    # for wall in spikes[2]:
-    #     if p[X] + hitbox[W] > wall[X] and p[X] < wall[X] + wall[W] and p[Y] + hitbox[H] >= wall[Y] and p[Y] + wall[H] + vPlayer[Y] > wall[Y]:
-    #         vPlayer[BOT] = wall[Y]
-    #         p[Y] = vPlayer[BOT] - hitbox[H]
-    #         vPlayer[Y] = 0
-
-                    
-
-
-            
-
-
-def checkBorders(p, hitbox, vPlayer, borders): #fix movement here
+def checkBorders(p, hitbox, vPlayer, borders):
     'checking if borders are touched'
-    for b in borders[0]:
+    for b in borders[0]: #go through borders on ground
+        if p[X] + hitbox[W] > b[X] and p[X] < b[X] + b[W] and p[Y] + hitbox[H] >= b[Y] and p[Y] + hitbox[H] + vPlayer[Y] > b[Y]: #check if player is on top
+            vPlayer[BOT] = b[Y] #sets bottom to border
+            p[Y] = vPlayer[BOT] - hitbox[H] #sets player pos on the border
+            vPlayer[Y] = 0 #no vert vel
 
-        # if (p[X] + 5) + hitbox[W] == b[X]:
-        #     vPlayer[X] = 0
-        #     p[X] = b[X] - 5 - hitbox[W]
-        #     p[Y] = vPlayer[BOT] - hitbox[H]
-
-        # elif p[X] - 5 == b[X] + b[W]:
-        #     vPlayer[X] = 0 
-        #     p[X] = b[X] + b[W] + 5
-        #     p[Y] = vPlayer[BOT] - hitbox[H]
-
-        if p[X] + hitbox[W] > b[X] and p[X] < b[X] + b[W] and p[Y] + hitbox[H] >= b[Y] and p[Y] + hitbox[H] + vPlayer[Y] > b[Y]:
-            vPlayer[BOT] = b[Y]
-            p[Y] = vPlayer[BOT] - hitbox[H]
-            vPlayer[Y] = 0
-
-    for b in borders[1]:
-
-        # if (p[X] + 5) + hitbox[W] == b[X]:
-        #     vPlayer[X] = 0
-        #     p[X] = b[X] - 5
-
-        # elif p[X] - 5 == b[X] + b[W]:
-        #     vPlayer[X] = 0 
-        #     p[X] = b[X] + b[W] + 5
-
-        if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(b):
-            vPlayer[TOP] = b[Y] + b[H]
-            p[Y] = vPlayer[TOP]
-            if p[Y] > b[H] + b[Y]:
-                vPlayer[Y] = 0
+    for b in borders[1]: #go through borders touching the top of the screen
+        if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(b): #check if the player touches it
+            vPlayer[TOP] = b[Y] + b[H] #top is the end of the vertical border
+            p[Y] = vPlayer[TOP] #the player's y pos is the end of the border
+            if p[Y] > b[H] + b[Y]: #checking if the player is gping into the border
+                vPlayer[Y] = 0 #player stops moving vertically
+                vPlayer[Y] += 1
 
 def checkDoor(p, door):
+    'checks if a door is enetered'
     keys = key.get_pressed()
-    if keys[K_RETURN] and p.colliderect(door):
+    if keys[K_RETURN] and p.colliderect(door): #checks if the player enters a door by hitting enter
         return True
-
-
-def hitSpikes(x, y, hitbox ,spikes):
-    collisionList = []
-    for spike in spikes:
-        playerRect = Rect(x, y, hitbox[W], hitbox[H])
-        return playerRect.collidelist(spike)
-
-def healthBar(health, pics):
-    for i in range(3):
-        if i == health:
-            pic = pics[i]
-        
-            return pic
-
+    return False
 
 def timeFont(font, timePassed, length):
     '''this function creates a timer for the level, which counts DOWN 
@@ -422,6 +222,5 @@ def timeFont(font, timePassed, length):
         text = font.render(str(int(length-len(timePassed))), True, (255, 0, 0)) #get the text by taking the length of the level minus length of list, convert to string
         timeTicking.play()
     text2 = font.render(str(int(length-len(timePassed))), True, (0, 0, 0)) #get the text by taking the length of the level minus length of list, convert to string
-    screen.blit(text2, (942, 5))
+    screen.blit(text2, (942, 5)) #shadow
     screen.blit(text, (940, 3)) #blit the text
-        

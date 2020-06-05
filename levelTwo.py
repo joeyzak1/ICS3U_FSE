@@ -95,7 +95,8 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     screen.blit(doorPic, door) #door
 
     if health >= 0: #blit the health only if health remains
-        screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
+        screen.blit(healthPicList[health], (0, 0))
+    #     screen.blit(shortcutFunctions.healthBar(health, healthPicList), (0, 0))
     shortcutFunctions.timeFont(timeFont, timePassed, 300) #blits the time in the corner
 
     for b in birds: #go through the birds
@@ -134,7 +135,7 @@ def move(p, player, sprites, borders, spikes, vPlayer):
 
     hitBox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, vPlayer[SCREENX]) #hitbox
 
-    if keys[K_SPACE] and p[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0 and shortcutFunctions.hitSpikes(p[X], p[Y] - 5, hitBox, spikes) == -1: #checking if it is ok to jump
+    if keys[K_SPACE] and p[Y] + hitBox[H] == vPlayer[BOT] and vPlayer[Y] == 0: #checking if it is ok to jump
         jumpSound.play() #play the jump sound
         vPlayer[Y] = jumpSpeed #go to jump speed
 
@@ -143,13 +144,13 @@ def move(p, player, sprites, borders, spikes, vPlayer):
         player[ROW] = 0 #set sprite frame category to 0
 
     # for border in borders:
-    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) == -1 and p[X] > leftEnd and p[X] > leftEnd: #checking if it is ok to go left
+    elif keys[K_LEFT] and Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) == -1 and p[X] > leftEnd and p[X] > leftEnd: #checking if it is ok to go left
         if keys[K_LSHIFT] or keys[K_RSHIFT] and Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) != -1 :
             vPlayer[X] = 0
         else:
             shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd) #move left
 
-    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) == -1 and p[X] + p[W] < rightEnd: #checking if it is ok to go right
+    elif keys[K_RIGHT] and Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) == -1 and p[X] + p[W] < rightEnd: #checking if it is ok to go right
         if keys[K_LSHIFT] or keys[K_RSHIFT] and Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) != -1:
             vPlayer[X] = 0
         else:
@@ -161,9 +162,6 @@ def move(p, player, sprites, borders, spikes, vPlayer):
         player[COL] = 0
         player[COL] -= 0.2
         vPlayer[X] = 0
-
-    # print(shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes), shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes))
-
 
     player[COL] += 0.2
 

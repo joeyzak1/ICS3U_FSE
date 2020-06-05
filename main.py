@@ -31,7 +31,6 @@ import levelTwo as lev2
 import levelThree as lv3
 import boss as bs
 import outro
-import shortcutFunctions
 import sys #for quitting pygame window without going to previous
 
 bh=False
@@ -140,16 +139,16 @@ def menu(action, p, lives):
         intro.helpDialog, intro.timePassed, intro.timeCounter = intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking, intro.helpDialog, intro.timePassed, intro.timeCounter)
 
         if intro.timeCounter == 95 and not second: #checking if the intro screen isnt black anymore and can play music
-            mixer.music.load('audio/IntroBack.wav')
+            mixer.music.load('audio/IntroBack.wav') #load the music and play it
             mixer.music.play(-1)
 
 
 
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             mixer.music.load('audio/lev1Back.wav') #play level one music
-            mixer.music.play(-1)
-            # level_One('lev1', p, lives)
-            level_Two('lev2', lev2.pRect, lives)
+            mixer.music.play(-1) #loop the music
+            level_One('lev1', p, lives)
+            # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
             # boss('boss', lives)
             # outro_func('outro', outro.pRect)
