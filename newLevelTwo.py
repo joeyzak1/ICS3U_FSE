@@ -41,7 +41,7 @@ vPlayer = [0, 0, bottom, 250, 0] #velocity, bottom, etc.
 player = [250, 529, 4, 0] #player rect and list
 pRect = Rect(250, 529, 4, 0)
 
-plats = [Rect(600, 425, 200, 15), Rect(1550, 425, 200, 15), Rect(8000, 200, 200, 15), Rect(8550, 200, 200, 15), 
+plats = [Rect(700, 425, 200, 15), Rect(1550, 425, 200, 15), Rect(8000, 200, 200, 15), Rect(8550, 200, 200, 15), 
         Rect(9000, 287-15, 200, 15), Rect(10050, 425, 200, 15), Rect(11650, 330, 200, 15)] #platforms
 
 #this list branches off into 2d lists - for spikes
