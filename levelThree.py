@@ -79,10 +79,10 @@ def move(p, player, sprites, v):
         sword.play() #play sword sound
         player[ROW] = 0 #set sprite row to 0
 
-    elif keys[K_LEFT] and player[X] > leftEnd: #checking if trying to move left
+    elif keys[K_LEFT] and p[X] > leftEnd: #checking if trying to move left
         shortcutFunctions.moveGuyLeft(p, player, v, leftEnd, rightEnd) #move left (shortcut functions)
 
-    elif keys[K_RIGHT] and player[X] < rightEnd: #checking if trying to move righ
+    elif keys[K_RIGHT] and p[X] + p[W] < rightEnd: #checking if trying to move righ
         shortcutFunctions.moveGuyRight(p, player, v, leftEnd, rightEnd) #move right (shortcut functions)
 
     else: #anything else would result in no movement and idle sprite

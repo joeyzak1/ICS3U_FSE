@@ -61,21 +61,11 @@ def drawHealthBlocks(healthB, offset):
         screen.blit(healthBlock, h)
         # draw.rect(screen, (0, 0, 255), h)
 
-def drawSlugs(slugs):
-    'this function draws slugs - work on these LATER'
-    return 1 
-
 def drawBorders (borders, offset):
     'this function draws borders'
     for lists in borders: #go through all lists in borders
         for border in lists:
             border = border.move(offset, 0)
-
-def drawTempBird(birds, offset):
-    'old func'
-    for bird in birds:
-        bird = bird.move(offset, 0)
-        draw.rect(screen, (120, 255, 89), [bird[X], bird[Y], 60, 30])
  
 def createHitbox (pic, x, y):
     'this function creates a hitbox'
@@ -95,18 +85,8 @@ def playerSprites (player, p, sprites, vPlayer, x):
     screen.blit(pic, pictureRect) #blits the picture
     return pictureRect #returns the pic rect
 
-# boss bullets --------------------------------------------------
-def drawBossBullets(bullets):
-    'draws boss bullets'
-    for b in bullets: #go through the bullets list
-        draw.circle(screen, (0, 255, 0), (int(b[0]),int(b[1])), 4) #draw the bullet
-
 def createBossBullets(bullets, SPEED, bossR, rapid):
     'create boss bullets'
-    # if rapid < 20:#for how often bullets appear
-    #     rapid += 1 #increase by 1
-
-    # if rapid == 20: #checking if time is right
     for i in range(12):
         ang = atan2(bossR[Y], bossR[X]) #gets the angle
         ang *= i #multiply the angle by i (for multiple angles)
@@ -114,52 +94,48 @@ def createBossBullets(bullets, SPEED, bossR, rapid):
         vy = sin(ang)*SPEED #vertical component
         if len(bullets) < 12:
             bullets.append([bossR[X], bossR[Y], vx, vy]) #add to bullet list
-    # print(len(bullets))
-        # rapid = 0 #set rapid to 0
-    # print("Bullet Created")
     
+# def checkBossBullets(bullets, p, health):
+#     'check and move boss bullets'
+#     for b in bullets[:]: #[:] is a COPY of the bullets list, goes through bullets list
+#         b[0] += b[2] #add x val to speed
+#         b[1] += b[3] #add y-val to speed
+#         bRect = Rect(b[0]-4, b[1]-4, 8, 8)
+#         if b[0] > 1800 or b[0] < -800 or b[1] < -500 or b[1] > 1400: #off screen
+#             bullets.remove(b) #remove from screen
+#         elif p.colliderect(bRect):
+#             bullets.remove(b)
+#             health -= 1
 
-def checkBossBullets(bullets, p, health):
-    'check and move boss bullets'
-    for b in bullets[:]: #[:] is a COPY of the bullets list, goes through bullets list
-        b[0] += b[2] #add x val to speed
-        b[1] += b[3] #add y-val to speed
-        bRect = Rect(b[0]-4, b[1]-4, 8, 8)
-        if b[0] > 1800 or b[0] < -800 or b[1] < -500 or b[1] > 1400: #off screen
-            bullets.remove(b) #remove from screen
-        elif p.colliderect(bRect):
-            bullets.remove(b)
-            health -= 1
-
-def createBossBulletsPhase2(bullets, rapid, boss):
-    # if rapid == 20:
-        bullets.append([boss[X], boss[Y], -5, 0])
+# def createBossBulletsPhase2(bullets, rapid, boss):
+#     # if rapid == 20:
+#         bullets.append([boss[X], boss[Y], -5, 0])
 
     # if rapid < 20:
     #     rapid += 1
 
 
-#move boss between attacks ------------------------------------
-def moveBossBetween(boss, b, v, time):
-    # if len(time) > 15:
-        # v[X] = -3
-        # if b[X] > 400:
-        #     v[X] = 0
-    v[X] = 0
-    # for i in range(2):
-    if b[X] > 300:
-        v[X] = -3
+# #move boss between attacks ------------------------------------
+# def moveBossBetween(boss, b, v, time):
+#     # if len(time) > 15:
+#         # v[X] = -3
+#         # if b[X] > 400:
+#         #     v[X] = 0
+#     v[X] = 0
+#     # for i in range(2):
+#     if b[X] > 300:
+#         v[X] = -3
                 
 
-            # elif  < b[X] < 625:
-            #     v[X] = 3
+#             # elif  < b[X] < 625:
+#             #     v[X] = 3
 
 #move boss close to player
-def moveBossPhaseTwo(boss, b, v, player):
-    gravityBoss = 3
-    bossUp = -15
-    if b[Y] < 0:
-        b[Y] += bossUp
+# def moveBossPhaseTwo(boss, b, v, player):
+#     gravityBoss = 3
+#     bossUp = -15
+#     if b[Y] < 0:
+#         b[Y] += bossUp
 
     # v[Y] += gravityBoss
 
@@ -170,19 +146,19 @@ def moveBossPhaseTwo(boss, b, v, player):
 
 
 
-def checkPlats(plats, p, player, hitBox, v):
-    'checking for platform collision'
-    # for plat in plats:
-    #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
-    #         vPlayer[BOT] = plat[Y]
-    #         p[Y] = vPlayer[BOT] - hitBox[H]
-    #         player[Y] = vPlayer[BOT] - hitBox[H]
-    #         vPlayer[Y] = 0
-    for plat in plats:
-        if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]: #check if player is ON TOP of platform
-            v[BOT] = plat[Y] #set v bottom to platform y coord
-            p[Y] = v[BOT] - p[H] #set player pos [Y] to plat
-            v[Y] = 0 #set player y velocity to 0
+# def checkPlats(plats, p, player, hitBox, v):
+#     'checking for platform collision'
+#     # for plat in plats:
+#     #     if p[X] + hitBox[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + hitBox[H] <= plat[Y] and p[Y] + hitBox[H] + vPlayer[Y] > plat[Y]:
+#     #         vPlayer[BOT] = plat[Y]
+#     #         p[Y] = vPlayer[BOT] - hitBox[H]
+#     #         player[Y] = vPlayer[BOT] - hitBox[H]
+#     #         vPlayer[Y] = 0
+#     for plat in plats:
+#         if p[X] + p[W] > plat[X] and p[X] < plat[X] + plat[W] and p[Y] + p[H] <= plat[Y] and p[Y] + p[H] + v[Y] > plat[Y]: #check if player is ON TOP of platform
+#             v[BOT] = plat[Y] #set v bottom to platform y coord
+#             p[Y] = v[BOT] - p[H] #set player pos [Y] to plat
+#             v[Y] = 0 #set player y velocity to 0
 
 
 
@@ -333,20 +309,20 @@ def checkBirdCollision(birds, p, health, player): #NOT BEING USED
             time.delay(150) #pause the program for 150ms to indicate pause
 
 
-def checkSpikes(p, hitbox, spikes, vPlayer, health, hitList):
-    'checking if spikes and player touch'
-    # for spike in spikes:
-    #     for sp in spike:
-    #         if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(sp):
-    #             health -= 1
-    #             if health < 0:
-    #                 health = 0
+# def checkSpikes(p, hitbox, spikes, vPlayer, health, hitList):
+#     'checking if spikes and player touch'
+#     # for spike in spikes:
+#     #     for sp in spike:
+#     #         if Rect(p[X], p[Y], hitbox[W], hitbox[H]).colliderect(sp):
+#     #             health -= 1
+#     #             if health < 0:
+#     #                 health = 0
             
-    for grnd in spikes[0]: #go through spikes on ground, may not need
-        if p[X] + hitbox[W] > grnd[X] and p[X] < grnd[X] + grnd[W] and p[Y] + hitbox[H] >= grnd[Y] and p[Y] + hitbox[H] + vPlayer[Y] > grnd[Y]:
-            vPlayer[BOT] = grnd[Y]
-            p[Y] = vPlayer[BOT] - hitbox[H]
-            vPlayer[Y] = 0
+#     for grnd in spikes[0]: #go through spikes on ground, may not need
+#         if p[X] + hitbox[W] > grnd[X] and p[X] < grnd[X] + grnd[W] and p[Y] + hitbox[H] >= grnd[Y] and p[Y] + hitbox[H] + vPlayer[Y] > grnd[Y]:
+#             vPlayer[BOT] = grnd[Y]
+#             p[Y] = vPlayer[BOT] - hitbox[H]
+#             vPlayer[Y] = 0
 
 
 
@@ -435,9 +411,6 @@ def healthBar(health, pics):
         
             return pic
 
-def playMusic(music, m):
-    mixer.music.load(music[m])
-    mixer.music.play(music[m])
 
 def timeFont(font, timePassed, length):
     '''this function creates a timer for the level, which counts DOWN 

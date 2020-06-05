@@ -113,7 +113,7 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
             for t in timeHit:
                 timeHit.remove(t)
 
-    for i in range(lives+1):
+    for i in range(lives+1): #blit pics for lives
         screen.blit(livesPic, (10 + 50*i, 80))
 
     #same things as level one
@@ -143,10 +143,10 @@ def move(p, player, sprites, borders, spikes, vPlayer):
         player[ROW] = 0 #set sprite frame category to 0
 
     # for border in borders:
-    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1 and p[X] > leftEnd: #checking if it is ok to go left
+    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1 and p[X] > leftEnd and p[X] > leftEnd: #checking if it is ok to go left
         shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd) #move left
 
-    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, borders) == -1: #checking if it is ok to go right
+    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, borders) == -1 and p[X] < rightEnd: #checking if it is ok to go right
         shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd) #move right
 
     #rest of the function is the same as level one

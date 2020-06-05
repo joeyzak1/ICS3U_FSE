@@ -97,7 +97,6 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
     hitbox = shortcutFunctions.playerSprites(player, p, sprites, vPlayer, p[X])
     # print(hitbox[Y] + hitbox[H])
 
-    # shortcutFunctions.drawBossBullets(bullets)
     for bull in bullets: #go through the bullets list
         draw.circle(screen, (0, 255, 0), (int(bull[0]),int(bull[1])), 4) #draw the bullet
 
@@ -119,6 +118,7 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
 
     elif not visible: #if the boss has ran out of health
         # draw.rect(screen, (255, 0, 0), door)
+        b = Rect(0, 0, 1, 1)
         screen.blit(doorImg, door) #draw the door
 
 
@@ -298,6 +298,7 @@ def checkCollision(p, player, sprites, boss, b, bullets, bossHealth, playerBulle
             visible = False #not visible anymore
         
     if not visible:
+        b = Rect(0, 0, 1, 1)
         bullets = []
         if p.colliderect(b): #making sure the player won't die after boss is dead
             ph = ph #health will remain the same
