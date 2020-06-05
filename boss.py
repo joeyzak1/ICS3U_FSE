@@ -129,7 +129,7 @@ def drawScene(p, player, sprites, boss, b, bullets, bossSprites, timeFont, bossH
 
     myTime += 1 #my time, whenever this is an interval 60, 1 second has passed
 
-    shortcutFunctions.timeFont(timeFont, timeShown, 500) #blits the time left in corner of screen
+    shortcutFunctions.timeFont(timeFont, timeShown, 300) #blits the time left in corner of screen
 
     for i in range(lives+1): #draws the lives in the corner
         screen.blit(livesPic, (10 + 50*i, 80)) #blits all the lives below the health, same as other files

@@ -149,9 +149,9 @@ def menu(action, p, lives):
             mixer.music.load('audio/lev1Back.wav') #play level one music
             mixer.music.play(-1)
             # level_One('lev1', p, lives)
-            # level_Two('lev2', lev2.pRect, lives)
+            level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
-            boss('boss', lives)
+            # boss('boss', lives)
             # outro_func('outro', outro.pRect)
 
         
@@ -266,7 +266,7 @@ def boss(action, lives):
             mixer.music.play(-1)
             outro_func('outro', outro.pRect, lives) #outro
 
-        if bs.playerHealth < 0 or len(bs.timePassed) >= 500: #checking if defeated by by boss, same process as others
+        if bs.playerHealth < 0 or len(bs.timePassed) >= 300: #checking if defeated by by boss, same process as others
             for b in bs.timePassed: #remove everything from time passed
                 bs.timePassed.remove(b) #reset time
             pRect = Rect(300, 600, 50, 50)

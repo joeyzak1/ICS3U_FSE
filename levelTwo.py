@@ -143,11 +143,17 @@ def move(p, player, sprites, borders, spikes, vPlayer):
         player[ROW] = 0 #set sprite frame category to 0
 
     # for border in borders:
-    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, borders) == -1 and p[X] > leftEnd and p[X] > leftEnd: #checking if it is ok to go left
-        shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd) #move left
+    elif keys[K_LEFT] and shortcutFunctions.hitSpikes(p[X] - 5, p[Y], hitBox, spikes) == -1 and Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) == -1 and p[X] > leftEnd and p[X] > leftEnd: #checking if it is ok to go left
+        if keys[K_LSHIFT] or keys[K_RSHIFT] and Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) != -1 :
+            vPlayer[X] = 0
+        else:
+            shortcutFunctions.moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd) #move left
 
-    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, borders) == -1 and p[X] < rightEnd: #checking if it is ok to go right
-        shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd) #move right
+    elif keys[K_RIGHT] and shortcutFunctions.hitSpikes(p[X] + 5, p[Y], hitBox, spikes) == -1 and Rect(p[X] + 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) == -1 and p[X] + p[W] < rightEnd: #checking if it is ok to go right
+        if keys[K_LSHIFT] or keys[K_RSHIFT] and Rect(p[X] - 5, p[Y], hitBox[W], hitBox[H]).collidelist(borders[0]) != -1:
+            vPlayer[X] = 0
+        else:
+            shortcutFunctions.moveGuyRight(p, player, vPlayer, leftEnd, rightEnd) #move right
 
     #rest of the function is the same as level one
 
