@@ -27,7 +27,7 @@ from importlib import * #ONLY WORKS FOR PYTHON 3.4 AND ABOVE - for when health g
 '''IF YOU ARE USING PYTHON VERSION 2.x, UNCOMMENT BOTH IMPORTLIB AND IMP, nothing is needed'''
 import intro #intro.py
 import levelOne #levelOne.py
-import newLevelTwo as lev2
+import levelTwo as lev2
 import levelThree as lv3
 import boss as bs
 import outro
@@ -185,9 +185,9 @@ def level_One(action, p, lives):
                 reload(levelOne) #if all health is taken away, restart the level
 
             else: #normal game loop
-                levelOne.v = levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds, levelOne.v)
+                levelOne.v = levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds, levelOne.borders, levelOne.v)
                 levelOne.move_bird(p, levelOne.birds, levelOne.bird_p, bird_sprites)
-                levelOne.isJump = levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed, levelOne.isJump)
+                levelOne.isJump = levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.v,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed, levelOne.isJump)
                 levelOne.timePassed, levelOne.myCounter = levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                     levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
                     levelOne.doorRect, health_img, levelOne.health, timeFont, lives, levelOne.timePassed, levelOne.myCounter, levelOne.v)

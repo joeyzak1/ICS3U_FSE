@@ -1,5 +1,8 @@
-#newLevelTwo.py
-
+'''
+Joey Zaka and Abbas Zaidi
+levelTwo.py
+Everything in here is to run level two
+'''
 from pygame import *
 import shortcutFunctions
 

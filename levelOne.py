@@ -1,5 +1,8 @@
 '''
+Joey Zaka and Abbas Zaidi
 levelOne.py
+Running this will do nothing
+Everything that goes on here is to run level one
 '''
 
 from pygame import *
@@ -7,12 +10,9 @@ from math import *
 from shortcutFunctions import *
 
 init()
-
-
 size = width, height = 1024, 768
 myClock = time.Clock()
 screen = display.set_mode(size)
-minusHealth = False
 
 backPic = image.load("Backgrounds/background_levelOne.png").convert() #background
 
@@ -30,9 +30,6 @@ v_bird = [0, 0]; vBird_vertical = 10; vBrid_gravity = -1 #velocity of birds
 plats = [Rect(900, 525, 200, 15), Rect(3000, 460, 200, 15), Rect(5000, 530, 200, 15), Rect(5400, 450, 200, 15), Rect(6300, 525, 200, 15),
         Rect(6600, 400, 200, 15), Rect(6900, 275, 200, 15)] #platform rect list
 
-# blocks = [Rect(1150, 360, 250, 40), Rect(3900, 75, 50, 300), Rect(3950, 75, 200, 50), Rect(4100, 75, 50, 150), Rect(3900, 187, 75, 150),
-#         Rect(4250, 75, 50, 300), Rect(4250, 325, 200, 50), Rect(4400, 375, 50, -300), Rect(4550, 75, 50, 300), Rect(7200, 175, 250, 40)] #blocks rect list
-
 blocks = [Rect(1150, 360, 250, 40), Rect(7200, 175, 250, 40)] #blocks rect list
 
 squared_blocks = [Rect(1250, 182, 50, 50), Rect(5475, 250, 50, 50)] #squared blocks rect list
@@ -42,35 +39,30 @@ healthSq = [squared_blocks[1]] #health square blocks
 slugs = [Rect(2050, 645, 30, 30), Rect(3600, 602, 30, 30), Rect(5700, 645, 30, 30)] #slugs rect list
 
 birds = [Rect(3300, 50, 50, 15), Rect(5300, 50, 50, 15), Rect(1800, 50, 50, 15), Rect(6500, 50, 50, 15), Rect(7500, 50, 50, 15)] #rect list for birds
-bird_p = [[birds[i][X], birds[i][Y], 0] for i in range(len(birds))]
-bird_hitboxes = []
-
-# print (bird_p)
+bird_p = [[birds[i][X], birds[i][Y], 0] for i in range(len(birds))] #make a list instead, based off rect coordinates. this is better for sprites
 
 borders = [Rect(2732, 632, 1366, 47)] #ground border
 
 doorRect = Rect(7305, 100, 40, 75) #rect for door
-
-runCol = backPic.get_at((3936, 61))
 
 rapid = 100; sword = 20 #for speed of bullets and sword
 
 isJump = False #variable for checking jumps
 
 health = 2 #beginning health
-pHitbox = Rect(0, 0, 0, 0)
 
 #time lists and variables
 timePassed = []
 myCounter = 0
 
-livesPic = image.load('Other/live.png')
+livesPic = image.load('Other/live.png') #lives pic
 
+#sounds
 jumpSound = mixer.Sound('audio/effects/Jump.wav')
 healthAddition = mixer.Sound('audio/effects/Powerup.wav')
 playerDamage = mixer.Sound('audio/effects/Explosion.wav')
 movement = mixer.Sound('audio/effects/movement.wav')
-movement.set_volume(.05)
+movement.set_volume(.05) #lower molume of movement
 enterDoor = mixer.Sound('audio/effects/door.wav')
 sword = mixer.Sound('audio/effects/sword.wav')
 
@@ -78,45 +70,30 @@ sword = mixer.Sound('audio/effects/sword.wav')
 freshman = font.Font('fonts/Freshman.ttf', 70)
 enterText = freshman.render('Press Enter on the Door', True, (2, 26, 112))
 
-
-
 def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives, timePassed, myCounter, v):
     'this function draws the scene'
-    # global rapid #globalizing rapid and player hitbox
-    # global pHitbox
-    # global timePassed
-    # global myCounter
 
     if check_levelTwo(door, p):
         screen.fill((0))
 
     else:
-
         offset = v[SCREENX]-p[X] #offset to move screen with eveything
         screen.blit(backPic, (offset, 0)) #background
         screen.blit(enterText, (6900 + offset, 400))
 
-        # for plat in plats: #this for loop blits all platforms in the correct position
-        #     plat = plat.move(offset, 0)
-            # draw.rect(screen, (0), plat)
-        drawPlats(plats, offset)
-        moveBlocks(blocks, offset)
-        moveSqBlocks(sqblocks, offset)
+        drawPlats(plats, offset) #draws the platforms (shortcut functions)
+        moveBlocks(blocks, offset) #moves the blocks with offset shortctu functions
+        moveSqBlocks(sqblocks, offset) #moves the squared blocks shortcut functions
 
         for b in b_s: #birds
-            birdHitbox = birdSprites(b, sprites_b, offset)
-            # row = int(b[ROW]) #get the row for the birds
-            # if row > 4: #checking if the row is greater than 4 (last one)
-            #     row = 0 #sets the row (frame) to first one
-            # pic_bird = sprites_b[row] #gets the picture
-            # screen.blit(pic_bird, createHitbox(pic_bird, b[X], b[Y]).move(offset, 0)) #blits the bird
+            birdHitbox = birdSprites(b, sprites_b, offset) #gets the bird sprites
 
         for border in borders: #draw borders
-            border = border.move(offset, 0) 
+            border = border.move(offset, 0) #move border
 
         #health
         if health > -1: #checking if the player is not dead
-            screen.blit(hearts[health], (0, 0))
+            screen.blit(hearts[health], (0, 0)) #blit the hearts
 
         door = door.move(offset, 0) #door
 
@@ -135,18 +112,7 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps()))) #change the name of the window, with fps
         return timePassed, myCounter #to reduce globals
 
-
-
-def healthBar(health, pics):
-    'this function determines which picture to display for the healthbar'
-    for i in range(3):
-        if i == health: #checking if i in the loop is equal to the health
-            pic = pics[i] #pic is the picture for health (1, 2, or 3 hearts)
-            return pic #returns the pixture to blit
-
-
-
-def move(p, player, sprites, blocks, birds, v):
+def move(p, player, sprites, blocks, birds, borders, v):
     'this function moves the player'
     keys = key.get_pressed() 
     mx, my = mouse.get_pos()
@@ -161,62 +127,19 @@ def move(p, player, sprites, blocks, birds, v):
         sword.play() #play sword sound
 
 
-    elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks): #checking if left arrow is clicked and it is ok to move left
+    elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks) and hitBlocks(p[X] - 5, p[Y], borders) == -1: #checking if left arrow is clicked and it is ok to move left
         moveGuyLeft(p, player, v, 400, 7550)
-        # player[ROW] = 3 #sets the sprite category to left moving
-
-        # if p[X] + 5 < 7550: #checking if player isnt at the end
-        #     movement.play() #play footsteps
-
-        #     if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
-        #         v[X] = -10 #doubles the speed of the player
-
-        #     else: #if no shift
-        #         v[X] = -5 #normal speed
-
-        #     if v[SCREENX] > 350: #so the player stays on the screen while running
-        #         v[SCREENX] -= 5 #move the screen itself
 
 
-        # elif p[X] > 7550: #checking if the player is past the right end point
-        #     if v[X] == 0: #checking if the players horizontal velocity is zero
-        #         movement.play() #play footsteps
-        #         if keys[K_LSHIFT] or keys[K_RSHIFT]: #checkin if shift
-        #             v[X] = -10 #sets the velocity to 10 in left direction
-
-        #         else: #no shift
-        #             v[X] = -5 #normal left velocity
-
-
-    elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks): #checking if right arrow is clicked and it is okay to move
+    elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks) and hitBlocks(p[X] + 5, p[Y], borders) == -1: #checking if right arrow is clicked and it is okay to move
         moveGuyRight(p, player, v, 400, 7550) #movement function in shortcut functions
-        # player[ROW] = 4 #sets the sprite category to right moving 
-
-        # if p[X] + 5 < 7550: #checking if the player is not at the end point
-        #     movement.play() #play footsteps
-
-        #     if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking for shift key
-        #         v[X] = 10 #double vel in right direction
-        #     else: #no shift
-        #         v[X] = 5 #normal velocity in positive direction
-
-        #     if v[SCREENX] < 700: #so the screen moves along with the player
-        #         v[SCREENX] += 5
-
-        # elif p[X] > 7550: #checking if past the right end
-        #     player[COL] = 0 #idle position
-        #     if v[X] > 0: #making sure the velocity will ALWAYS be 0
-        #         v[X] = 0 #won't move
-
 
     else: #so the player doesn't move on its own
         player[COL] = 0 #idle position
         player[COL] -= 0.2 #so the frame doesnt move (added later)
         v[X] = 0 #player isnt moving
 
- 
     player[COL] += 0.2 #increase the frame of 0.2 (increase to speed of frame switching)
-
 
     if player[COL] >= len(sprites[ROW]): #checking if the frame number is greater than the amount of sprites in the category
         player[COL] = 1 #sets to the 2nd frame
@@ -224,9 +147,6 @@ def move(p, player, sprites, blocks, birds, v):
     p[X] += v[X] #adding the velocity to the players x position
     v[Y] += gravity #add gravity to the player's vertical velocity
     return v #return v to reduce global variables (need v as a parameter because of different modules)
-
-
-
 
 def move_bird(p, birds, bird_p, sprites):
     'this function moves the bird close to the player'
@@ -246,21 +166,11 @@ def move_bird(p, birds, bird_p, sprites):
             b[Y] += v_bird[Y] #increase bird pos by vel
             b[X] += v_bird[X] #increasing bird x pos by vel
 
-
-def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes, door, healthSq, timePassed, isJump):
+def check(p, player, sprites, v, plats, slugs, borders, birds, door, healthSq, timePassed, isJump):
     'this function mainly checks for collision'
     global health
 
-
-    #redoing the sprites here to use hitbox
-    row = player[ROW]
-    col = int(player[COL])
-
-    if row == 0 and col == 5:
-        col = 0
-
-    pic = sprites[row][col]
-    pHitbox = createHitbox(pic, p[X], p[Y])
+    pHitbox = playerSprites(player, p, sprites, v, v[SCREENX]) #sprites
 
     keys = key.get_pressed()
 
@@ -348,12 +258,11 @@ def check(p, player, sprites, hitbox, plats, slugs, borders, birds, birdHitboxes
 
     p[Y] += v[Y] #add vert velocity to player 
 
-    if p[Y] + p[H] >= GROUND: #checking if player is on or past ground
+    if p[Y] + p[H] >= GROUND: #checking if player is on or past ground, dont want the player falling past the ground
         v[BOT] = GROUND #set the bottom to the ground
         p[Y] = GROUND-p[H] #the players y pos to the ground perfectly
         v[Y] = 0 #vertical velocity is 0
     return isJump
-
 
 def check_attack(p, player, sprites, slugs, birds):
     'checking if the player attacked'
@@ -375,7 +284,6 @@ def check_attack(p, player, sprites, slugs, birds):
             if pHitbox.colliderect(birdRect): #check if touched bird
                 birds.remove(bird) #removes the bird
 
-
 def check_levelTwo(door, p):
     'checks if level two door was pressed, this function is used in main.py'
     keys = key.get_pressed()
@@ -386,7 +294,6 @@ def check_levelTwo(door, p):
 
     else:
         return False #not in the door
-
 
 def birdCollision(p, player, birds):
     'check bird collision'
@@ -403,7 +310,6 @@ def birdCollision(p, player, birds):
                 playerDamage.play()
                 health -= 1 #lower health by 1
                 time.delay(150) #this will pause the program for 150ms to indicate you got hit
-
 
 def hitBlocks(x, y, blocks):
     'check if hit blocks in a list'
