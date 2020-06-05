@@ -39,7 +39,7 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "825,525"  # to position pygame window
 
 init()
 width, height = 1024, 768; screen = display.set_mode((width,height))
-
+ 
 RED = (255,0,0); GREY = (127,127,127); BLACK = (0,0,0); WHITE = (255,255,255); BLUE = (0,0,255); GREEN = (0,255,0); YELLOW = (255,255,0) #cols
 
 running = True; myClock = time.Clock() #pg stuff
