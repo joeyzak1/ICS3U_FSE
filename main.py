@@ -151,8 +151,8 @@ def menu(action, p, lives):
         if mb[0] == 1 and intro.introRects[0].collidepoint(mx, my) and len(intro.timePassed) > 2: #check if new game was clicked, go to level one
             mixer.music.load('audio/lev1Back.wav') #play level one music
             mixer.music.play(-1)
-            # level_One('lev1', p, lives)
-            level_Two('lev2', lev2.pRect, lives)
+            level_One('lev1', p, lives)
+            # level_Two('lev2', lev2.pRect, lives)
             # level_Three('lev3', lv3.pRect, lives)
             # boss('boss', lives)
             # outro_func('outro', outro.pRect)
@@ -336,6 +336,8 @@ def gameOver(action, lives): #game over screen
             second = True #set second = true so all modules can be reloaded in the intro
             mixer.music.load('audio/IntroBack.wav') #load music
             mixer.music.play(-1) #play intro music
+            timePassed = []
+            myCounter = 0
             menu('menu', p, lives) #run the intro screen
 
         if myCounter % 60 == 0: #checking if the counter can be divisible by 60
