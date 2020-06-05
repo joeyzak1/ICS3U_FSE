@@ -193,40 +193,70 @@ def moveGuyLeft(p, player, vPlayer, leftEnd, rightEnd):
     keys = key.get_pressed()
 
     # if leftEnd < p[X] + 5 < rightEnd: #checking if player is offscreen
-    if p[X] > leftEnd:
-        movement.play()
-        player[ROW] = 3 #set sprite row to left moving
-        vPlayer[X] = -5 #set velocity of player to -5 (left moving)
-        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if chift was held
-            vPlayer[X] = -10 #increase velocity
-        if vPlayer[SCREENX] > 250: #checking if screen pos is correct
-            vPlayer[SCREENX] -= 5 
+    # if p[X] > leftEnd:
+    #     movement.play()
+    #     player[ROW] = 3 #set sprite row to left moving
+    #     vPlayer[X] = -5 #set velocity of player to -5 (left moving)
+    #     if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if chift was held
+    #         vPlayer[X] = -10 #increase velocity
+    #     if vPlayer[SCREENX] > 250: #checking if screen pos is correct
+    #         vPlayer[SCREENX] -= 5 
 
-    elif p[X] > rightEnd: #checking if right end is touched
-        if vPlayer[X] == 0: #checking if players velocity is 0
-            movement.play()
-            if keys[K_LSHIFT] or keys[K_RSHIFT]: #if shift clicked
-                vPlayer[X] = -10 #v = -10 (left faster)
-            else: #anything else
-                vPlayer[X] = -5 #v = -5 (slower)
+    # elif p[X] > rightEnd: #checking if right end is touched
+    #     if vPlayer[X] == 0: #checking if players velocity is 0
+    #         movement.play()
+    #         if keys[K_LSHIFT] or keys[K_RSHIFT]: #if shift clicked
+    #             vPlayer[X] = -10 #v = -10 (left faster)
+    #         else: #anything else
+    #             vPlayer[X] = -5 #v = -5 (slower)
+    if p[X] + 5 < rightEnd: #checking if the player is not at the end point
+        movement.play() #play movement sound
+        player[ROW] = 3 #moving left sprite
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
+            vPlayer[X] = -10 #doubles the speed of the player
+        else: #if no shift
+            vPlayer[X] = -5 #normal speed
+        if vPlayer[SCREENX] > 350: #so the player stays on the screen while running
+            vPlayer[SCREENX] -= 5 #move the screen itself
+    elif p[X] > rightEnd: #checking if past the right end
+        movement.play() #movement sound
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
+            vPlayer[X] = -10 #doubles the speed of the player
+        else: #if no shift
+            vPlayer[X] = -5 #normal speed
+
 
 
 def moveGuyRight(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the right'
     keys = key.get_pressed()
  #checking if good with borders
-    movement.play()
-    player[ROW] = 4 #sprite row to right moving 
-    vPlayer[X] = 5 #player x velocity set to 5 (moving right)
-    if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if shift is clicked
-        vPlayer[X] = 10 #v = 10 (faster)
-    if vPlayer[SCREENX] < 700: #checking if good with screen pos
-        vPlayer[SCREENX] += 5 #increase by 5
+    # movement.play()
+    # player[ROW] = 4 #sprite row to right moving 
+    # vPlayer[X] = 5 #player x velocity set to 5 (moving right)
+    # if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if shift is clicked
+    #     vPlayer[X] = 10 #v = 10 (faster)
+    # if vPlayer[SCREENX] < 700: #checking if good with screen pos
+    #     vPlayer[SCREENX] += 5 #increase by 5
 
-    elif p[X] > rightEnd: #checking if good with right end of level
-        player[COL] = 0 #cannot move, therefore must be in idle position
-        if vPlayer[X] > 0: #checking if trying to move
-            vPlayer[X] = 0 #then he cant move
+    # elif p[X] > rightEnd: #checking if good with right end of level
+    #     player[COL] = 0 #cannot move, therefore must be in idle position
+    #     if vPlayer[X] > 0: #checking if trying to move
+    #         vPlayer[X] = 0 #then he cant move
+    if p[X] + 5 < rightEnd:
+        player[ROW] = 4
+        movement.play()
+        if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
+            vPlayer[X] = 10 #doubles the speed of the player
+        else: #if no shift
+            vPlayer[X] = 5 #normal speed
+        if vPlayer[SCREENX] < 700: #so the player stays on the screen while running
+            vPlayer[SCREENX] += 5 #move the screen itself
+    elif p[X] > rightEnd:
+        player[ROW] = 4
+        player[COL] = 0
+        if vPlayer[X] > 0:
+            vPlayer[X] = 0
 
 def moveGuyLeftBoss(p, player, vPlayer, leftEnd, rightEnd):
     'this function moves the guy to the left only for boss'

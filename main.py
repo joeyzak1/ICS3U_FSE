@@ -31,6 +31,7 @@ import newLevelTwo as lev2
 import levelThree as lv3
 import boss as bs
 import outro
+import shortcutFunctions
 import sys #for quitting pygame window without going to previous
 
 bh=False
@@ -137,11 +138,7 @@ def menu(action, p, lives):
 
         intro.move_intro(ch1_intro, ch1_sprites, moveBackground, moveWalking)
         intro.helpDialog, intro.timePassed, intro.timeCounter = intro.draw_introScene(ch1_intro, ch1_sprites, moveBackground, moveWalking, intro.helpDialog, intro.timePassed, intro.timeCounter)
-        # if len(intro.timePassed) > 2:
-        #     currentScene = 'intro'
-            # mixer.music.load('audio/IntroBack.wav')
-            # mixer.music.play(-1)
-        #     mixer.music.play(-1)
+
         if intro.timeCounter == 95 and not second: #checking if the intro screen isnt black anymore and can play music
             mixer.music.load('audio/IntroBack.wav')
             mixer.music.play(-1)
@@ -190,7 +187,6 @@ def level_One(action, p, lives):
             else: #normal game loop
                 levelOne.v = levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds, levelOne.v)
                 levelOne.move_bird(p, levelOne.birds, levelOne.bird_p, bird_sprites)
-                # levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
                 levelOne.isJump = levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed, levelOne.isJump)
                 levelOne.timePassed, levelOne.myCounter = levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                     levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 

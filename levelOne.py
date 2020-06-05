@@ -104,11 +104,12 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         moveSqBlocks(sqblocks, offset)
 
         for b in b_s: #birds
-            row = int(b[ROW]) #get the row for the birds
-            if row > 4: #checking if the row is greater than 4 (last one)
-                row = 0 #sets the row (frame) to first one
-            pic_bird = sprites_b[row] #gets the picture
-            screen.blit(pic_bird, createHitbox(pic_bird, b[X], b[Y]).move(offset, 0)) #blits the bird
+            birdHitbox = birdSprites(b, sprites_b, offset)
+            # row = int(b[ROW]) #get the row for the birds
+            # if row > 4: #checking if the row is greater than 4 (last one)
+            #     row = 0 #sets the row (frame) to first one
+            # pic_bird = sprites_b[row] #gets the picture
+            # screen.blit(pic_bird, createHitbox(pic_bird, b[X], b[Y]).move(offset, 0)) #blits the bird
 
         for border in borders: #draw borders
             border = border.move(offset, 0) 
@@ -161,53 +162,54 @@ def move(p, player, sprites, blocks, birds, v):
 
 
     elif keys[K_LEFT] and p[X] > 400 and hitBlocks(p[X]-5, p[Y], blocks) and hitBlocks(p[X]-5, p[Y], squared_blocks): #checking if left arrow is clicked and it is ok to move left
-        player[ROW] = 3 #sets the sprite category to left moving
+        moveGuyLeft(p, player, v, 400, 7550)
+        # player[ROW] = 3 #sets the sprite category to left moving
 
-        if p[X] + 5 < 7550: #checking if player isnt at the end
-            movement.play() #play footsteps
+        # if p[X] + 5 < 7550: #checking if player isnt at the end
+        #     movement.play() #play footsteps
 
-            if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
-                v[X] = -10 #doubles the speed of the player
+        #     if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking if the shift key(s) were clicked 
+        #         v[X] = -10 #doubles the speed of the player
 
-            else: #if no shift
-                v[X] = -5 #normal speed
+        #     else: #if no shift
+        #         v[X] = -5 #normal speed
 
-            if v[SCREENX] > 350: #so the player stays on the screen while running
-                v[SCREENX] -= 5 #move the screen itself
+        #     if v[SCREENX] > 350: #so the player stays on the screen while running
+        #         v[SCREENX] -= 5 #move the screen itself
 
 
-        elif p[X] > 7550: #checking if the player is past the right end point
-            if v[X] == 0: #checking if the players horizontal velocity is zero
-                movement.play() #play footsteps
-                if keys[K_LSHIFT] or keys[K_RSHIFT]: #checkin if shift
-                    v[X] = -10 #sets the velocity to 10 in left direction
+        # elif p[X] > 7550: #checking if the player is past the right end point
+        #     if v[X] == 0: #checking if the players horizontal velocity is zero
+        #         movement.play() #play footsteps
+        #         if keys[K_LSHIFT] or keys[K_RSHIFT]: #checkin if shift
+        #             v[X] = -10 #sets the velocity to 10 in left direction
 
-                else: #no shift
-                    v[X] = -5 #normal left velocity
+        #         else: #no shift
+        #             v[X] = -5 #normal left velocity
 
 
     elif keys[K_RIGHT] and p[X] < 12280 and hitBlocks(p[X]+5, p[Y], blocks) and hitBlocks(p[X]+5, p[Y], squared_blocks): #checking if right arrow is clicked and it is okay to move
-        player[ROW] = 4 #sets the sprite category to right moving 
+        moveGuyRight(p, player, v, 400, 7550) #movement function in shortcut functions
+        # player[ROW] = 4 #sets the sprite category to right moving 
 
-        if p[X] + 5 < 7550: #checking if the player is not at the end point
-            movement.play() #play footsteps
+        # if p[X] + 5 < 7550: #checking if the player is not at the end point
+        #     movement.play() #play footsteps
 
-            if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking for shift key
-                v[X] = 10 #double vel in right direction
-            else: #no shift
-                v[X] = 5 #normal velocity in positive direction
+        #     if keys[K_LSHIFT] or keys[K_RSHIFT]: #checking for shift key
+        #         v[X] = 10 #double vel in right direction
+        #     else: #no shift
+        #         v[X] = 5 #normal velocity in positive direction
 
-            if v[SCREENX] < 700: #so the screen moves along with the player
-                v[SCREENX] += 5
+        #     if v[SCREENX] < 700: #so the screen moves along with the player
+        #         v[SCREENX] += 5
 
-        elif p[X] > 7550: #checking if past the right end
-            player[COL] = 0 #idle position
-            if v[X] > 0: #making sure the velocity will ALWAYS be 0
-                v[X] = 0 #won't move
+        # elif p[X] > 7550: #checking if past the right end
+        #     player[COL] = 0 #idle position
+        #     if v[X] > 0: #making sure the velocity will ALWAYS be 0
+        #         v[X] = 0 #won't move
 
 
     else: #so the player doesn't move on its own
-        # extra=False #no extra 5 units
         player[COL] = 0 #idle position
         player[COL] -= 0.2 #so the frame doesnt move (added later)
         v[X] = 0 #player isnt moving
@@ -221,7 +223,7 @@ def move(p, player, sprites, blocks, birds, v):
 
     p[X] += v[X] #adding the velocity to the players x position
     v[Y] += gravity #add gravity to the player's vertical velocity
-    return v
+    return v #return v to reduce global variables (need v as a parameter because of different modules)
 
 
 
