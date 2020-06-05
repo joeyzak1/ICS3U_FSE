@@ -2,6 +2,19 @@
 main.py
 ICS3U FSE 
 Run this to play the game from start to finish
+Multiple modules were used to create the game
+
+ATTENTION TO DETAIL
+- Timer will beep on the last 5 seconds
+- Sound effect on almost every object in the game
+- highlughting rect when hover over in the intro
+- Shadow on the timer
+- Artwork in photoshop 
+- Lives and health shown in corner at all times
+- Portion of boss health bar will turn red when you hit the boss
+- Tips given throughout the game 
+- In the intro, there is a scene PURPOSEFULLY where the player is running without a background
+- When you lose health, the game pauses for 100 ms
 '''
 
 from pygame import *
