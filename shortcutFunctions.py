@@ -36,23 +36,23 @@ def drawPlats(plats, offset):
         plat = plat.move(offset, 0)
         screen.blit(platPic, (plat[X], plat[Y])) #blitting each plat pic in plat pos
 
-def drawSpikes(spikes, offset):
+def moveSpikes(spikes, offset):
     'this functions draws spikes'
     for sp in spikes: 
         for ground in sp: #went through two loops to get to desired spikes (2d list)
             ground = ground.move(offset, 0) #move according to offset
 
-def drawBlocks(blocks):
+def moveBlocks(blocks, offset):
     'this function draws blocks - blocks must be in a LIST and have offset'
     for block in blocks: #this loop blits all blocks
         block = block.move(offset, 0)
-        draw.rect(screen, (255, 0, 0), block) #draws the block
+        # draw.rect(screen, (255, 0, 0), block) #draws the block
 
-def drawSqBlocks(sq_blocks):
+def moveSqBlocks(sq_blocks, offset):
     'this function draws squared blocks - param needs to be a list'
     for sq in sq_blocks: #this for loop blits all squared blocks
         sq = sq.move(offset, 0)
-        draw.rect(screen, (0, 0, 255), sq)
+        # draw.rect(screen, (0, 0, 255), sq)
 
 def drawHealthBlocks(healthB, offset):
     'this function draws the health blocks'
@@ -76,7 +76,7 @@ def drawTempBird(birds, offset):
     for bird in birds:
         bird = bird.move(offset, 0)
         draw.rect(screen, (120, 255, 89), [bird[X], bird[Y], 60, 30])
-
+ 
 def createHitbox (pic, x, y):
     'this function creates a hitbox'
     pic_width = pic.get_width() #get the width of the sprite frame

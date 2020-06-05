@@ -84,7 +84,7 @@ def drawScene(p, player, sprites, plats, platPic, spikes, borders, birds, birdSp
     screen.blit(backPic, (offset, 0))
 
     shortcutFunctions.drawPlats(plats, offset) #objects to draw
-    shortcutFunctions.drawSpikes(spikes, offset)
+    shortcutFunctions.moveSpikes(spikes, offset)
     shortcutFunctions.drawBorders(borders, offset)
     shortcutFunctions.drawHealthBlocks(healthBlocks, offset)
 

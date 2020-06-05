@@ -188,13 +188,13 @@ def level_One(action, p, lives):
                 reload(levelOne) #if all health is taken away, restart the level
 
             else: #normal game loop
-                levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds)
+                levelOne.v = levelOne.move(p, ch1_levelOne, ch1_sprites, levelOne.blocks, levelOne.birds, levelOne.v)
                 levelOne.move_bird(p, levelOne.birds, levelOne.bird_p, bird_sprites)
                 # levelOne.move_bad(p, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites)
                 levelOne.isJump = levelOne.check(p, ch1_levelOne, ch1_sprites,levelOne.pHitbox,levelOne.plats, levelOne.slugs, levelOne.borders, levelOne.bird_p, levelOne.bird_hitboxes, levelOne.doorRect, levelOne.healthSq, levelOne.timePassed, levelOne.isJump)
                 levelOne.timePassed, levelOne.myCounter = levelOne.drawScene(screen, p, ch1_sprites, ch1_levelOne, levelOne.plats, levelOne.blocks, 
                     levelOne.squared_blocks, levelOne.slugs, bullets_slugs, levelOne.birds, levelOne.bird_p, bird_sprites, levelOne.borders, 
-                    levelOne.doorRect, health_img, levelOne.health, timeFont, lives, levelOne.timePassed, levelOne.myCounter)
+                    levelOne.doorRect, health_img, levelOne.health, timeFont, lives, levelOne.timePassed, levelOne.myCounter, levelOne.v)
 
 
         

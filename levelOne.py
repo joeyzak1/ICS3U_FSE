@@ -80,7 +80,7 @@ enterText = freshman.render('Press Enter on the Door', True, (2, 26, 112))
 
 
 
-def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives, timePassed, myCounter):
+def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slugs, birds, b_s, sprites_b, borders, door, hearts, health, tFont, lives, timePassed, myCounter, v):
     'this function draws the scene'
     # global rapid #globalizing rapid and player hitbox
     # global pHitbox
@@ -100,82 +100,39 @@ def drawScene(screen, p, sprites, player, plats, blocks, sqblocks, slugs, b_slug
         #     plat = plat.move(offset, 0)
             # draw.rect(screen, (0), plat)
         drawPlats(plats, offset)
-
-
-        for block in blocks: #this loop blits all blocks
-            block = block.move(offset, 0)
-            # draw.rect(screen, (255, 0, 0), block)
-
-        for sq in sqblocks: #this for loop blits all squared blocks
-            sq = sq.move(offset, 0)
-            # draw.rect(screen, (0, 0, 255), sq)
-
-        # for slug in slugs: #this blits the slugs
-        #     slug = slug.move(offset, 0); draw.rect(screen, (0, 255, 255), slug)
-
-        #     if rapid < 100 and player[X] + 500 <= slug[X]: #checking for bullet speed
-        #         rapid += 1
-
-        #     if slug[0] <= 1400 and rapid == 100 and player[X] < slug[X]: #checking if bullet speed is slow enough to shoot
-        #         b_slugs.append([slug[X], (slug[Y] + (slug[Y]+slug[H]))//2, v_bull[0], 0]) #create a bullet
-        #         rapid = 0 #set rapid to zero
-
-        # for b in b_slugs: #bullets
-        #     bs_rect = Rect(b[0], b[1], 20, 10)
-        #     draw.rect(screen, (255, 255, 0), bs_rect)
-
+        moveBlocks(blocks, offset)
+        moveSqBlocks(sqblocks, offset)
 
         for b in b_s: #birds
-            # b = b.move(offset, 0)
             row = int(b[ROW]) #get the row for the birds
-            # print (row)
             if row > 4: #checking if the row is greater than 4 (last one)
                 row = 0 #sets the row (frame) to first one
             pic_bird = sprites_b[row] #gets the picture
-
             screen.blit(pic_bird, createHitbox(pic_bird, b[X], b[Y]).move(offset, 0)) #blits the bird
-            # draw.rect(screen, (255, 0, 0), createHitbox(pic_bird, b[X], b[Y]).move(offset, 0), 1) 
-
-            # screen.blit(pic_bird, get_hitbox(pic_bird, b))
 
         for border in borders: #draw borders
             border = border.move(offset, 0) 
-            # draw.rect(screen, (255, 0, 0), border, 3)
 
         #health
-        if health > -1:
-            screen.blit(healthBar(health, hearts), (0, 0))
+        if health > -1: #checking if the player is not dead
+            screen.blit(hearts[health], (0, 0))
 
-        door = door.move(offset, 0)
-        # draw.rect(screen, (123, 213, 7), door)
+        door = door.move(offset, 0) #door
 
-        row = player[ROW] #row (category of sprites for player)
-        col = int(player[COL]) #frame of sprite
-        if row == 0 and col == 5:
-            col = 0 #this is for the attacking, as there seemed to be a crash with the attacking sprites
+        pHitbox = playerSprites(player, p, sprites, v, v[SCREENX]) #sprites
 
-        pic = sprites[row][col] #get the frame pic
-        # sprite_width = pic.get_width()
-        # sprite_height = pic.get_height()
+        for i in range(lives+1): #to blit the lives on the screen
+            screen.blit(livesPic, (10 + 50*i, 80)) #display each picture as a live
 
-        # hitBox = Rect(v[SCREENX], p[1], sprite_width, sprite_height)
-        pHitbox = createHitbox(pic, v[SCREENX], p[Y]) #create a player hitbox
-
-        screen.blit(pic, createHitbox(pic, v[SCREENX], p[Y])) #blit the player
-        # draw.rect(screen, (255, 0, 0), createHitbox(pic, v[SCREENX], p[Y]), 2) #draw the hitbox
-
-        for i in range(lives+1):
-            screen.blit(livesPic, (10 + 50*i, 80))
-
-        timeFont(tFont, timePassed, 125)
-        if myCounter % 60 == 0:
-            timePassed.append('t')
-        myCounter += 1
+        timeFont(tFont, timePassed, 125) #timer in the corner
+        if myCounter % 60 == 0: #checking if 1 second has passed
+            timePassed.append('t') #add to the time passed list
+        myCounter += 1 #counter for the second
 
         display.update()
         myClock.tick(60)
         display.set_caption("Super Swordy Boy - Level One     FPS = " + str(int(myClock.get_fps()))) #change the name of the window, with fps
-        return timePassed, myCounter #to reduce locals and globals
+        return timePassed, myCounter #to reduce globals
 
 
 
@@ -188,7 +145,7 @@ def healthBar(health, pics):
 
 
 
-def move(p, player, sprites, blocks, birds):
+def move(p, player, sprites, blocks, birds, v):
     'this function moves the player'
     keys = key.get_pressed() 
     mx, my = mouse.get_pos()
@@ -264,6 +221,7 @@ def move(p, player, sprites, blocks, birds):
 
     p[X] += v[X] #adding the velocity to the players x position
     v[Y] += gravity #add gravity to the player's vertical velocity
+    return v
 
 
 
