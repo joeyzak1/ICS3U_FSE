@@ -1,4 +1,5 @@
 '''
+Joey Zaka and Abbas Zaidi
 main.py
 ICS3U FSE 
 Run this to play the game from start to finish
